@@ -14,10 +14,9 @@ const LocationPickerMap = dynamic(
 );
 
 // Dynamic import for MapComponent to avoid SSR issues with Leaflet
-const MapComponent = dynamic(
-  () => import('@/components/MapComponent'),
-  { ssr: false }
-);
+const MapComponent = dynamic(() => import('@/components/MapComponent'), {
+  ssr: false,
+});
 
 export default function RoutesPage() {
   const [userLocation, setUserLocation] = useState({
