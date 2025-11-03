@@ -243,7 +243,8 @@ export default function RoutesPage() {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-white/80 font-light tracking-wide">
-                Temukan perjalanan optimal dengan teknologi AI
+                Temukan destinasi wisata terbaik di Surabaya dengan rekomendasi
+                rute yang optimal
               </p>
             </div>
           </div>
