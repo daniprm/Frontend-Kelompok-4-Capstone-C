@@ -1,9 +1,9 @@
 // Types untuk aplikasi rekomendasi wisata
 
-import { Key } from 'react';
+// import { Key } from 'react';
 
 export interface Destination {
-  place_id: Key | null | undefined;
+  place_id: string | null | undefined;
   order: number;
   nama: string;
   kategori: string[];
@@ -13,6 +13,7 @@ export interface Destination {
   alamat?: string;
   jam_buka?: string;
   rating?: number;
+  image_url?: string | null;
 }
 
 export interface Route {

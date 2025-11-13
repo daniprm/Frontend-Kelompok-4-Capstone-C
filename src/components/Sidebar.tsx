@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Route as RouteIcon, Bot } from 'lucide-react';
+import { Home, Route as RouteIcon, Bot, MapPin } from 'lucide-react';
 
 interface SidebarProps {
   onChatbotClick?: () => void;
@@ -12,10 +12,11 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
   const pathname = usePathname();
 
   const navItems = [
-    { icon: Home, label: 'Beranda', href: '/', type: 'link' as const },
-    { icon: RouteIcon, label: 'Rute', href: '/routes', type: 'link' as const },
-    { icon: Bot, label: 'Chatbot', href: '#', type: 'button' as const },
-  ];
+  { icon: Home, label: 'Beranda', href: '/', type: 'link' as const },
+  { icon: RouteIcon, label: 'Rute', href: '/routes', type: 'link' as const },
+  { icon: MapPin, label: 'Lihat Semua', href: '/lihat-semua', type: 'link' as const },
+  { icon: Bot, label: 'Chatbot', href: '#', type: 'button' as const },
+];
 
   return (
     <div className="fixed left-0 top-1/3 z-50 group/sidebar">

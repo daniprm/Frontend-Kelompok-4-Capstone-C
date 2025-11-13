@@ -18,6 +18,7 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
 });
 
+
 export default function RoutesPage() {
   const [userLocation, setUserLocation] = useState({
     latitude: -7.2458,

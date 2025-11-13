@@ -16,13 +16,20 @@ export default function DestinationCard({
 }: DestinationCardProps) {
   const categoryLabels: { [key: string]: string } = {
     makanan_berat: 'Makanan Berat',
-    makanan_ringan: 'Makanan Ringan',
-    halal: 'Halal',
-    wisata_alam: 'Wisata Alam',
-    wisata_budaya: 'Wisata Budaya',
-    wisata_kuliner: 'Wisata Kuliner',
-    belanja: 'Belanja',
-    hiburan: 'Hiburan',
+  makanan_ringan: 'Makanan Ringan',
+  halal: 'Halal',
+  wisata_alam: 'Wisata Alam',
+  wisata_budaya: 'Wisata Budaya',
+  wisata_kuliner: 'Wisata Kuliner',
+  belanja: 'Belanja',
+  hiburan: 'Hiburan',
+  // Add these missing ones:
+  oleh_oleh: 'Oleh-oleh',
+  mall: 'Mall',
+  non_kuliner: 'Non Kuliner',
+  play: 'Bermain',
+  kantor_pariwisata: 'Kantor Pariwisata',
+  all: 'Semua',
   };
 
   return (
@@ -44,17 +51,18 @@ export default function DestinationCard({
 
       {/* Enhanced Image Section */}
       <div className="relative h-72 w-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
-        <Image
-          src={
-            destination.gambar ||
-            `https://picsum.photos/seed/${destination.nama}/600/400`
-          }
-          alt={destination.nama}
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
-        />
-        {/* Dynamic overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+  <Image
+    src={
+      destination.image_url ||
+      destination.gambar ||
+      `https://picsum.photos/seed/${destination.nama}/600/400`
+    }
+    alt={destination.nama}
+    fill
+    className="object-cover group-hover:scale-110 transition-transform duration-700"
+  />
+  {/* Dynamic overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
 
         {/* Floating rating badge */}
         {destination.rating && (
@@ -106,9 +114,9 @@ export default function DestinationCard({
 
         {/* Enhanced CTA Button */}
         <Link
-          href={`/destination/${encodeURIComponent(destination.nama)}`}
-          className="group/btn relative flex items-center justify-center gap-3 w-full text-center overflow-hidden"
-        >
+  href={`/destination/${encodeURIComponent(destination.place_id ?? '')}`}
+  className="group/btn relative flex items-center justify-center gap-3 w-full text-center overflow-hidden"
+>
           <span className="absolute inset-0 bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900"></span>
           <span className="absolute inset-0 bg-gradient-to-r from-slate-800 via-slate-900 to-black translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></span>
 

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DestinationCard from '@/components/DestinationCard';
 import { Destination } from '@/types';
+import { getDestinations } from '@/services/destinationService';
 import {
   MapPin,
   Route as RouteIcon,
@@ -14,51 +15,37 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-// Data dummy untuk landing page
-const featuredDestinations: Destination[] = [
-  {
-    place_id: 'dummy-1',
-    order: 1,
-    nama: 'Pusat Oleh-Oleh Bu Rudy',
-    kategori: ['belanja', 'wisata_kuliner'],
-    coordinates: [-7.2575, 112.7521],
-    deskripsi:
-      'Pusat oleh-oleh khas Surabaya dengan berbagai pilihan makanan ringan dan kerajinan lokal.',
-    rating: 4.5,
-  },
-  {
-    place_id: 'dummy-2',
-    order: 2,
-    nama: 'Nasi Goreng Kambing',
-    kategori: ['makanan_berat', 'halal', 'wisata_kuliner'],
-    coordinates: [-7.2456, 112.7378],
-    deskripsi:
-      'Kuliner legendaris Surabaya dengan cita rasa nasi goreng kambing yang khas dan lezat.',
-    rating: 4.7,
-  },
-  {
-    place_id: 'dummy-3',
-    order: 3,
-    nama: 'Taman Bunga',
-    kategori: ['wisata_alam'],
-    coordinates: [-7.2389, 112.7289],
-    deskripsi:
-      'Taman indah dengan berbagai jenis bunga warna-warni, cocok untuk bersantai dan berfoto.',
-    rating: 4.3,
-  },
-];
-
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
+  const [featuredDestinations, setFeaturedDestinations] = useState<Destination[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Load destinations and get first 3
+    async function loadFeaturedDestinations() {
+      try {
+        const allDestinations = await getDestinations();
+        // Get first 3 destinations
+        const featured = allDestinations.slice(0, 3);
+        setFeaturedDestinations(featured);
+      } catch (error) {
+        console.error('Error loading destinations:', error);
+        setFeaturedDestinations([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadFeaturedDestinations();
   }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
-      {/* Hero Section */}
+      {/* Hero Section - keep existing */}
       <div className="relative h-[600px] w-full overflow-hidden">
+        {/* ...existing hero content... */}
         <Image
           src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=2070"
           alt="Surabaya Tourism"
@@ -142,12 +129,12 @@ export default function Home() {
                       Destinasi Populer
                     </h2>
                     <p className="text-gray-600 font-medium mt-1">
-                      Jelajahi tempat-tempat menarik di Surabaya
+                      Jelajahi 3 destinasi terpopuler di Surabaya
                     </p>
                   </div>
                 </div>
                 <Link
-                  href="/routes"
+                  href="/lihat-semua"
                   className="group/link flex items-center gap-2 text-slate-700 hover:text-slate-900 font-bold transition-colors duration-300"
                 >
                   <span>Lihat Semua</span>
@@ -155,19 +142,38 @@ export default function Home() {
                 </Link>
               </div>
 
+              {/* Featured Destinations Grid */}
               {isClient && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {featuredDestinations.map((dest, idx) => (
-                    <DestinationCard key={idx} destination={dest} />
-                  ))}
+                  {loading ? (
+                    // Loading skeleton for 3 cards
+                    [...Array(3)].map((_, idx) => (
+                      <div 
+                        key={idx} 
+                        className="bg-gray-200 animate-pulse h-96 rounded-lg"
+                      />
+                    ))
+                  ) : featuredDestinations.length > 0 ? (
+                    featuredDestinations.map((dest, idx) => (
+                      <DestinationCard 
+                        key={dest.place_id || idx} 
+                        destination={dest} 
+                      />
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center py-12">
+                      <p className="text-gray-500 text-lg">
+                        Belum ada destinasi yang tersedia
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Features Section */}
+{/* Features Section */}
       <div className="bg-gradient-to-br from-slate-50 via-gray-50 to-slate-50 py-20">
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
