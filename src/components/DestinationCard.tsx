@@ -33,7 +33,7 @@ export default function DestinationCard({
   };
 
   return (
-    <div className="group relative bg-white overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 transform hover:-translate-y-2 hover:scale-[1.02]">
+    <div className="group relative bg-white overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 transform hover:-translate-y-2 hover:scale-[1.02] flex flex-col h-full">
       {/* Animated gradient border on hover */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
       <div className="absolute inset-[2px] bg-white -z-5"></div>
@@ -81,11 +81,11 @@ export default function DestinationCard({
       </div>
 
       {/* Content Section with Enhanced Design */}
-      <div className="p-6 relative">
+      <div className="p-6 relative flex flex-col flex-grow">
         {/* Gradient accent line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
 
-        <h3 className="font-bold text-xl text-gray-800 mb-4 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-700 group-hover:to-slate-900 transition-all duration-300 leading-tight">
+        <h3 className="font-bold text-xl text-gray-800 mb-4 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-700 group-hover:to-slate-900 transition-all duration-300 leading-tight min-h-[3.5rem]">
           {destination.nama}
         </h3>
 
@@ -115,7 +115,7 @@ export default function DestinationCard({
         {/* Enhanced CTA Button */}
         <Link
   href={`/destination/${encodeURIComponent(destination.place_id ?? '')}`}
-  className="group/btn relative flex items-center justify-center gap-3 w-full text-center overflow-hidden"
+  className="group/btn relative flex items-center justify-center gap-3 w-full text-center overflow-hidden mt-auto"
 >
           <span className="absolute inset-0 bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900"></span>
           <span className="absolute inset-0 bg-gradient-to-r from-slate-800 via-slate-900 to-black translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></span>
