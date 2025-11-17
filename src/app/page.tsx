@@ -47,7 +47,7 @@ export default function Home() {
       <div className="relative h-[600px] w-full overflow-hidden">
         {/* ...existing hero content... */}
         <Image
-          src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=2070"
+          src="https://pemerintahan.surabaya.go.id/web/assets/frontend/img/suro_boyo.jpg"
           alt="Surabaya Tourism"
           fill
           className="object-cover brightness-50"
@@ -78,13 +78,13 @@ export default function Home() {
           <div className="container mx-auto px-6 md:px-12">
             <div className="max-w-3xl">
               <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 drop-shadow-2xl tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-emerald-300">
-                  REKOMENDASI
-                </span>
-                <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-white to-white">
-                  WISATA SURABAYA
-                </span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e1ce24] to-[#fefefe]">
+                  REKOMENDASI 
+                  </span>
+                  <br />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e1ce24] to-[#fefefe]">
+                    WISATA SURABAYA
+                  </span>
               </h1>
               <p className="text-2xl text-white/90 mb-10 font-light tracking-wide">
                 Temukan destinasi wisata terbaik di Surabaya dengan rekomendasi
@@ -92,7 +92,7 @@ export default function Home() {
               </p>
               <Link
                 href="/routes"
-                className="group/btn relative inline-flex items-center gap-3 bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 hover:from-slate-800 hover:via-slate-900 hover:to-black text-white font-bold text-lg py-5 px-10 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/20 overflow-hidden"
+                className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#e1ce24] to-[#fefefe] text-[#2d1d72] font-bold text-xl py-6 px-12 shadow-2xl hover:opacity-90 transition-all duration-300 overflow-hidden"
               >
                 <span className="absolute inset-0 bg-white/0 group-hover/btn:bg-white/10 transition-all duration-300"></span>
                 <span className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></span>
@@ -112,7 +112,7 @@ export default function Home() {
 
           <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden">
             {/* Accent Bar */}
-            <div className="h-2 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800"></div>
+            <div className="h-2 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24]"></div>
 
             <div className="p-10">
               {/* Section Header */}
@@ -125,7 +125,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900">
+                    <h2 className="text-3xl font-bold text-[#2d1d72]">
                       Destinasi Populer
                     </h2>
                     <p className="text-gray-600 font-medium mt-1">
@@ -178,12 +178,12 @@ export default function Home() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
             <div className="inline-block relative mb-6">
-              <div className="absolute inset-0 bg-emerald-600 blur-2xl opacity-20 animate-pulse"></div>
-              <div className="relative w-20 h-20 bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center mx-auto">
+              <div className="absolute inset-0 bg-[#2d1d72] blur-2xl opacity-20 animate-pulse"></div>
+              <div className="relative w-20 h-20 bg-[#2d1d72] flex items-center justify-center mx-auto">
                 <Sparkles className="w-10 h-10 text-white" />
               </div>
             </div>
-            <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900 mb-4">
+            <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-[#2d1d72] mb-4">
               Kenapa Memilih Kami?
             </h2>
             <p className="text-gray-600 text-lg font-medium">
@@ -196,15 +196,15 @@ export default function Home() {
             <div className="group relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
               <div className="relative bg-white shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="h-1.5 bg-gradient-to-r from-slate-700 to-slate-900"></div>
+                <div className="h-1.5 bg-[#2D1D72]"></div>
                 <div className="p-8 text-center">
                   <div className="relative inline-block mb-6">
                     <div className="absolute inset-0 bg-slate-700 blur-md opacity-50"></div>
-                    <div className="relative w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center mx-auto">
+                    <div className="relative w-16 h-16 bg-[#2D1D72] flex items-center justify-center mx-auto">
                       <RouteIcon className="w-8 h-8 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-800 mb-4">
+                  <h3 className="text-2xl font-bold text-[#2D1D72] mb-4">
                     Rute Optimal
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -217,17 +217,17 @@ export default function Home() {
 
             {/* Feature 2 */}
             <div className="group relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+              <div className="absolute -inset-1 bg-[#F5A201] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
               <div className="relative bg-white shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="h-1.5 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
+                <div className="h-1.5 bg-[#F5A201]"></div>
                 <div className="p-8 text-center">
                   <div className="relative inline-block mb-6">
-                    <div className="absolute inset-0 bg-emerald-600 blur-md opacity-50"></div>
-                    <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center mx-auto">
+                    <div className="absolute inset-0 bg-[#F5A201] blur-md opacity-50"></div>
+                    <div className="relative w-16 h-16 bg-[#F5A201] flex items-center justify-center mx-auto">
                       <Map className="w-8 h-8 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-emerald-700 mb-4">
+                  <h3 className="text-2xl font-bold text-[#F5A201] mb-4">
                     Peta Interaktif
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -240,17 +240,17 @@ export default function Home() {
 
             {/* Feature 3 */}
             <div className="group relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+              <div className="absolute -inset-1 bg-[#1c58b3] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
               <div className="relative bg-white shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="h-1.5 bg-gradient-to-r from-amber-500 to-amber-600"></div>
+                <div className="h-1.5 bg-[#1c58b3]"></div>
                 <div className="p-8 text-center">
                   <div className="relative inline-block mb-6">
-                    <div className="absolute inset-0 bg-amber-500 blur-md opacity-50"></div>
-                    <div className="relative w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mx-auto">
+                    <div className="absolute inset-0 bg-[#1c58b3] blur-md opacity-50"></div>
+                    <div className="relative w-16 h-16 bg-[#1c58b3] flex items-center justify-center mx-auto">
                       <Star className="w-8 h-8 text-white fill-white" />
                     </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-amber-600 mb-4">
+                  <h3 className="text-2xl font-bold text-[#1c58b3] mb-4">
                     Rekomendasi Terpercaya
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -287,15 +287,15 @@ export default function Home() {
 
         <div className="container mx-auto px-6 md:px-12 text-center relative z-10">
           <div className="inline-block relative mb-6">
-            <div className="absolute inset-0 bg-emerald-500 blur-2xl opacity-30 animate-pulse"></div>
+            <div className="absolute inset-0 bg-[#2d1d72] blur-2xl opacity-30 animate-pulse"></div>
             <div className="relative w-20 h-20 bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 mx-auto">
               <MapPin className="w-10 h-10 text-white" />
             </div>
           </div>
 
           <h2 className="text-5xl font-bold text-white mb-6 tracking-tight">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-emerald-300 to-white">
-              Siap Menjelajahi Surabaya?
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#fefefe] via-[#e1ce24] to-[#fefefe]">
+            Siap Menjelajahi Surabaya?
             </span>
           </h2>
           <p className="text-2xl text-white/80 mb-10 font-light max-w-3xl mx-auto">
@@ -304,7 +304,7 @@ export default function Home() {
           </p>
           <Link
             href="/routes"
-            className="group/btn relative inline-flex items-center gap-3 bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-700 hover:via-emerald-800 hover:to-teal-800 text-white font-bold text-xl py-6 px-12 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/30 overflow-hidden"
+            className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#e1ce24] to-[#fefefe] text-[#2d1d72] font-bold text-xl py-6 px-12 shadow-2xl hover:opacity-90 transition-all duration-300 overflow-hidden"
           >
             <span className="absolute inset-0 bg-white/0 group-hover/btn:bg-white/10 transition-all duration-300"></span>
             <span className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></span>
@@ -320,7 +320,7 @@ export default function Home() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#013C58] flex items-center justify-center">
                 <MapPin className="w-5 h-5 text-white" />
               </div>
               <span className="font-bold text-lg">Wisata Surabaya</span>

@@ -236,14 +236,14 @@ export default function RoutesPage() {
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="flex items-center gap-6">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-[#2d1d72] blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
               <div className="relative w-16 h-16 bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform duration-300">
                 <RouteIcon className="w-8 h-8 text-white" />
               </div>
             </div>
             <div className="flex-1">
               <h1 className="text-5xl md:text-6xl font-bold mb-3 tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-emerald-300">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#fefefe] via-[#e1ce24] to-[#fefefe]">
                   Rekomendasi Rute Wisata
                 </span>
               </h1>
@@ -424,17 +424,17 @@ export default function RoutesPage() {
 
             <div className="relative bg-white shadow-2xl border border-gray-100 h-full overflow-hidden">
               {/* Accent Bar with Gradient */}
-              <div className="h-1.5 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600"></div>
+              <div className="h-1.5 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24]"></div>
 
               <div className="p-8 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="relative">
                     <div className="absolute inset-0 bg-emerald-600 blur-md opacity-50"></div>
-                    <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center">
+                    <div className="relative w-12 h-12 bg-[#2d1d72] flex items-center justify-center">
                       <MapPin className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-teal-700">
+                  <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-[#2d1d72]">
                     Pilih Lokasi di Peta
                   </h2>
                 </div>

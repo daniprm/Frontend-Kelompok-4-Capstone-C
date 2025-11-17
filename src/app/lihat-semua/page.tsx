@@ -26,7 +26,7 @@ export default async function LihatSemuaPage() {
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="flex items-center gap-6">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-[#2d1d72] blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
               <div className="relative w-16 h-16 bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -36,7 +36,7 @@ export default async function LihatSemuaPage() {
             </div>
             <div className="flex-1">
               <h1 className="text-5xl md:text-6xl font-bold mb-3 tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-emerald-300">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#fefefe] via-[#e1ce24] to-[#fefefe]">
                   Semua Destinasi
                 </span>
               </h1>
