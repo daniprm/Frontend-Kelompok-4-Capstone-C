@@ -12,6 +12,7 @@ interface MapComponentProps {
   height?: string;
   preCalculatedDistance?: number; // Distance in km from OSRM calculation
   preCalculatedDuration?: number; // Duration in minutes from OSRM calculation
+  showRoute?: boolean; // Whether to show route or just markers
 }
 
 export default function MapComponent({
@@ -20,6 +21,7 @@ export default function MapComponent({
   height = '500px',
   preCalculatedDistance,
   preCalculatedDuration,
+  showRoute = true, // Default to true for backward compatibility
 }: MapComponentProps) {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -100,34 +102,64 @@ export default function MapComponent({
       popupAnchor: [0, -40],
     });
 
-    // Add user location marker with red pin
-    try {
-      L.marker(userLocation, {
-        icon: userLocationIcon,
-      })
-        .addTo(map)
-        .bindPopup('<b>Lokasi Anda</b>');
-    } catch (error) {
-      console.error('Error adding user location marker:', error);
+    // Custom red pin icon for single destination (when showRoute is false)
+    const destinationPinIcon = L.divIcon({
+      className: 'custom-marker',
+      html: `
+        <div style="position: relative; width: 30px; height: 40px;">
+          <svg width="30" height="40" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pin shadow -->
+            <ellipse cx="15" cy="38" rx="6" ry="2" fill="rgba(0,0,0,0.2)"/>
+            <!-- Pin body -->
+            <path d="M15 0C8.925 0 4 4.925 4 11c0 8.25 11 24 11 24s11-15.75 11-24c0-6.075-4.925-11-11-11z" 
+                  fill="#EF4444" stroke="#B91C1C" stroke-width="1"/>
+            <!-- Pin inner circle -->
+            <circle cx="15" cy="11" r="5" fill="white"/>
+            <circle cx="15" cy="11" r="3" fill="#B91C1C"/>
+          </svg>
+        </div>
+      `,
+      iconSize: [30, 40],
+      iconAnchor: [15, 40],
+      popupAnchor: [0, -40],
+    });
+
+    // Add user location marker with red pin (only if showing route)
+    if (showRoute) {
+      try {
+        L.marker(userLocation, {
+          icon: userLocationIcon,
+        })
+          .addTo(map)
+          .bindPopup('<b>Lokasi Anda</b>');
+      } catch (error) {
+        console.error('Error adding user location marker:', error);
+      }
     }
 
     // Add destination markers
     destinations.forEach((dest) => {
       try {
         L.marker(dest.coordinates, {
-          icon: createIcon('#3B82F6', dest.order),
+          icon: showRoute
+            ? createIcon('#3B82F6', dest.order)
+            : destinationPinIcon,
         })
           .addTo(map)
           .bindPopup(
-            `<b>${dest.order}. ${dest.nama}</b><br>${dest.kategori.join(', ')}`
+            showRoute
+              ? `<b>${dest.order}. ${dest.nama}</b><br>${dest.kategori.join(
+                  ', '
+                )}`
+              : `<b>${dest.nama}</b><br>${dest.kategori.join(', ')}`
           );
       } catch (error) {
         console.error('Error adding destination marker:', error);
       }
     });
 
-    // Fetch and draw route using OSRM
-    if (destinations.length > 0) {
+    // Fetch and draw route using OSRM (only if showRoute is true)
+    if (showRoute && destinations.length > 0) {
       // Use pre-calculated values if available and mode is 'car'
       const usePreCalculated =
         transportMode === 'car' &&
@@ -261,6 +293,14 @@ export default function MapComponent({
             setIsLoading(false);
           });
       }
+    } else if (!showRoute && destinations.length > 0) {
+      // If not showing route, just fit bounds to destinations
+      try {
+        const bounds = L.latLngBounds(destinations.map((d) => d.coordinates));
+        map.fitBounds(bounds, { padding: [50, 50] });
+      } catch (error) {
+        console.error('Error fitting bounds to destinations:', error);
+      }
     }
 
     // Cleanup function
@@ -273,6 +313,7 @@ export default function MapComponent({
     transportMode,
     preCalculatedDistance,
     preCalculatedDuration,
+    showRoute,
   ]);
 
   // Cleanup on component unmount
@@ -316,39 +357,41 @@ export default function MapComponent({
   return (
     <div className="relative">
       {/* Transport Mode Selector */}
-      <div className="absolute top-4 left-16 z-[1000] bg-white shadow-lg border border-gray-200 overflow-hidden">
-        <div className="p-2">
-          <p className="text-xs font-bold text-gray-700 mb-2 px-1 uppercase tracking-wider">
-            Moda Transportasi
-          </p>
-          <div className="flex gap-1">
-            {transportModes.map(({ mode, icon: Icon, label }) => (
-              <button
-                key={mode}
-                onClick={() => setTransportMode(mode)}
-                className={`relative px-3 py-2 transition-all duration-300 group/mode ${
-                  transportMode === mode
-                    ? 'bg-gradient-to-br from-slate-700 to-slate-900 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-br hover:from-slate-600 hover:to-slate-800 hover:text-white'
-                }`}
-                title={label}
-              >
-                <div className="flex flex-col items-center gap-1">
-                  <Icon
-                    className={`w-5 h-5 transition-transform group-hover/mode:scale-110 duration-300`}
-                  />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">
-                    {label}
-                  </span>
-                </div>
-              </button>
-            ))}
+      {showRoute && (
+        <div className="absolute top-4 left-16 z-[1000] bg-white shadow-lg border border-gray-200 overflow-hidden">
+          <div className="p-2">
+            <p className="text-xs font-bold text-gray-700 mb-2 px-1 uppercase tracking-wider">
+              Moda Transportasi
+            </p>
+            <div className="flex gap-1">
+              {transportModes.map(({ mode, icon: Icon, label }) => (
+                <button
+                  key={mode}
+                  onClick={() => setTransportMode(mode)}
+                  className={`relative px-3 py-2 transition-all duration-300 group/mode ${
+                    transportMode === mode
+                      ? 'bg-gradient-to-br from-slate-700 to-slate-900 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-br hover:from-slate-600 hover:to-slate-800 hover:text-white'
+                  }`}
+                  title={label}
+                >
+                  <div className="flex flex-col items-center gap-1">
+                    <Icon
+                      className={`w-5 h-5 transition-transform group-hover/mode:scale-110 duration-300`}
+                    />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">
+                      {label}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Route Info Display */}
-      {routeInfo && !isLoading && (
+      {showRoute && routeInfo && !isLoading && (
         <div className="absolute top-4 right-4 bg-white shadow-lg border border-gray-200 z-[1000] overflow-hidden min-w-[200px]">
           <div className="h-1 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
           <div className="p-4">
@@ -377,7 +420,7 @@ export default function MapComponent({
         </div>
       )}
 
-      {isLoading && (
+      {showRoute && isLoading && (
         <div className="absolute top-4 right-4 bg-white px-4 py-2 shadow-lg border border-gray-200 z-[1000]">
           <div className="flex items-center gap-2">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#F59E0B]"></div>

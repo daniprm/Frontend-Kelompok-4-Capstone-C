@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Destination } from '@/types';
@@ -254,7 +253,6 @@ export default function DestinationDetailPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {destination.alamat && (
                   <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                    <span className="text-2xl">📍</span>
                     <div>
                       <div className="font-semibold text-gray-800 mb-1">
                         Alamat
@@ -265,7 +263,6 @@ export default function DestinationDetailPage() {
                 )}
                 {destination.jam_buka && (
                   <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                    <span className="text-2xl">🕐</span>
                     <div>
                       <div className="font-semibold text-gray-800 mb-1">
                         Jam Buka
@@ -282,11 +279,16 @@ export default function DestinationDetailPage() {
             {/* Map */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Lokasi</h2>
-              <MapComponent
-                destinations={[destination]}
-                userLocation={destination.coordinates}
-                height="400px"
-              />
+              {isClient && (
+                <div className="h-[400px] rounded-lg overflow-hidden border border-gray-200">
+                  <MapComponent
+                    destinations={[destination]}
+                    userLocation={destination.coordinates}
+                    height="400px"
+                    showRoute={false}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -321,14 +323,8 @@ export default function DestinationDetailPage() {
                   Buka di Google Maps
                 </a>
                 <Link
-                  href="/routes"
-                  className="block w-full text-center bg-gray-700 hover:bg-gray-800 text-white font-medium py-3 px-4 transition-colors duration-200"
-                >
-                  Buat Rute Perjalanan
-                </Link>
-                <Link
                   href="/lihat-semua"
-                  className="block w-full text-center bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 transition-colors duration-200"
+                  className="block w-full text-center hover:bg-gray-200/20 text-[#F59E0B] border-2 border-[#F59E0B] font-medium py-3 px-4 transition-colors duration-200"
                 >
                   Lihat Semua Destinasi
                 </Link>
