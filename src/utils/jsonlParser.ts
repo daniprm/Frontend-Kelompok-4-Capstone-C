@@ -1,5 +1,67 @@
 import { Destination } from '@/types'
 
+interface ExternalAPIItem {
+  restaurant_id?: number
+  place_id?: string
+  nama_destinasi?: string
+  kategori?: string | string[]
+  latitude?: number
+  longitude?: number
+  deskripsi?: string
+  rating?: number
+  alamat?: string
+  jam_buka?: string
+  image_url?: string
+}
+
+function generateDefaultDescription(nama: string, kategori: string): string {
+  return `${nama} adalah destinasi wisata yang berada di Surabaya dengan kategori ${kategori}.`
+}
+
+// Helper function to generate default rating
+function generateDefaultRating(): number {
+  return 4.0 + Math.random() * 0.5 // Random rating between 4.0 - 4.5
+}
+
+// Helper function to generate default image URL
+function generateDefaultImageUrl(nama: string): string {
+  return `https://picsum.photos/seed/${nama.replace(/[^a-zA-Z0-9]/g, '')}/800/600`
+}
+
+// Parse external API data
+export function parseExternalAPIData(data: ExternalAPIItem[]): Destination[] {
+  return data.map((item) => {
+    // Parse kategori - handle both string and array formats
+    let kategoriArray: string[] = []
+    if (typeof item.kategori === 'string') {
+      kategoriArray = item.kategori.split(',').map((k: string) => k.trim())
+    } else if (Array.isArray(item.kategori)) {
+      kategoriArray = item.kategori
+    } else {
+      kategoriArray = ['umum']
+    }
+
+    return {
+      place_id: item.restaurant_id?.toString() || `dest-${Date.now()}-${Math.random()}`,
+      order: item.restaurant_id || 0,
+      nama: item.nama_destinasi || 'Nama tidak tersedia',
+      kategori: kategoriArray,
+      coordinates: [
+        parseFloat(item.latitude !== undefined ? item.latitude.toString() : '') || -7.2575,
+        parseFloat(item.longitude !== undefined ? item.longitude.toString() : '') || 112.7521
+      ],
+      deskripsi: item.deskripsi || generateDefaultDescription(
+        item.nama_destinasi || 'destinasi',
+        kategoriArray[0] || 'wisata'
+      ),
+      rating: item.rating || generateDefaultRating(),
+      alamat: item.alamat || 'Alamat belum tersedia, Surabaya, Jawa Timur',
+      jam_buka: item.jam_buka || '08:00 - 22:00 WIB',
+      image_url: item.image_url || generateDefaultImageUrl(item.nama_destinasi || 'default')
+    }
+  })
+}
+
 export function parseJSONL(jsonlText: string): Destination[] {
   const lines = jsonlText.trim().split('\n')
   const destinations: Destination[] = []
@@ -39,33 +101,33 @@ export function parseJSONL(jsonlText: string): Destination[] {
   return destinations
 }
 
-// Helper function to generate default descriptions
-// Helper function to generate default descriptions
-function generateDefaultDescription(nama: string, kategori: string | string[]): string {
-  const kategoriArray = Array.isArray(kategori) ? kategori : [kategori]
-  const mainKategori = kategoriArray[0] || 'umum'
+// // Helper function to generate default descriptions
+// // Helper function to generate default descriptions
+// function generateDefaultDescription(nama: string, kategori: string | string[]): string {
+//   const kategoriArray = Array.isArray(kategori) ? kategori : [kategori]
+//   const mainKategori = kategoriArray[0] || 'umum'
   
-  const descriptions: Record<string, string> = {
-    'makanan_berat': `${nama} adalah tempat makan yang menyajikan berbagai hidangan lengkap dan mengenyangkan. Cocok untuk makan siang atau malam bersama keluarga dan teman.`,
-    'makanan_ringan': `${nama} menawarkan berbagai jajanan dan camilan lezat. Tempat yang tepat untuk ngemil atau mencari oleh-oleh khas Surabaya.`,
-    'oleh_oleh': `${nama} adalah pusat oleh-oleh yang menyediakan berbagai produk khas Surabaya dan Jawa Timur. Pilihan terbaik untuk membeli kenang-kenangan.`,
-    'mall': `${nama} adalah pusat perbelanjaan modern yang menyediakan berbagai kebutuhan keluarga, dari fashion hingga kuliner dalam satu tempat yang nyaman.`,
-    'non_kuliner': `${nama} merupakan destinasi wisata menarik di Surabaya yang menawarkan pengalaman berkesan untuk dikunjungi bersama keluarga dan teman.`,
-    'play': `${nama} adalah tempat rekreasi dan hiburan yang menyenangkan untuk menghabiskan waktu bersama keluarga dan teman-teman.`,
-    'kantor_pariwisata': `${nama} menyediakan informasi lengkap tentang destinasi wisata dan layanan pariwisata di Surabaya dan sekitarnya.`,
-    'all': `${nama} adalah destinasi serbaguna yang menawarkan berbagai fasilitas dan aktivitas untuk memenuhi kebutuhan pengunjung.`
-  }
+//   const descriptions: Record<string, string> = {
+//     'makanan_berat': `${nama} adalah tempat makan yang menyajikan berbagai hidangan lengkap dan mengenyangkan. Cocok untuk makan siang atau malam bersama keluarga dan teman.`,
+//     'makanan_ringan': `${nama} menawarkan berbagai jajanan dan camilan lezat. Tempat yang tepat untuk ngemil atau mencari oleh-oleh khas Surabaya.`,
+//     'oleh_oleh': `${nama} adalah pusat oleh-oleh yang menyediakan berbagai produk khas Surabaya dan Jawa Timur. Pilihan terbaik untuk membeli kenang-kenangan.`,
+//     'mall': `${nama} adalah pusat perbelanjaan modern yang menyediakan berbagai kebutuhan keluarga, dari fashion hingga kuliner dalam satu tempat yang nyaman.`,
+//     'non_kuliner': `${nama} merupakan destinasi wisata menarik di Surabaya yang menawarkan pengalaman berkesan untuk dikunjungi bersama keluarga dan teman.`,
+//     'play': `${nama} adalah tempat rekreasi dan hiburan yang menyenangkan untuk menghabiskan waktu bersama keluarga dan teman-teman.`,
+//     'kantor_pariwisata': `${nama} menyediakan informasi lengkap tentang destinasi wisata dan layanan pariwisata di Surabaya dan sekitarnya.`,
+//     'all': `${nama} adalah destinasi serbaguna yang menawarkan berbagai fasilitas dan aktivitas untuk memenuhi kebutuhan pengunjung.`
+//   }
   
-  return descriptions[mainKategori] || `${nama} adalah destinasi menarik yang patut dikunjungi saat berada di Surabaya. Menawarkan pengalaman yang berkesan untuk wisatawan.`
-}
+//   return descriptions[mainKategori] || `${nama} adalah destinasi menarik yang patut dikunjungi saat berada di Surabaya. Menawarkan pengalaman yang berkesan untuk wisatawan.`
+// }
 
-// Helper function to generate random rating between 4.0-4.8
-function generateDefaultRating(): number {
-  return Math.round((Math.random() * 0.8 + 4.0) * 10) / 10
-}
+// // Helper function to generate random rating between 4.0-4.8
+// function generateDefaultRating(): number {
+//   return Math.round((Math.random() * 0.8 + 4.0) * 10) / 10
+// }
 
-// Helper function to generate default image URL
-function generateDefaultImageUrl(nama: string): string {
-  const cleanName = nama.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()
-  return `https://picsum.photos/seed/${cleanName}/400/300`
-}
+// // Helper function to generate default image URL
+// function generateDefaultImageUrl(nama: string): string {
+//   const cleanName = nama.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()
+//   return `https://picsum.photos/seed/${cleanName}/400/300`
+// }

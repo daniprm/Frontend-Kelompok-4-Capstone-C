@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Destination } from '@/types';
-import { getDestinations } from '@/services/destinationService';
 
 // Dynamically import MapComponent to avoid SSR issues
 const MapComponent = dynamic(() => import('@/components/MapComponent'), {
@@ -17,6 +16,24 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), {
     </div>
   )
 });
+
+// Helper functions
+function generateDefaultRating(): number {
+  return 4.0 + Math.random() * 0.5;
+}
+
+function generateDefaultDescription(nama: string, kategori: string): string {
+  const descriptions: { [key: string]: string } = {
+    'makanan_berat': `${nama} adalah tempat makan yang menyajikan berbagai hidangan lengkap dan mengenyangkan. Cocok untuk makan siang atau malam bersama keluarga dan teman.`,
+    'makanan_ringan': `${nama} menawarkan berbagai jajanan dan camilan lezat. Tempat yang tepat untuk ngemil atau mencari oleh-oleh khas Surabaya.`,
+    'oleh_oleh': `${nama} adalah pusat oleh-oleh yang menyediakan berbagai produk khas Surabaya dan Jawa Timur. Pilihan terbaik untuk membeli kenang-kenangan.`,
+    'mall': `${nama} adalah pusat perbelanjaan modern yang menyediakan berbagai kebutuhan keluarga, dari fashion hingga kuliner dalam satu tempat yang nyaman.`,
+    'non_kuliner': `${nama} merupakan destinasi wisata menarik di Surabaya yang menawarkan pengalaman berkesan untuk dikunjungi bersama keluarga dan teman.`,
+    'play': `${nama} adalah tempat rekreasi dan hiburan yang menyenangkan untuk menghabiskan waktu bersama keluarga dan teman-teman.`,
+    'kantor_pariwisata': `${nama} menyediakan informasi lengkap tentang destinasi wisata dan layanan pariwisata di Surabaya dan sekitarnya.`,
+  };
+  return descriptions[kategori] || `${nama} adalah destinasi wisata yang berada di Surabaya dengan kategori ${kategori}.`;
+}
 
 export default function DestinationDetailPage() {
   const params = useParams();
@@ -33,56 +50,70 @@ export default function DestinationDetailPage() {
         setLoading(true);
         setError(null);
 
-        // Decode destination place_id from URL
-        const placeId = decodeURIComponent(params.place_id as string);
-        console.log('🔍 Looking for destination with place_id:', placeId);
+        // Get restaurant_id from URL params
+        const restaurantId = params.place_id as string;
+        console.log('🔍 Fetching destination with restaurant_id:', restaurantId);
         
-        // Search by place_id directly
-        const allDestinations = await getDestinations();
-        console.log('📍 Available destinations:', allDestinations.length);
-        console.log('📍 Sample place_ids:', allDestinations.slice(0, 5).map(d => d.place_id));
-        
-        const foundDestination = allDestinations.find(
-          dest => dest.place_id === placeId
-        );
+        // Fetch from external API
+        const apiUrl = process.env.NEXT_PUBLIC_EXTERNAL_API_URL || 'http://127.0.0.1:8000';
+        const response = await fetch(`${apiUrl}/wisata/${restaurantId}`, {
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
 
-        console.log('✅ Found destination:', foundDestination?.nama || 'Not found');
-
-        if (foundDestination) {
-          setDestination(foundDestination);
-        } else {
-          // Create a fallback destination if not found
-          setDestination({
-            place_id: 'not-found',
-            order: 0,
-            nama: `Destination with ID: ${placeId}`,
-            kategori: ['wisata'],
-            coordinates: [-7.2458, 112.7378],
-            deskripsi: 'Informasi detail destinasi ini sedang dalam proses pembaruan. Silakan kembali lagi nanti untuk informasi yang lebih lengkap.',
-            rating: 4.0,
-            alamat: 'Alamat belum tersedia, Surabaya, Jawa Timur',
-            jam_buka: '08:00 - 17:00 WIB',
-            image_url: `https://picsum.photos/seed/${placeId}/1920/800`
-          });
-          setError(`Destinasi dengan ID "${placeId}" tidak ditemukan`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch destination: ${response.status}`);
         }
+
+        const apiData = await response.json();
+        console.log('✅ Received data:', apiData);
+
+        // Transform API data to Destination type
+        const kategoriArray = typeof apiData.kategori === 'string' 
+          ? apiData.kategori.split(',').map((k: string) => k.trim())
+          : Array.isArray(apiData.kategori) 
+          ? apiData.kategori 
+          : ['wisata'];
+
+        const transformedDestination: Destination = {
+          place_id: apiData.restaurant_id?.toString() || restaurantId,
+          order: apiData.restaurant_id || 0,
+          nama: apiData.nama_destinasi || 'Nama tidak tersedia',
+          kategori: kategoriArray,
+          coordinates: [
+            parseFloat(apiData.latitude) || -7.2575,
+            parseFloat(apiData.longitude) || 112.7521
+          ],
+          deskripsi: apiData.deskripsi || generateDefaultDescription(
+            apiData.nama_destinasi || 'destinasi',
+            kategoriArray[0] || 'wisata'
+          ),
+          rating: apiData.rating || generateDefaultRating(),
+          alamat: apiData.alamat || 'Alamat belum tersedia, Surabaya, Jawa Timur',
+          jam_buka: apiData.jam_buka || '08:00 - 22:00 WIB',
+          image_url: apiData.image_url || `https://picsum.photos/seed/${apiData.nama_destinasi}/1920/800`
+        };
+
+        setDestination(transformedDestination);
       } catch (err) {
-        console.error('Error loading destination:', err);
+        console.error('❌ Error loading destination:', err);
         setError('Terjadi kesalahan saat memuat data destinasi');
         
         // Fallback destination
-        const placeId = decodeURIComponent(params.place_id as string);
+        const restaurantId = params.place_id as string;
         setDestination({
-          place_id: 'error-fallback',
+          place_id: restaurantId,
           order: 0,
-          nama: `Error loading destination: ${placeId}`,
+          nama: `Destinasi ID: ${restaurantId}`,
           kategori: ['wisata'],
           coordinates: [-7.2458, 112.7378],
           deskripsi: 'Terjadi kesalahan saat memuat informasi destinasi. Silakan coba lagi nanti.',
           rating: 4.0,
           alamat: 'Alamat belum tersedia, Surabaya, Jawa Timur',
           jam_buka: '08:00 - 17:00 WIB',
-          image_url: `https://picsum.photos/seed/${placeId}/1920/800`
+          image_url: `https://picsum.photos/seed/${restaurantId}/1920/800`
         });
       } finally {
         setLoading(false);
@@ -90,7 +121,7 @@ export default function DestinationDetailPage() {
     }
 
     loadDestination();
-  }, [params.place_id]); // Changed from params.name to params.place_id
+  }, [params.place_id]);
 
   // Loading state
   if (loading || !destination) {
@@ -148,11 +179,7 @@ export default function DestinationDetailPage() {
       {/* Header Image */}
       <div className="relative h-[400px] w-full">
         <img
-          src={
-            destination.image_url ||
-            destination.gambar ||
-            `https://picsum.photos/seed/${destination.nama}/1920/800`
-          }
+          src={destination.image_url || `https://picsum.photos/seed/${destination.nama}/1920/800`}
           alt={destination.nama}
           className="w-full h-full object-cover"
         />

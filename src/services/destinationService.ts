@@ -1,16 +1,25 @@
 import { Destination } from '@/types'
-
+import { parseExternalAPIData } from '@/utils/jsonlParser'
 export async function getDestinations(): Promise<Destination[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/destinations`, {
-      cache: 'force-cache' // Cache for better performance
+    const apiUrl = process.env.NEXT_PUBLIC_EXTERNAL_API_URL || 'http://localhost:8000'
+    const response = await fetch(`${apiUrl}/wisata?offset=0`, {
+      cache: 'no-store', // Changed to no-store for fresh data from external API
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
     
     if (!response.ok) {
-      throw new Error('Failed to fetch destinations')
+      throw new Error(`Failed to fetch destinations: ${response.status}`)
     }
     
-    return await response.json()
+    const apiData = await response.json()
+    
+    // Transform the external API data
+    const destinations = parseExternalAPIData(apiData.data || [])
+    
+    return destinations
   } catch (error) {
     console.error('Error fetching destinations:', error)
     return []
