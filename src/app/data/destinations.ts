@@ -59,27 +59,27 @@
 //   // Add more destinations as needed
 // ]
 
-import { Destination } from '@/types'
+import { Destination } from '@/types';
 
 // This will be populated by the API
-export let destinations: Destination[] = []
+// export let destinations: Destination[] = []
 
 // Function to load destinations (used by pages)
 export async function loadDestinations(): Promise<Destination[]> {
   try {
     const response = await fetch('/api/destinations', {
-      cache: 'force-cache'
-    })
-    
+      cache: 'force-cache',
+    });
+
     if (!response.ok) {
-      throw new Error('Failed to fetch destinations')
+      throw new Error('Failed to fetch destinations');
     }
-    
-    const data = await response.json()
-    destinations = data
-    return data
+
+    const data = await response.json();
+    // destinations = data
+    return data;
   } catch (error) {
-    console.error('Error loading destinations:', error)
-    return []
+    console.error('Error loading destinations:', error);
+    return [];
   }
 }

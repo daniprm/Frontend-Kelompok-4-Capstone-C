@@ -17,12 +17,14 @@ import {
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
-  const [featuredDestinations, setFeaturedDestinations] = useState<Destination[]>([]);
+  const [featuredDestinations, setFeaturedDestinations] = useState<
+    Destination[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
-    
+
     // Load destinations and get first 3
     async function loadFeaturedDestinations() {
       try {
@@ -42,7 +44,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section - keep existing */}
       <div className="relative h-[600px] w-full overflow-hidden">
         {/* ...existing hero content... */}
@@ -54,37 +56,14 @@ export default function Home() {
           priority
         />
 
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div
-            className="absolute bottom-0 right-0 w-96 h-96 bg-slate-500/20 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: '1s' }}
-          ></div>
-        </div>
-
-        {/* Grid Pattern Overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-          }}
-        ></div>
-
         {/* Overlay with title */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent flex items-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent flex items-center">
           <div className="container mx-auto px-6 md:px-12">
             <div className="max-w-3xl">
-              <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 drop-shadow-2xl tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e1ce24] to-[#fefefe]">
-                  REKOMENDASI 
-                  </span>
-                  <br />
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e1ce24] to-[#fefefe]">
-                    WISATA SURABAYA
-                  </span>
+              <h1 className="text-6xl md:text-7xl font-bold mb-6 drop-shadow-2xl tracking-tight leading-tight">
+                <span className="text-white">REKOMENDASI</span>
+                <br />
+                <span className="text-[#F59E0B]">WISATA SURABAYA</span>
               </h1>
               <p className="text-2xl text-white/90 mb-10 font-light tracking-wide">
                 Temukan destinasi wisata terbaik di Surabaya dengan rekomendasi
@@ -92,12 +71,10 @@ export default function Home() {
               </p>
               <Link
                 href="/routes"
-                className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#e1ce24] to-[#fefefe] text-[#2d1d72] font-bold text-xl py-6 px-12 shadow-2xl hover:opacity-90 transition-all duration-300 overflow-hidden"
+                className="group inline-flex items-center gap-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-lg py-5 px-10 shadow-xl transition-all duration-200"
               >
-                <span className="absolute inset-0 bg-white/0 group-hover/btn:bg-white/10 transition-all duration-300"></span>
-                <span className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></span>
-                <span className="relative">REKOMENDASIKAN RUTE</span>
-                <ArrowRight className="w-6 h-6 relative transition-transform group-hover/btn:translate-x-2 duration-300" />
+                REKOMENDASIKAN RUTE
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
             </div>
           </div>
@@ -105,40 +82,32 @@ export default function Home() {
       </div>
 
       {/* Featured Destinations */}
-      <div className="container mx-auto px-6 md:px-12 py-20">
-        <div className="relative group mb-12">
-          {/* Glow Effect */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
-
-          <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden">
-            {/* Accent Bar */}
-            <div className="h-2 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24]"></div>
+      <div className="bg-gray-50 py-20">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#F59E0B]"></div>
 
             <div className="p-10">
-              {/* Section Header */}
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-slate-700 blur-lg opacity-50"></div>
-                    <div className="relative w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-                      <Star className="w-7 h-7 text-white fill-white" />
-                    </div>
+                  <div className="w-12 h-12 bg-[#F59E0B] flex items-center justify-center">
+                    <Star className="w-6 h-6 text-white fill-white" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-[#2d1d72]">
+                    <h2 className="text-3xl font-bold text-gray-900">
                       Destinasi Populer
                     </h2>
-                    <p className="text-gray-600 font-medium mt-1">
+                    <p className="text-gray-600 mt-1">
                       Jelajahi 3 destinasi terpopuler di Surabaya
                     </p>
                   </div>
                 </div>
                 <Link
                   href="/lihat-semua"
-                  className="group/link flex items-center gap-2 text-slate-700 hover:text-slate-900 font-bold transition-colors duration-300"
+                  className="group/link flex items-center gap-2 text-[#F59E0B] hover:text-[#D97706] font-semibold transition-colors duration-200"
                 >
                   <span>Lihat Semua</span>
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover/link:translate-x-1 duration-300" />
+                  <ArrowRight className="w-5 h-5 group-hover/link:translate-x-1 transition-transform duration-200" />
                 </Link>
               </div>
 
@@ -148,16 +117,16 @@ export default function Home() {
                   {loading ? (
                     // Loading skeleton for 3 cards
                     [...Array(3)].map((_, idx) => (
-                      <div 
-                        key={idx} 
+                      <div
+                        key={idx}
                         className="bg-gray-200 animate-pulse h-96 rounded-lg"
                       />
                     ))
                   ) : featuredDestinations.length > 0 ? (
                     featuredDestinations.map((dest, idx) => (
-                      <DestinationCard 
-                        key={dest.place_id || idx} 
-                        destination={dest} 
+                      <DestinationCard
+                        key={dest.place_id || idx}
+                        destination={dest}
                       />
                     ))
                   ) : (
@@ -173,130 +142,75 @@ export default function Home() {
           </div>
         </div>
       </div>
-{/* Features Section */}
-      <div className="bg-gradient-to-br from-slate-50 via-gray-50 to-slate-50 py-20">
+      {/* Features Section */}
+      <div className="bg-white py-20">
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
-            <div className="inline-block relative mb-6">
-              <div className="absolute inset-0 bg-[#2d1d72] blur-2xl opacity-20 animate-pulse"></div>
-              <div className="relative w-20 h-20 bg-[#2d1d72] flex items-center justify-center mx-auto">
-                <Sparkles className="w-10 h-10 text-white" />
-              </div>
+            <div className="w-16 h-16 bg-[#F59E0B] flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-[#2d1d72] mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Kenapa Memilih Kami?
             </h2>
-            <p className="text-gray-600 text-lg font-medium">
+            <p className="text-gray-600 text-lg">
               Teknologi terkini untuk pengalaman wisata terbaik
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="group relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-              <div className="relative bg-white shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="h-1.5 bg-[#2D1D72]"></div>
-                <div className="p-8 text-center">
-                  <div className="relative inline-block mb-6">
-                    <div className="absolute inset-0 bg-slate-700 blur-md opacity-50"></div>
-                    <div className="relative w-16 h-16 bg-[#2D1D72] flex items-center justify-center mx-auto">
-                      <RouteIcon className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#2D1D72] mb-4">
-                    Rute Optimal
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Dapatkan rekomendasi rute terbaik menggunakan AI untuk
-                    mengoptimalkan perjalanan Anda
-                  </p>
-                </div>
+            <div className="bg-gray-50 border border-gray-200 hover:shadow-lg transition-shadow duration-200 p-8 text-center">
+              <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center mx-auto mb-6">
+                <RouteIcon className="w-7 h-7 text-white" />
               </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Rute Optimal
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Dapatkan rekomendasi rute terbaik menggunakan AI untuk
+                mengoptimalkan perjalanan Anda
+              </p>
             </div>
 
             {/* Feature 2 */}
-            <div className="group relative">
-              <div className="absolute -inset-1 bg-[#F5A201] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-              <div className="relative bg-white shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="h-1.5 bg-[#F5A201]"></div>
-                <div className="p-8 text-center">
-                  <div className="relative inline-block mb-6">
-                    <div className="absolute inset-0 bg-[#F5A201] blur-md opacity-50"></div>
-                    <div className="relative w-16 h-16 bg-[#F5A201] flex items-center justify-center mx-auto">
-                      <Map className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#F5A201] mb-4">
-                    Peta Interaktif
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Visualisasi rute secara real-time dengan OpenStreetMap dan
-                    OSRM routing
-                  </p>
-                </div>
+            <div className="bg-gray-50 border border-gray-200 hover:shadow-lg transition-shadow duration-200 p-8 text-center">
+              <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center mx-auto mb-6">
+                <Map className="w-7 h-7 text-white" />
               </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Peta Interaktif
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Visualisasi rute secara real-time dengan OpenStreetMap dan OSRM
+                routing
+              </p>
             </div>
 
             {/* Feature 3 */}
-            <div className="group relative">
-              <div className="absolute -inset-1 bg-[#1c58b3] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-              <div className="relative bg-white shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="h-1.5 bg-[#1c58b3]"></div>
-                <div className="p-8 text-center">
-                  <div className="relative inline-block mb-6">
-                    <div className="absolute inset-0 bg-[#1c58b3] blur-md opacity-50"></div>
-                    <div className="relative w-16 h-16 bg-[#1c58b3] flex items-center justify-center mx-auto">
-                      <Star className="w-8 h-8 text-white fill-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#1c58b3] mb-4">
-                    Rekomendasi Terpercaya
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Destinasi wisata pilihan dengan rating dan review dari
-                    pengunjung lain
-                  </p>
-                </div>
+            <div className="bg-gray-50 border border-gray-200 hover:shadow-lg transition-shadow duration-200 p-8 text-center">
+              <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center mx-auto mb-6">
+                <Star className="w-7 h-7 text-white fill-white" />
               </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Rekomendasi Terpercaya
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Destinasi wisata pilihan dengan rating dan review dari
+                pengunjung lain
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Call to Action */}
-      <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-24 overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div
-            className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: '1s' }}
-          ></div>
-        </div>
-
-        {/* Grid Pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage:
-              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-          }}
-        ></div>
-
-        <div className="container mx-auto px-6 md:px-12 text-center relative z-10">
-          <div className="inline-block relative mb-6">
-            <div className="absolute inset-0 bg-[#2d1d72] blur-2xl opacity-30 animate-pulse"></div>
-            <div className="relative w-20 h-20 bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 mx-auto">
-              <MapPin className="w-10 h-10 text-white" />
-            </div>
+      <div className="bg-gray-900 py-24">
+        <div className="container mx-auto px-6 md:px-12 text-center">
+          <div className="w-16 h-16 bg-[#F59E0B] flex items-center justify-center mx-auto mb-6">
+            <MapPin className="w-8 h-8 text-white" />
           </div>
-
-          <h2 className="text-5xl font-bold text-white mb-6 tracking-tight">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#fefefe] via-[#e1ce24] to-[#fefefe]">
+          <h2 className="text-5xl font-bold text-white mb-6">
             Siap Menjelajahi Surabaya?
-            </span>
           </h2>
           <p className="text-2xl text-white/80 mb-10 font-light max-w-3xl mx-auto">
             Dapatkan rekomendasi rute wisata yang dipersonalisasi berdasarkan
@@ -304,28 +218,26 @@ export default function Home() {
           </p>
           <Link
             href="/routes"
-            className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#e1ce24] to-[#fefefe] text-[#2d1d72] font-bold text-xl py-6 px-12 shadow-2xl hover:opacity-90 transition-all duration-300 overflow-hidden"
+            className="group inline-flex items-center gap-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-lg py-5 px-10 shadow-xl transition-all duration-200"
           >
-            <span className="absolute inset-0 bg-white/0 group-hover/btn:bg-white/10 transition-all duration-300"></span>
-            <span className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></span>
-            <RouteIcon className="w-7 h-7 relative transition-transform group-hover/btn:rotate-12 duration-300" />
-            <span className="relative">BUAT RUTE SEKARANG</span>
-            <ArrowRight className="w-7 h-7 relative transition-transform group-hover/btn:translate-x-2 duration-300" />
+            <RouteIcon className="w-6 h-6 group-hover:rotate-12 transition-transform duration-200" />
+            BUAT RUTE SEKARANG
+            <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-b from-slate-900 to-black text-white py-12 border-t border-slate-800">
+      <footer className="bg-gray-800 text-white py-12">
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#013C58] flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#F59E0B] flex items-center justify-center">
                 <MapPin className="w-5 h-5 text-white" />
               </div>
               <span className="font-bold text-lg">Wisata Surabaya</span>
             </div>
-            <p className="text-gray-400 font-medium">
+            <p className="text-gray-400">
               &copy; 2025 Rekomendasi Wisata Surabaya. All rights reserved.
             </p>
           </div>

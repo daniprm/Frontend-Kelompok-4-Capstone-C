@@ -380,7 +380,7 @@ export default function MapComponent({
       {isLoading && (
         <div className="absolute top-4 right-4 bg-white px-4 py-2 shadow-lg border border-gray-200 z-[1000]">
           <div className="flex items-center gap-2">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-slate-700"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#F59E0B]"></div>
             <span className="text-sm text-gray-600 font-medium">
               Memuat rute...
             </span>

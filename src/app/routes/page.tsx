@@ -18,7 +18,6 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
 });
 
-
 export default function RoutesPage() {
   const [userLocation, setUserLocation] = useState({
     latitude: -7.2458,
@@ -207,47 +206,20 @@ export default function RoutesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header with Enhanced Design */}
-      <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white py-20 overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-          <div
-            className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: '1s' }}
-          ></div>
-          <div
-            className="absolute top-1/2 left-1/2 w-72 h-72 bg-emerald-500/10 rounded-full blur-2xl animate-pulse"
-            style={{ animationDelay: '2s' }}
-          ></div>
-        </div>
-
-        {/* Grid Pattern Overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage:
-              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-          }}
-        ></div>
-
-        <div className="container mx-auto px-6 md:px-12 relative z-10">
+      <div className="bg-gray-900 text-white py-20">
+        <div className="container mx-auto px-6 md:px-12">
           <div className="flex items-center gap-6">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-[#2d1d72] blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
-              <div className="relative w-16 h-16 bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform duration-300">
-                <RouteIcon className="w-8 h-8 text-white" />
-              </div>
+            <div className="w-16 h-16 bg-[#F59E0B] flex items-center justify-center">
+              <RouteIcon className="w-8 h-8 text-white" />
             </div>
             <div className="flex-1">
               <h1 className="text-5xl md:text-6xl font-bold mb-3 tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#fefefe] via-[#e1ce24] to-[#fefefe]">
-                  Rekomendasi Rute Wisata
-                </span>
+                <span className="text-white">Rekomendasi </span>
+                <span className="text-[#F59E0B]">Rute Wisata</span>
               </h1>
-              <p className="text-xl md:text-2xl text-white/80 font-light tracking-wide">
+              <p className="text-xl md:text-2xl text-gray-300">
                 Temukan destinasi wisata terbaik di Surabaya dengan rekomendasi
                 rute yang optimal
               </p>
@@ -257,155 +229,103 @@ export default function RoutesPage() {
       </div>
 
       {/* Location Input Section - 2 Column Layout */}
-      <div className="container mx-auto px-6 md:px-12 py-12">
-        {/* Enhanced Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Left Column - Input with Glass Morphism */}
-          <div className="relative group">
-            {/* Animated Glow Effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
-
-            <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden">
-              {/* Accent Bar with Gradient */}
-              <div className="h-1.5 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700"></div>
+      <div className="bg-gray-50 py-12">
+        <div className="container mx-auto px-6 md:px-12">
+          {/* Enhanced Main Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {/* Left Column - Input with Glass Morphism */}
+            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+              <div className="h-1 bg-[#F59E0B]"></div>
 
               <div className="p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-slate-700 blur-md opacity-50"></div>
-                    <div className="relative w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-white" />
-                    </div>
+                  <div className="w-12 h-12 bg-[#F59E0B] flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900">
+                  <h2 className="text-2xl font-bold text-gray-900">
                     Masukkan Lokasi Anda
                   </h2>
                 </div>
 
                 {/* Coordinate Inputs with Modern Styling */}
-                <div className="space-y-5 mb-8">
-                  <div className="group/input transform transition-all duration-300 hover:scale-[1.02]">
-                    <label className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider flex items-center gap-2">
-                      <span className="w-1 h-4 bg-gradient-to-b from-slate-600 to-slate-800"></span>
+                <div className="space-y-4 mb-8">
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">
                       Latitude
                     </label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        step="0.000001"
-                        value={userLocation.latitude}
-                        onChange={(e) =>
-                          setUserLocation({
-                            ...userLocation,
-                            latitude: parseFloat(e.target.value),
-                          })
-                        }
-                        className="w-full px-4 py-4 border-2 border-gray-200 focus:ring-2 focus:ring-slate-600 focus:border-slate-600 transition-all duration-300 bg-gradient-to-br from-gray-50 to-white hover:from-white hover:to-gray-50 font-mono text-gray-900 shadow-sm group-hover/input:shadow-lg"
-                        placeholder="-7.2458"
-                      />
-                      <div className="absolute inset-0 border-2 border-slate-600 opacity-0 group-hover/input:opacity-10 pointer-events-none transition-opacity duration-300"></div>
-                    </div>
+                    <input
+                      type="number"
+                      step="0.000001"
+                      value={userLocation.latitude}
+                      onChange={(e) =>
+                        setUserLocation({
+                          ...userLocation,
+                          latitude: parseFloat(e.target.value),
+                        })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-all duration-200 bg-white font-mono text-gray-900"
+                      placeholder="-7.2458"
+                    />
                   </div>
-                  <div className="group/input transform transition-all duration-300 hover:scale-[1.02]">
-                    <label className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider flex items-center gap-2">
-                      <span className="w-1 h-4 bg-gradient-to-b from-slate-800 to-emerald-600"></span>
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">
                       Longitude
                     </label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        step="0.000001"
-                        value={userLocation.longitude}
-                        onChange={(e) =>
-                          setUserLocation({
-                            ...userLocation,
-                            longitude: parseFloat(e.target.value),
-                          })
-                        }
-                        className="w-full px-4 py-4 border-2 border-gray-200 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition-all duration-300 bg-gradient-to-br from-gray-50 to-white hover:from-white hover:to-gray-50 font-mono text-gray-900 shadow-sm group-hover/input:shadow-lg"
-                        placeholder="112.7378"
-                      />
-                      <div className="absolute inset-0 border-2 border-emerald-600 opacity-0 group-hover/input:opacity-10 pointer-events-none transition-opacity duration-300"></div>
-                    </div>
+                    <input
+                      type="number"
+                      step="0.000001"
+                      value={userLocation.longitude}
+                      onChange={(e) =>
+                        setUserLocation({
+                          ...userLocation,
+                          longitude: parseFloat(e.target.value),
+                        })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-all duration-200 bg-white font-mono text-gray-900"
+                      placeholder="112.7378"
+                    />
                   </div>
                 </div>
 
                 {/* Enhanced Action Buttons */}
-                <div className="space-y-4 mb-6">
+                <div className="space-y-3 mb-6">
                   <button
                     onClick={handleGetCurrentLocation}
-                    className="group/btn relative w-full px-6 py-4 bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 hover:from-gray-800 hover:via-gray-900 hover:to-black text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl overflow-hidden"
+                    className="w-full px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                   >
-                    <span className="absolute inset-0 w-0 bg-gradient-to-r from-white/10 to-transparent transition-all duration-500 group-hover/btn:w-full"></span>
-                    <span className="relative flex items-center justify-center gap-2">
-                      <MapPin className="w-5 h-5 transition-transform group-hover/btn:scale-110 duration-300" />
-                      Gunakan Lokasi Saat Ini
-                    </span>
+                    <MapPin className="w-5 h-5" />
+                    Gunakan Lokasi Saat Ini
                   </button>
                   <button
                     onClick={handleGenerateRoutes}
                     disabled={isLoading || isCalculatingDistance}
-                    className="group/btn relative w-full px-6 py-5 bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 hover:from-slate-800 hover:via-slate-900 hover:to-black text-white font-bold text-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl overflow-hidden"
+                    className="w-full px-6 py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-lg transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
                   >
-                    <span className="absolute inset-0 bg-white/0 group-hover/btn:bg-white/10 transition-all duration-300"></span>
-                    <span className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></span>
-                    <span className="relative flex items-center justify-center gap-3">
-                      {isLoading || isCalculatingDistance ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white animate-spin"></div>
-                          <span>
-                            {isCalculatingDistance
-                              ? 'Menghitung Jarak Rute...'
-                              : 'Memproses...'}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <RouteIcon className="w-6 h-6 transition-transform group-hover/btn:rotate-12 duration-300" />
-                          <span>Generate Rute</span>
-                        </>
-                      )}
-                    </span>
+                    {isLoading || isCalculatingDistance ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white animate-spin"></div>
+                        <span>
+                          {isCalculatingDistance
+                            ? 'Menghitung Jarak Rute...'
+                            : 'Memproses...'}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <RouteIcon className="w-6 h-6" />
+                        <span>Generate Rute</span>
+                      </>
+                    )}
                   </button>
                 </div>
 
                 {/* Enhanced Info Box */}
-                <div className="relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-600/5 via-slate-700/5 to-emerald-600/5 opacity-50"></div>
-                  <div className="relative p-5 border-l-4 border-slate-700 shadow-inner backdrop-blur-sm">
-                    <p className="font-bold mb-3 text-gray-800 flex items-center gap-2">
-                      <span className="flex items-center gap-1">
-                        <span className="w-2 h-2 bg-slate-700 animate-pulse"></span>
-                        <span
-                          className="w-2 h-2 bg-slate-600 animate-pulse"
-                          style={{ animationDelay: '0.2s' }}
-                        ></span>
-                        <span
-                          className="w-2 h-2 bg-emerald-600 animate-pulse"
-                          style={{ animationDelay: '0.4s' }}
-                        ></span>
-                      </span>
-                      Tips:
-                    </p>
-                    <ul className="space-y-2 text-sm text-gray-700">
-                      <li className="flex items-start gap-3 group/tip">
-                        <span className="text-slate-700 font-bold transition-transform group-hover/tip:translate-x-1 duration-200">
-                          →
-                        </span>
-                        <span className="flex-1">
-                          Klik peta di sebelah kanan untuk memilih lokasi
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3 group/tip">
-                        <span className="text-emerald-600 font-bold transition-transform group-hover/tip:translate-x-1 duration-200">
-                          →
-                        </span>
-                        <span className="flex-1">
-                          Drag marker merah ke posisi yang diinginkan
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
+                <div className="p-4 bg-gray-50 border-l-4 border-[#F59E0B]">
+                  <p className="font-bold mb-2 text-gray-800">💡 Tips:</p>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>• Klik peta di sebelah kanan untuk memilih lokasi</li>
+                    <li>• Drag marker merah ke posisi yang diinginkan</li>
+                  </ul>
                 </div>
 
                 {error && (
@@ -415,33 +335,20 @@ export default function RoutesPage() {
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Right Column - Enhanced Map Picker */}
-          <div className="relative group">
-            {/* Animated Glow Effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
-
-            <div className="relative bg-white shadow-2xl border border-gray-100 h-full overflow-hidden">
-              {/* Accent Bar with Gradient */}
-              <div className="h-1.5 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24]"></div>
-
+            {/* Right Column - Enhanced Map Picker */}
+            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+              <div className="h-1 bg-[#F59E0B]"></div>
               <div className="p-8 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-emerald-600 blur-md opacity-50"></div>
-                    <div className="relative w-12 h-12 bg-[#2d1d72] flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-white" />
-                    </div>
+                  <div className="w-12 h-12 bg-[#F59E0B] flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-[#2d1d72]">
+                  <h2 className="text-2xl font-bold text-gray-900">
                     Pilih Lokasi di Peta
                   </h2>
                 </div>
-
-                <div className="flex-1 overflow-hidden shadow-2xl ring-2 ring-gray-100 relative group/map">
-                  {/* Map Hover Overlay */}
-                  <div className="absolute inset-0 border-2 border-emerald-600 opacity-0 group-hover/map:opacity-20 pointer-events-none transition-opacity duration-300 z-10"></div>
+                <div className="flex-1 overflow-hidden shadow-lg border border-gray-200">
                   <LocationPickerMap
                     initialLocation={[
                       userLocation.latitude,
@@ -455,23 +362,21 @@ export default function RoutesPage() {
             </div>
           </div>
         </div>
+        {/* End Location Input Section */}
 
         {/* Route Selection with Enhanced Design */}
         {routeData && routeData.data && routeData.data.routes && (
           <div className="mb-12 relative">
             {/* Section Header with Animation */}
             <div className="flex items-center gap-4 mb-8">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-slate-700 blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
-                <div className="relative w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-                  <RouteIcon className="w-7 h-7 text-white" />
-                </div>
+              <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                <RouteIcon className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900">
+                <h2 className="text-3xl font-bold text-gray-900">
                   Pilih Rute Terbaik
                 </h2>
-                <p className="text-gray-600 font-medium mt-1">
+                <p className="text-gray-600 mt-1">
                   {routeData.data.routes.length} Rekomendasi Tersedia
                 </p>
               </div>
@@ -483,54 +388,27 @@ export default function RoutesPage() {
                 <button
                   key={route.rank}
                   onClick={() => setSelectedRoute(route)}
-                  className={`group relative overflow-hidden transition-all duration-500 text-left transform hover:scale-[1.02] ${
+                  className={`text-left transition-all duration-200 border-2 ${
                     selectedRoute?.rank === route.rank
-                      ? 'shadow-2xl'
-                      : 'shadow-lg hover:shadow-2xl'
+                      ? 'border-[#F59E0B] shadow-lg bg-[#F59E0B]/5'
+                      : 'border-gray-200 shadow-md hover:shadow-lg bg-white hover:border-[#F59E0B]/50'
                   }`}
                 >
-                  {/* Animated Gradient Border */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 transition-opacity duration-300 ${
-                      selectedRoute?.rank === route.rank
-                        ? 'opacity-100'
-                        : 'opacity-0 group-hover:opacity-50'
-                    }`}
-                  ></div>
-
-                  {/* Card Content */}
-                  <div
-                    className={`relative m-[2px] p-6 transition-all duration-300 ${
-                      selectedRoute?.rank === route.rank
-                        ? 'bg-gradient-to-br from-slate-50 via-gray-50 to-slate-50'
-                        : 'bg-white'
-                    }`}
-                  >
+                  <div className="p-6">
                     {/* Header with Rank Badge */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="relative">
-                        <div
-                          className={`absolute inset-0 blur-md transition-opacity duration-300 ${
-                            selectedRoute?.rank === route.rank
-                              ? 'opacity-60'
-                              : 'opacity-0'
-                          } bg-slate-700`}
-                        ></div>
-                        <div
-                          className={`relative px-5 py-2.5 font-bold transition-all duration-300 ${
-                            selectedRoute?.rank === route.rank
-                              ? 'bg-gradient-to-r from-slate-700 to-slate-900 text-white shadow-lg'
-                              : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-700'
-                          }`}
-                        >
-                          Rute #{route.rank}
-                        </div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div
+                        className={`px-4 py-2 font-bold ${
+                          selectedRoute?.rank === route.rank
+                            ? 'bg-[#F59E0B] text-white'
+                            : 'bg-gray-100 text-gray-700'
+                        }`}
+                      >
+                        Rute #{route.rank}
                       </div>
-
-                      {/* Selection Indicator */}
                       {selectedRoute?.rank === route.rank && (
-                        <div className="flex items-center gap-2 text-slate-700 font-semibold animate-pulse">
-                          <div className="w-2 h-2 bg-slate-700"></div>
+                        <div className="flex items-center gap-2 text-[#F59E0B] font-semibold">
+                          <div className="w-2 h-2 bg-[#F59E0B] rounded-full"></div>
                           Dipilih
                         </div>
                       )}
@@ -538,29 +416,28 @@ export default function RoutesPage() {
 
                     {/* Stats with Modern Design */}
                     <div className="space-y-3">
-                      <div className="group/stat relative overflow-hidden p-4 bg-gradient-to-br from-white to-gray-50 border-l-4 border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                      <div className="p-3 bg-gray-50 border-l-4 border-gray-700">
                         <div className="flex items-center justify-between">
-                          <span className="font-semibold text-gray-700 uppercase text-xs tracking-wider">
+                          <span className="font-semibold text-gray-700 text-sm">
                             Destinasi
                           </span>
-                          <span className="font-bold text-slate-800 text-2xl">
+                          <span className="font-bold text-gray-800 text-xl">
                             {route.total_destinations}
                           </span>
                         </div>
                       </div>
-                      <div className="group/stat relative overflow-hidden p-4 bg-gradient-to-br from-white to-gray-50 border-l-4 border-emerald-600 shadow-sm hover:shadow-md transition-shadow duration-200">
+                      <div className="p-3 bg-gray-50 border-l-4 border-[#F59E0B]">
                         <div className="flex flex-col gap-1">
-                          <span className="font-semibold text-gray-700 uppercase text-xs tracking-wider">
+                          <span className="font-semibold text-gray-700 text-sm">
                             Total Jarak
                           </span>
                           <div className="flex items-baseline justify-between">
-                            <span className="font-bold text-emerald-600 text-2xl">
-                              {route.total_distance_km.toFixed(2)}{' '}
-                              <span className="text-base">km</span>
+                            <span className="font-bold text-[#F59E0B] text-xl">
+                              {route.total_distance_km.toFixed(2)} km
                             </span>
                           </div>
                           {route.estimated_duration_minutes && (
-                            <span className="text-xs text-gray-500 mt-1">
+                            <span className="text-xs text-gray-500">
                               ≈ {Math.round(route.estimated_duration_minutes)}{' '}
                               menit
                             </span>
@@ -578,151 +455,96 @@ export default function RoutesPage() {
         {/* Route Details, Map, and Destinations */}
         {selectedRoute && (
           <>
-            {/* Detail Rute - Enhanced Statistics */}
-            <div className="relative group mb-12">
-              {/* Glow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
-
-              <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden">
-                {/* Accent Bar */}
-                <div className="h-2 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800"></div>
-
+            {/* Detail Rute & Peta Rute - 2 Column Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              {/* Left Column - Detail Rute Stats */}
+              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+                <div className="h-1 bg-[#F59E0B]"></div>
                 <div className="p-10">
-                  {/* Section Header */}
                   <div className="flex items-center gap-4 mb-10">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-slate-700 blur-lg opacity-50"></div>
-                      <div className="relative w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-                        <RouteIcon className="w-7 h-7 text-white" />
-                      </div>
+                    <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                      <RouteIcon className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900">
+                      <h2 className="text-3xl font-bold text-gray-900">
                         Detail Rute #{selectedRoute.rank}
                       </h2>
-                      <p className="text-gray-600 font-medium mt-1">
+                      <p className="text-gray-600 mt-1">
                         Statistik Perjalanan Anda
                       </p>
                     </div>
                   </div>
 
                   {/* Enhanced Statistics Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Destinations Stat */}
-                    <div className="group/stat relative overflow-hidden h-full flex">
-                      <div className="absolute inset-0 bg-gradient-to-br from-slate-600/5 to-slate-700/10 opacity-0 group-hover/stat:opacity-100 transition-opacity duration-300"></div>
-                      <div className="relative p-8 bg-gradient-to-br from-white to-gray-50 border-l-4 border-slate-700 shadow-lg hover:shadow-xl transition-all duration-300 w-full flex flex-col">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 bg-slate-700/10 flex items-center justify-center">
-                            <div className="w-3 h-3 bg-slate-700"></div>
-                          </div>
-                          <span className="text-xs uppercase tracking-wider font-bold text-gray-500">
-                            Destinasi
-                          </span>
-                        </div>
-                        <div className="flex-1 flex flex-col justify-center">
-                          <div className="text-5xl font-bold text-slate-800 mb-2 tracking-tight">
-                            {selectedRoute.total_destinations}
-                          </div>
-                          <div className="text-sm font-semibold text-gray-600">
-                            Tempat Wisata
-                          </div>
-                        </div>
+                  <div className="space-y-6">
+                    <div className="p-6 bg-gray-50 border-l-4 border-gray-700">
+                      <div className="text-sm font-semibold text-gray-600 mb-2">
+                        Destinasi
+                      </div>
+                      <div className="text-4xl font-bold text-gray-800">
+                        {selectedRoute.total_destinations}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-1">
+                        Tempat Wisata
                       </div>
                     </div>
-
-                    {/* Distance Stat */}
-                    <div className="group/stat relative overflow-hidden h-full flex">
-                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-emerald-600/10 opacity-0 group-hover/stat:opacity-100 transition-opacity duration-300"></div>
-                      <div className="relative p-8 bg-gradient-to-br from-white to-gray-50 border-l-4 border-emerald-600 shadow-lg hover:shadow-xl transition-all duration-300 w-full flex flex-col">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 bg-emerald-600/10 flex items-center justify-center">
-                            <div className="w-3 h-3 bg-emerald-600"></div>
-                          </div>
-                          <span className="text-xs uppercase tracking-wider font-bold text-gray-500">
-                            Jarak Rute
-                          </span>
-                        </div>
-                        <div className="flex-1 flex flex-col justify-center">
-                          <div className="text-5xl font-bold text-emerald-600 mb-2 tracking-tight">
-                            {selectedRoute.total_distance_km.toFixed(2)}
-                          </div>
-                          <div className="text-sm font-semibold text-gray-600">
-                            Kilometer
-                          </div>
-                          {selectedRoute.estimated_duration_minutes && (
-                            <div className="mt-3 pt-3 border-t border-emerald-200">
-                              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                                Estimasi Waktu
-                              </div>
-                              <div className="text-2xl font-bold text-emerald-700">
-                                {Math.round(
-                                  selectedRoute.estimated_duration_minutes
-                                )}{' '}
-                                min
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                    <div className="p-6 bg-gray-50 border-l-4 border-[#F59E0B]">
+                      <div className="text-sm font-semibold text-gray-600 mb-2">
+                        Jarak Rute
                       </div>
+                      <div className="text-4xl font-bold text-[#F59E0B]">
+                        {selectedRoute.total_distance_km.toFixed(2)}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-1">
+                        Kilometer
+                      </div>
+                      {selectedRoute.estimated_duration_minutes && (
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <div className="text-xs text-gray-500 mb-1">
+                            Estimasi Waktu
+                          </div>
+                          <div className="text-xl font-bold text-[#D97706]">
+                            {Math.round(
+                              selectedRoute.estimated_duration_minutes
+                            )}{' '}
+                            min
+                          </div>
+                        </div>
+                      )}
                     </div>
-
-                    {/* Ranking Stat */}
-                    <div className="group/stat relative overflow-hidden h-full flex">
-                      <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-gray-600/10 opacity-0 group-hover/stat:opacity-100 transition-opacity duration-300"></div>
-                      <div className="relative p-8 bg-gradient-to-br from-white to-gray-50 border-l-4 border-gray-600 shadow-lg hover:shadow-xl transition-all duration-300 w-full flex flex-col">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 bg-gray-600/10 flex items-center justify-center">
-                            <div className="w-3 h-3 bg-gray-600"></div>
-                          </div>
-                          <span className="text-xs uppercase tracking-wider font-bold text-gray-500">
-                            Peringkat
-                          </span>
-                        </div>
-                        <div className="flex-1 flex flex-col justify-center">
-                          <div className="text-5xl font-bold text-gray-700 mb-2 tracking-tight">
-                            #{selectedRoute.rank}
-                          </div>
-                          <div className="text-sm font-semibold text-gray-600">
-                            Rekomendasi
-                          </div>
-                        </div>
+                    <div className="p-6 bg-gray-50 border-l-4 border-gray-600">
+                      <div className="text-sm font-semibold text-gray-600 mb-2">
+                        Peringkat
+                      </div>
+                      <div className="text-4xl font-bold text-gray-700">
+                        #{selectedRoute.rank}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-1">
+                        Rekomendasi
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Peta Rute - Enhanced Map Section */}
-            <div className="relative group mb-12">
-              {/* Glow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
-
-              <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden">
-                {/* Accent Bar */}
-                <div className="h-2 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600"></div>
-
+              {/* Right Column - Peta Rute */}
+              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+                <div className="h-1 bg-[#F59E0B]"></div>
                 <div className="p-10">
-                  {/* Section Header */}
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-emerald-600 blur-lg opacity-50"></div>
-                      <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center">
-                        <MapPin className="w-7 h-7 text-white" />
-                      </div>
+                    <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                      <MapPin className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-teal-700">
+                      <h2 className="text-3xl font-bold text-gray-900">
                         Peta Rute Perjalanan
                       </h2>
-                      <p className="text-gray-600 font-medium mt-1">
+                      <p className="text-gray-600 mt-1">
                         Visualisasi Rute Optimal Anda
                       </p>
                     </div>
                   </div>
-
-                  <div className="overflow-hidden shadow-2xl ring-4 ring-gray-100">
+                  <div className="overflow-hidden shadow-lg border border-gray-200">
                     <MapComponent
                       userLocation={[
                         userLocation.latitude,
@@ -740,45 +562,34 @@ export default function RoutesPage() {
             </div>
 
             {/* Daftar Destinasi - Enhanced Destination List */}
-            <div className="relative group">
-              {/* Glow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
-
-              <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden">
-                {/* Accent Bar */}
-                <div className="h-2 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800"></div>
-
-                <div className="p-10">
-                  {/* Section Header */}
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-slate-700 blur-lg opacity-50"></div>
-                      <div className="relative w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-                        <Star className="w-7 h-7 text-white fill-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900">
-                        Daftar Destinasi
-                      </h2>
-                      <p className="text-gray-600 font-medium mt-1">
-                        {selectedRoute.destinations.length} Tempat Wisata
-                        Menakjubkan
-                      </p>
-                    </div>
+            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+              <div className="h-1 bg-[#F59E0B]"></div>
+              <div className="p-10">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                    <Star className="w-7 h-7 text-white fill-white" />
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {selectedRoute.destinations.map((destination, idx) => (
-                      <DestinationCard
-                        key={`${destination.nama}-${idx}`}
-                        destination={{
-                          ...destination,
-                          place_id: destination.nama,
-                        }}
-                      />
-                    ))}
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      Daftar Destinasi
+                    </h2>
+                    <p className="text-gray-600 mt-1">
+                      {selectedRoute.destinations.length} Tempat Wisata
+                      Menakjubkan
+                    </p>
                   </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {selectedRoute.destinations.map((destination, idx) => (
+                    <DestinationCard
+                      key={`${destination.nama}-${idx}`}
+                      destination={{
+                        ...destination,
+                        place_id: destination.nama,
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -791,13 +602,10 @@ export default function RoutesPage() {
           routeData.data &&
           routeData.data.routes && (
             <div className="text-center py-20">
-              <div className="inline-block relative">
-                <div className="absolute inset-0 bg-slate-700 blur-2xl opacity-20 animate-pulse"></div>
-                <div className="relative w-24 h-24 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center mx-auto mb-6">
-                  <RouteIcon className="w-12 h-12 text-white" />
-                </div>
+              <div className="w-24 h-24 bg-gray-200 flex items-center justify-center mx-auto mb-6">
+                <RouteIcon className="w-12 h-12 text-gray-400" />
               </div>
-              <p className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-900">
+              <p className="text-xl font-semibold text-gray-700">
                 Pilih salah satu rute di atas untuk melihat detail
               </p>
             </div>

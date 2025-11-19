@@ -129,7 +129,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
       {isMinimized ? (
         <button
           onClick={() => setIsMinimized(false)}
-          className="group relative w-16 h-16 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24] hover:from-[#2d1d72] hover:to-[#e1ce24] text-white shadow-2xl transition-all duration-300 flex items-center justify-center"
+          className="group w-16 h-16 bg-[#F59E0B] hover:bg-[#D97706] text-white shadow-2xl transition-all duration-200 flex items-center justify-center"
         >
           <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300"></div>
           <MessageCircle className="w-8 h-8 relative z-10" />
@@ -139,12 +139,12 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
         /* Full Chatbot */
         <div className="relative w-[400px] max-w-[calc(100vw-3rem)]">
           {/* Glow Effect */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-[#2d1d72] via-[#e1ce24] to-[#2d1d72] opacity-20 blur-xl"></div>
+          <div className="absolute -inset-1 bg-[#F59E0B]/20 blur-xl"></div>
 
           <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col h-[600px] max-h-[calc(100vh-8rem)]">
             {/* Header */}
-            <div className="h-2 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24]"></div>
-            <div className="bg-gradient-to-r from-[#2d1d72] to-[#e1ce24] text-white p-4 flex items-center justify-between">
+            <div className="h-1 bg-[#F59E0B]"></div>
+            <div className="bg-gray-900 text-white p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-md flex items-center justify-center">
                   <Bot className="w-6 h-6" />
@@ -173,7 +173,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-br from-white to-gray-50">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -184,9 +184,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                   {/* Avatar */}
                   <div
                     className={`flex-shrink-0 w-8 h-8 flex items-center justify-center ${
-                      message.role === 'user'
-                        ? 'bg-gradient-to-br from-slate-700 to-slate-900'
-                        : 'bg-[#2d1d72]'
+                      message.role === 'user' ? 'bg-gray-800' : 'bg-[#F59E0B]'
                     }`}
                   >
                     {message.role === 'user' ? (
@@ -205,7 +203,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     <div
                       className={`inline-block px-3 py-2 shadow-md text-left text-sm ${
                         message.role === 'user'
-                          ? 'bg-gradient-to-br from-slate-700 to-slate-900 text-white'
+                          ? 'bg-gray-800 text-white'
                           : 'bg-white border border-gray-200 text-gray-800'
                       }`}
                     >
@@ -260,7 +258,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                               code: ({ children, className }) => {
                                 const isInline = !className;
                                 return isInline ? (
-                                  <code className="bg-emerald-100 text-emerald-800 px-1 py-0.5 text-xs font-mono">
+                                  <code className="bg-amber-100 text-amber-800 px-1 py-0.5 text-xs font-mono">
                                     {children}
                                   </code>
                                 ) : (
@@ -274,13 +272,13 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                                   href={href}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-emerald-600 hover:text-emerald-700 underline"
+                                  className="text-[#F59E0B] hover:text-[#D97706] underline"
                                 >
                                   {children}
                                 </a>
                               ),
                               blockquote: ({ children }) => (
-                                <blockquote className="border-l-4 border-emerald-600 pl-4 italic text-gray-700 mb-2">
+                                <blockquote className="border-l-4 border-[#F59E0B] pl-4 italic text-gray-700 mb-2">
                                   {children}
                                 </blockquote>
                               ),
@@ -308,12 +306,12 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
               {/* Loading Indicator */}
               {isLoading && (
                 <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-[#2d1d72] flex items-center justify-center">
+                  <div className="flex-shrink-0 w-8 h-8 bg-[#F59E0B] flex items-center justify-center">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="inline-block px-3 py-2 bg-white border border-gray-200 shadow-md">
                     <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-[#2d1d72]" />
+                      <Loader2 className="w-4 h-4 animate-spin text-[#F59E0B]" />
                       <span className="text-sm text-gray-600">
                         Sedang mengetik...
                       </span>
@@ -337,7 +335,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     placeholder="Tanya tentang wisata Surabaya..."
                     disabled={isLoading}
                     rows={1}
-                    className="w-full px-3 py-2 pr-10 border border-gray-300 focus:outline-none focus:border-[#2d1d72] focus:ring-2 focus:ring-[#2d1d72]/20 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 text-sm text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 text-sm text-gray-900 placeholder:text-gray-400"
                     style={{
                       minHeight: '40px',
                       maxHeight: '100px',
@@ -348,10 +346,9 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="group relative px-4 py-2 bg-[#2d1d72] hover:bg-[#2d1d72] text-white font-semibold disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  className="bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold px-4 py-2 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300"></span>
-                  <span className="relative flex items-center gap-2">
+                  <span className="flex items-center gap-2">
                     {isLoading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
