@@ -129,7 +129,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
       {isMinimized ? (
         <button
           onClick={() => setIsMinimized(false)}
-          className="group relative w-16 h-16 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white shadow-2xl transition-all duration-300 flex items-center justify-center"
+          className="group relative w-16 h-16 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24] hover:from-[#2d1d72] hover:to-[#e1ce24] text-white shadow-2xl transition-all duration-300 flex items-center justify-center"
         >
           <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300"></div>
           <MessageCircle className="w-8 h-8 relative z-10" />
@@ -139,12 +139,12 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
         /* Full Chatbot */
         <div className="relative w-[400px] max-w-[calc(100vw-3rem)]">
           {/* Glow Effect */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 opacity-20 blur-xl"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-[#2d1d72] via-[#e1ce24] to-[#2d1d72] opacity-20 blur-xl"></div>
 
           <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col h-[600px] max-h-[calc(100vh-8rem)]">
             {/* Header */}
-            <div className="h-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700"></div>
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-4 flex items-center justify-between">
+            <div className="h-2 bg-gradient-to-r from-[#2d1d72] to-[#e1ce24]"></div>
+            <div className="bg-gradient-to-r from-[#2d1d72] to-[#e1ce24] text-white p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-md flex items-center justify-center">
                   <Bot className="w-6 h-6" />
@@ -186,7 +186,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     className={`flex-shrink-0 w-8 h-8 flex items-center justify-center ${
                       message.role === 'user'
                         ? 'bg-gradient-to-br from-slate-700 to-slate-900'
-                        : 'bg-gradient-to-br from-emerald-600 to-teal-700'
+                        : 'bg-[#2d1d72]'
                     }`}
                   >
                     {message.role === 'user' ? (
@@ -308,12 +308,12 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
               {/* Loading Indicator */}
               {isLoading && (
                 <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center">
+                  <div className="flex-shrink-0 w-8 h-8 bg-[#2d1d72] flex items-center justify-center">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="inline-block px-3 py-2 bg-white border border-gray-200 shadow-md">
                     <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
+                      <Loader2 className="w-4 h-4 animate-spin text-[#2d1d72]" />
                       <span className="text-sm text-gray-600">
                         Sedang mengetik...
                       </span>
@@ -337,7 +337,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     placeholder="Tanya tentang wisata Surabaya..."
                     disabled={isLoading}
                     rows={1}
-                    className="w-full px-3 py-2 pr-10 border border-gray-300 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 text-sm text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 focus:outline-none focus:border-[#2d1d72] focus:ring-2 focus:ring-[#2d1d72]/20 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 text-sm text-gray-900 placeholder:text-gray-400"
                     style={{
                       minHeight: '40px',
                       maxHeight: '100px',
@@ -348,7 +348,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="group relative px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-semibold disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  className="group relative px-4 py-2 bg-[#2d1d72] hover:bg-[#2d1d72] text-white font-semibold disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
                 >
                   <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300"></span>
                   <span className="relative flex items-center gap-2">
