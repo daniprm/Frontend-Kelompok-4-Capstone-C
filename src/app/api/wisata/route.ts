@@ -4,6 +4,18 @@ import { NextRequest, NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+// CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, ngrok-skip-browser-warning',
+}
+
+// Handle OPTIONS preflight request
+export async function OPTIONS(request: NextRequest) {
+  return NextResponse.json({}, { headers: corsHeaders })
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -27,19 +39,19 @@ export async function GET(request: NextRequest) {
       console.error('❌ External API error:', response.status, response.statusText)
       return NextResponse.json(
         { error: 'Failed to fetch data from external API', status: response.status },
-        { status: response.status }
+        { status: response.status, headers: corsHeaders }
       )
     }
 
     const data = await response.json()
     console.log('✅ Successfully fetched data, count:', data.data?.length || 0)
     
-    return NextResponse.json(data)
+    return NextResponse.json(data, { headers: corsHeaders })
   } catch (error) {
     console.error('❌ Proxy error:', error)
     return NextResponse.json(
       { error: 'Internal server error', message: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     )
   }
 }

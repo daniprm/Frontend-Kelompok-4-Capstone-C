@@ -1,14 +1,13 @@
 import { Destination } from '@/types'
 import { parseExternalAPIData } from '@/utils/jsonlParser'
+
 export async function getDestinations(): Promise<Destination[]> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-    const response = await fetch(`${apiUrl}/wisata?offset=0`, {
+    // Use Next.js API proxy instead of direct external API call
+    const response = await fetch('/api/wisata?offset=0', {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       }
     })
     
@@ -29,8 +28,49 @@ export async function getDestinations(): Promise<Destination[]> {
 }
 
 export async function getDestinationById(id: string): Promise<Destination | null> {
-  const destinations = await getDestinations()
-  return destinations.find(dest => dest.place_id === id) || null
+  try {
+    // Use Next.js API proxy instead of direct external API call
+    const response = await fetch(`/api/wisata/${id}`, {
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch destination: ${response.status}`)
+    }
+    
+    const apiData = await response.json()
+    
+    // Transform single destination
+    const kategoriArray = typeof apiData.kategori === 'string' 
+      ? apiData.kategori.split(',').map((k: string) => k.trim())
+      : Array.isArray(apiData.kategori) 
+      ? apiData.kategori 
+      : ['wisata']
+
+    const destination: Destination = {
+      place_id: apiData.restaurant_id?.toString() || id,
+      order: apiData.restaurant_id || 0,
+      nama: apiData.nama_destinasi || 'Nama tidak tersedia',
+      kategori: kategoriArray,
+      coordinates: [
+        parseFloat(apiData.latitude) || -7.2575,
+        parseFloat(apiData.longitude) || 112.7521
+      ],
+      deskripsi: apiData.deskripsi || `Destinasi wisata di Surabaya`,
+      rating: apiData.rating || 4.0,
+      alamat: apiData.alamat || 'Alamat belum tersedia, Surabaya',
+      jam_buka: apiData.jam_buka || '08:00 - 22:00 WIB',
+      image_url: apiData.image_url || `https://picsum.photos/seed/${apiData.nama_destinasi}/1920/800`
+    }
+
+    return destination
+  } catch (error) {
+    console.error('Error fetching destination:', error)
+    return null
+  }
 }
 
 export async function getDestinationsByCategory(category: string): Promise<Destination[]> {

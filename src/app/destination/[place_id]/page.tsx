@@ -54,15 +54,11 @@ export default function DestinationDetailPage() {
         const restaurantId = params.place_id as string;
         console.log('🔍 Fetching destination with restaurant_id:', restaurantId);
         
-        // Fetch from external API
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        const response = await fetch(`${apiUrl}/wisata/${restaurantId}`, {
+        // Fetch from Next.js API proxy (to avoid CORS issues)
+        const response = await fetch(`/api/wisata/${restaurantId}`, {
           cache: 'no-store',
           headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      
+            'Content-Type': 'application/json',
           }
         });
 
