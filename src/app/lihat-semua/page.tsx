@@ -2,6 +2,9 @@ import { Metadata } from 'next'
 import { getDestinations } from '@/services/destinationService'
 import DestinationCard from '@/components/DestinationCard'
 
+// Force dynamic rendering - required for Vercel deployment with external API
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Lihat Semua Destinasi | Wisata Surabaya',
   description: 'Jelajahi semua destinasi wisata kuliner dan non-kuliner yang tersedia di Surabaya'

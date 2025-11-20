@@ -4,7 +4,7 @@ export async function getDestinations(): Promise<Destination[]> {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
     const response = await fetch(`${apiUrl}/wisata?offset=0`, {
-      cache: 'no-store', // Changed to no-store for fresh data from external API
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
