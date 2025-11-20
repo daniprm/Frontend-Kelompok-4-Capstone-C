@@ -6,10 +6,10 @@ export const revalidate = 0
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
     const externalUrl = `${apiUrl}/wisata/${id}`

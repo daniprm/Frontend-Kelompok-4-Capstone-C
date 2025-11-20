@@ -7,6 +7,8 @@ Error: Dynamic server usage: Route /lihat-semua couldn't be rendered statically
 because it used revalidate: 0 fetch https://...ngrok-free.dev/wisata?offset=0
 ```
 
+**Update**: Next.js 15 also introduced a breaking change where `params` in API routes must be awaited.
+
 ## Root Cause
 Next.js was trying to **statically generate** the `/lihat-semua` page at build time, but the page needs to fetch data from an external API dynamically. This creates a conflict because:
 
@@ -66,7 +68,12 @@ export async function GET(request: NextRequest) {
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }  // ⚠️ Next.js 15: params is now a Promise
+) {
+  const { id } = await params  // ⚠️ Must await params
+  
   const response = await fetch(externalUrl, {
     cache: 'no-store',
     headers: { /* ... */ }
