@@ -16,11 +16,24 @@ import { parseExternalAPIData } from '@/utils/jsonlParser'
 export async function getDestinations(): Promise<Destination[]> {
   try {
     // Determine base URL based on environment
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' // Client-side: use relative URL
-      : process.env.VERCEL_URL 
-        ? `https://${process.env.VERCEL_URL}` // Vercel deployment
-        : 'http://localhost:3000'; // Local development SSR
+    let baseUrl = '';
+    
+    if (typeof window === 'undefined') {
+      // Server-side rendering
+      if (process.env.NEXT_PUBLIC_SITE_URL) {
+        // Use explicit site URL if set
+        baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      } else if (process.env.VERCEL_URL) {
+        // Vercel deployment - use VERCEL_URL
+        baseUrl = `https://${process.env.VERCEL_URL}`;
+      } else {
+        // Local development
+        baseUrl = 'http://localhost:3000';
+      }
+    }
+    // Client-side: baseUrl stays empty (relative URL)
+    
+    console.log('[Server] Fetching from:', `${baseUrl}/api/wisata?offset=0`);
     
     // Use Next.js API proxy instead of direct external API call
     const response = await fetch(`${baseUrl}/api/wisata?offset=0`, {
@@ -49,11 +62,24 @@ export async function getDestinations(): Promise<Destination[]> {
 export async function getDestinationById(id: string): Promise<Destination | null> {
   try {
     // Determine base URL based on environment
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' // Client-side: use relative URL
-      : process.env.VERCEL_URL 
-        ? `https://${process.env.VERCEL_URL}` // Vercel deployment
-        : 'http://localhost:3000'; // Local development SSR
+    let baseUrl = '';
+    
+    if (typeof window === 'undefined') {
+      // Server-side rendering
+      if (process.env.NEXT_PUBLIC_SITE_URL) {
+        // Use explicit site URL if set
+        baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      } else if (process.env.VERCEL_URL) {
+        // Vercel deployment - use VERCEL_URL
+        baseUrl = `https://${process.env.VERCEL_URL}`;
+      } else {
+        // Local development
+        baseUrl = 'http://localhost:3000';
+      }
+    }
+    // Client-side: baseUrl stays empty (relative URL)
+    
+    console.log('[Server] Fetching destination:', `${baseUrl}/api/wisata/${id}`);
 
     // Use Next.js API proxy instead of direct external API call
     const response = await fetch(`${baseUrl}/api/wisata/${id}`, {
