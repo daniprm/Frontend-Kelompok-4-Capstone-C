@@ -1,21 +1,26 @@
 import { Destination } from '@/types'
 import { parseExternalAPIData } from '@/utils/jsonlParser'
 
-// Helper to get the base URL for API calls
-function getBaseUrl() {
-  // In browser, use relative URL
-  if (typeof window !== 'undefined') return ''
+// // Helper to get the base URL for API calls
+// function getBaseUrl() {
+//   // In browser, use relative URL
+//   if (typeof window !== 'undefined') return ''
   
-  // On server, use Vercel URL or localhost
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+//   // On server, use Vercel URL or localhost
+//   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
   
-  // Fallback to localhost for local development
-  return 'http://localhost:3000'
-}
+//   // Fallback to localhost for local development
+//   return 'http://localhost:3000'
+// }
 
 export async function getDestinations(): Promise<Destination[]> {
   try {
-    const baseUrl = getBaseUrl()
+    // Determine base URL based on environment
+    const baseUrl = typeof window !== 'undefined' 
+      ? '' // Client-side: use relative URL
+      : process.env.VERCEL_URL 
+        ? `https://${process.env.VERCEL_URL}` // Vercel deployment
+        : 'http://localhost:3000'; // Local development SSR
     
     // Use Next.js API proxy instead of direct external API call
     const response = await fetch(`${baseUrl}/api/wisata?offset=0`, {
@@ -43,8 +48,13 @@ export async function getDestinations(): Promise<Destination[]> {
 
 export async function getDestinationById(id: string): Promise<Destination | null> {
   try {
-    const baseUrl = getBaseUrl()
-    
+    // Determine base URL based on environment
+    const baseUrl = typeof window !== 'undefined' 
+      ? '' // Client-side: use relative URL
+      : process.env.VERCEL_URL 
+        ? `https://${process.env.VERCEL_URL}` // Vercel deployment
+        : 'http://localhost:3000'; // Local development SSR
+
     // Use Next.js API proxy instead of direct external API call
     const response = await fetch(`${baseUrl}/api/wisata/${id}`, {
       cache: 'no-store',
