@@ -393,25 +393,25 @@ export default function MapComponent({
       {/* Route Info Display */}
       {showRoute && routeInfo && !isLoading && (
         <div className="absolute top-4 right-4 bg-white shadow-lg border border-gray-200 z-[1000] overflow-hidden min-w-[200px]">
-          <div className="h-1 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
+          <div className="h-1 bg-[#F59E0B]"></div>
           <div className="p-4">
             <p className="text-xs font-bold text-gray-700 mb-3 uppercase tracking-wider">
               Estimasi Perjalanan
             </p>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-2 bg-gradient-to-br from-white to-gray-50 border-l-2 border-emerald-600">
+              <div className="flex items-center justify-between p-2 bg-gradient-to-br from-white to-gray-50 border-l-4 border-[#F59E0B]">
                 <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Jarak
                 </span>
-                <span className="text-lg font-bold text-emerald-600">
+                <span className="text-lg font-bold text-[#F59E0B]">
                   {formatDistance(routeInfo.distance)}
                 </span>
               </div>
-              <div className="flex items-center justify-between p-2 bg-gradient-to-br from-white to-gray-50 border-l-2 border-slate-700">
+              <div className="flex items-center justify-between p-2 bg-gradient-to-br from-white to-gray-50 border-l-4 border-gray-700">
                 <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Waktu
                 </span>
-                <span className="text-lg font-bold text-slate-700">
+                <span className="text-lg font-bold text-gray-800">
                   {formatDuration(routeInfo.duration)}
                 </span>
               </div>
