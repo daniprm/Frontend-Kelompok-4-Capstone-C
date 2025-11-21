@@ -213,6 +213,19 @@ export default function DestinationDetail({
                       </div>
                     </div>
                   </div>
+
+                  {/* Google Maps Button */}
+                  <div className="mt-6">
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${destination.coordinates[0]},${destination.coordinates[1]}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold py-4 px-6 transition-colors duration-200 shadow-md hover:shadow-lg"
+                    >
+                      <MapPin className="w-5 h-5" />
+                      <span>Buka di Google Maps</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
