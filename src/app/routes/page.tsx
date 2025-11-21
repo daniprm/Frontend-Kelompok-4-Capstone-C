@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { MapPin, Route as RouteIcon, Star } from 'lucide-react';
 import DestinationCard from '@/components/DestinationCard';
 import { generateRoutes, getOSRMRoute } from '@/lib/api';
-import { ApiResponse, Route } from '@/types';
 
 // Dynamic import for LocationPickerMap to avoid SSR issues
 const LocationPickerMap = dynamic(
@@ -18,20 +17,68 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
 });
 
+// Interface untuk destinasi dari backend API
+interface BackendDestination {
+  order: number;
+  place_id: number;
+  nama_destinasi: string;
+  kategori: string[];
+  latitude: number;
+  longitude: number;
+  alamat: string;
+  image_url: string;
+  deskripsi: string | null;
+}
+
+// Interface untuk route dari backend
+interface BackendRoute {
+  rank: number;
+  total_distance_km: number;
+  is_valid_order: boolean;
+  destinations: BackendDestination[];
+  estimated_duration_minutes?: number;
+}
+
+// Interface untuk response API
+interface BackendApiResponse {
+  success: boolean;
+  message: string;
+  data: {
+    routes: BackendRoute[];
+  };
+}
+
+// Fungsi untuk transformasi data backend ke format frontend
+function transformDestination(backendDest: BackendDestination) {
+  return {
+    place_id: backendDest.place_id.toString(),
+    nama: backendDest.nama_destinasi,
+    kategori: backendDest.kategori,
+    coordinates: [backendDest.latitude, backendDest.longitude] as [
+      number,
+      number
+    ],
+    alamat: backendDest.alamat,
+    image_url: backendDest.image_url,
+    deskripsi: backendDest.deskripsi || undefined,
+    order: backendDest.order,
+  };
+}
+
 export default function RoutesPage() {
   const [userLocation, setUserLocation] = useState({
     latitude: -7.2458,
     longitude: 112.7378,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [routeData, setRouteData] = useState<ApiResponse | null>(null);
-  const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
+  const [routeData, setRouteData] = useState<BackendApiResponse | null>(null);
+  const [selectedRoute, setSelectedRoute] = useState<BackendRoute | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
 
   // Function to calculate real distance using OSRM
   const calculateRealDistances = async (
-    routes: Route[],
+    routes: BackendRoute[],
     userLoc: { latitude: number; longitude: number }
   ) => {
     setIsCalculatingDistance(true);
@@ -43,7 +90,9 @@ export default function RoutesPage() {
           // Create array of coordinates: user location + all destinations
           const allPoints: [number, number][] = [
             [userLoc.latitude, userLoc.longitude],
-            ...route.destinations.map((d) => d.coordinates),
+            ...route.destinations.map(
+              (d) => [d.latitude, d.longitude] as [number, number]
+            ),
           ];
 
           console.log(
@@ -135,14 +184,21 @@ export default function RoutesPage() {
       const response = await generateRoutes(userLocation);
       console.log('API Response:', response);
 
-      if (response.success && response.data && response.data.routes) {
+      // Cast response to BackendApiResponse since backend structure is different
+      const backendResponse = response as unknown as BackendApiResponse;
+
+      if (
+        backendResponse.success &&
+        backendResponse.data &&
+        backendResponse.data.routes
+      ) {
         // Try to calculate real distances using OSRM
-        let finalRoutes = response.data.routes;
+        let finalRoutes = backendResponse.data.routes;
 
         try {
           console.log('Recalculating distances with OSRM...');
           const routesWithRealDistances = await calculateRealDistances(
-            response.data.routes,
+            backendResponse.data.routes,
             userLocation
           );
           finalRoutes = routesWithRealDistances;
@@ -175,10 +231,9 @@ export default function RoutesPage() {
         );
 
         // Update response with sorted routes
-        const updatedResponse = {
-          ...response,
+        const updatedResponse: BackendApiResponse = {
+          ...backendResponse,
           data: {
-            ...response.data,
             routes: routesWithUpdatedRank,
           },
         };
@@ -366,205 +421,202 @@ export default function RoutesPage() {
 
         {/* Route Selection with Enhanced Design */}
         {routeData && routeData.data && routeData.data.routes && (
-          <div className="mb-12 relative">
-            {/* Section Header with Animation */}
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
-                <RouteIcon className="w-7 h-7 text-white" />
+          <div className="container mx-auto px-6 md:px-12">
+            <div className="mb-8">
+              {/* Section Header with Animation */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                  <RouteIcon className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900">
+                    Hasil Rekomendasi Rute
+                  </h2>
+                  <p className="text-gray-600 mt-1">
+                    {routeData.data.routes.length} Rekomendasi Tersedia
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Pilih Rute Terbaik
-                </h2>
-                <p className="text-gray-600 mt-1">
-                  {routeData.data.routes.length} Rekomendasi Tersedia
-                </p>
-              </div>
-            </div>
 
-            {/* Route Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {routeData.data.routes.map((route: Route) => (
-                <button
-                  key={route.rank}
-                  onClick={() => setSelectedRoute(route)}
-                  className={`text-left transition-all duration-200 border-2 ${
-                    selectedRoute?.rank === route.rank
-                      ? 'border-[#F59E0B] shadow-lg bg-[#F59E0B]/5'
-                      : 'border-gray-200 shadow-md hover:shadow-lg bg-white hover:border-[#F59E0B]/50'
-                  }`}
-                >
-                  <div className="p-6">
-                    {/* Header with Rank Badge */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className={`px-4 py-2 font-bold ${
-                          selectedRoute?.rank === route.rank
-                            ? 'bg-[#F59E0B] text-white'
-                            : 'bg-gray-100 text-gray-700'
-                        }`}
-                      >
-                        Rute #{route.rank}
-                      </div>
-                      {selectedRoute?.rank === route.rank && (
-                        <div className="flex items-center gap-2 text-[#F59E0B] font-semibold">
-                          <div className="w-2 h-2 bg-[#F59E0B] rounded-full"></div>
-                          Dipilih
+              {/* Route Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {routeData.data.routes.map((route: BackendRoute) => (
+                  <button
+                    key={route.rank}
+                    onClick={() => setSelectedRoute(route)}
+                    className={`text-left transition-all duration-200 border-2 ${
+                      selectedRoute?.rank === route.rank
+                        ? 'border-[#F59E0B] shadow-lg bg-[#F59E0B]/5'
+                        : 'border-gray-200 shadow-md hover:shadow-lg bg-white hover:border-[#F59E0B]/50'
+                    }`}
+                  >
+                    <div className="p-6">
+                      {/* Header with Rank Badge */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div
+                          className={`px-4 py-2 font-bold ${
+                            selectedRoute?.rank === route.rank
+                              ? 'bg-[#F59E0B] text-white'
+                              : 'bg-gray-100 text-gray-700'
+                          }`}
+                        >
+                          Rute #{route.rank}
                         </div>
-                      )}
-                    </div>
+                        {selectedRoute?.rank === route.rank && (
+                          <div className="flex items-center gap-2 text-[#F59E0B] font-semibold">
+                            <div className="w-2 h-2 bg-[#F59E0B] rounded-full"></div>
+                            Dipilih
+                          </div>
+                        )}
+                      </div>
 
-                    {/* Stats with Modern Design */}
-                    <div className="space-y-3">
-                      <div className="p-3 bg-gray-50 border-l-4 border-gray-700">
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold text-gray-700 text-sm">
-                            Destinasi
-                          </span>
-                          <span className="font-bold text-gray-800 text-xl">
-                            {route.total_destinations}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="p-3 bg-gray-50 border-l-4 border-[#F59E0B]">
-                        <div className="flex flex-col gap-1">
-                          <span className="font-semibold text-gray-700 text-sm">
-                            Total Jarak
-                          </span>
-                          <div className="flex items-baseline justify-between">
-                            <span className="font-bold text-[#F59E0B] text-xl">
-                              {route.total_distance_km.toFixed(2)} km
+                      {/* Stats with Modern Design */}
+                      <div className="space-y-3">
+                        <div className="p-3 bg-gray-50 border-l-4 border-gray-700">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-gray-700 text-sm">
+                              Destinasi
+                            </span>
+                            <span className="font-bold text-gray-800 text-xl">
+                              {route.destinations.length}
                             </span>
                           </div>
-                          {route.estimated_duration_minutes && (
-                            <span className="text-xs text-gray-500">
-                              ≈ {Math.round(route.estimated_duration_minutes)}{' '}
-                              menit
+                        </div>
+                        <div className="p-3 bg-gray-50 border-l-4 border-[#F59E0B]">
+                          <div className="flex flex-col gap-1">
+                            <span className="font-semibold text-gray-700 text-sm">
+                              Total Jarak
                             </span>
-                          )}
+                            <div className="flex items-baseline justify-between">
+                              <span className="font-bold text-[#F59E0B] text-xl">
+                                {route.total_distance_km.toFixed(2)} km
+                              </span>
+                            </div>
+                            {route.estimated_duration_minutes && (
+                              <span className="text-xs text-gray-500">
+                                ≈ {Math.round(route.estimated_duration_minutes)}{' '}
+                                menit
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
         {/* Route Details, Map, and Destinations */}
         {selectedRoute && (
-          <>
-            {/* Detail Rute & Peta Rute - 2 Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              {/* Left Column - Detail Rute Stats */}
-              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-                <div className="h-1 bg-[#F59E0B]"></div>
-                <div className="p-10">
-                  <div className="flex items-center gap-4 mb-10">
-                    <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
-                      <RouteIcon className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-3xl font-bold text-gray-900">
-                        Detail Rute #{selectedRoute.rank}
-                      </h2>
-                      <p className="text-gray-600 mt-1">
-                        Statistik Perjalanan Anda
-                      </p>
-                    </div>
+          <div className="container mx-auto px-6 md:px-12">
+            {/* Detail Rute Stats - Vertical Layout */}
+            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden mb-8">
+              <div className="h-1 bg-[#F59E0B]"></div>
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                    <RouteIcon className="w-7 h-7 text-white" />
                   </div>
-
-                  {/* Enhanced Statistics Grid */}
-                  <div className="space-y-6">
-                    <div className="p-6 bg-gray-50 border-l-4 border-gray-700">
-                      <div className="text-sm font-semibold text-gray-600 mb-2">
-                        Destinasi
-                      </div>
-                      <div className="text-4xl font-bold text-gray-800">
-                        {selectedRoute.total_destinations}
-                      </div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        Tempat Wisata
-                      </div>
-                    </div>
-                    <div className="p-6 bg-gray-50 border-l-4 border-[#F59E0B]">
-                      <div className="text-sm font-semibold text-gray-600 mb-2">
-                        Jarak Rute
-                      </div>
-                      <div className="text-4xl font-bold text-[#F59E0B]">
-                        {selectedRoute.total_distance_km.toFixed(2)}
-                      </div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        Kilometer
-                      </div>
-                      {selectedRoute.estimated_duration_minutes && (
-                        <div className="mt-3 pt-3 border-t border-gray-200">
-                          <div className="text-xs text-gray-500 mb-1">
-                            Estimasi Waktu
-                          </div>
-                          <div className="text-xl font-bold text-[#D97706]">
-                            {Math.round(
-                              selectedRoute.estimated_duration_minutes
-                            )}{' '}
-                            min
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-6 bg-gray-50 border-l-4 border-gray-600">
-                      <div className="text-sm font-semibold text-gray-600 mb-2">
-                        Peringkat
-                      </div>
-                      <div className="text-4xl font-bold text-gray-700">
-                        #{selectedRoute.rank}
-                      </div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        Rekomendasi
-                      </div>
-                    </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      Detail Rute #{selectedRoute.rank}
+                    </h2>
+                    <p className="text-gray-600 mt-1">
+                      Statistik Perjalanan Anda
+                    </p>
                   </div>
                 </div>
-              </div>
 
-              {/* Right Column - Peta Rute */}
-              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-                <div className="h-1 bg-[#F59E0B]"></div>
-                <div className="p-10">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
-                      <MapPin className="w-7 h-7 text-white" />
+                {/* Enhanced Statistics Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="p-6 bg-gray-50 border-l-4 border-gray-700">
+                    <div className="text-sm font-semibold text-gray-600 mb-2">
+                      Destinasi
                     </div>
-                    <div>
-                      <h2 className="text-3xl font-bold text-gray-900">
-                        Peta Rute Perjalanan
-                      </h2>
-                      <p className="text-gray-600 mt-1">
-                        Visualisasi Rute Optimal Anda
-                      </p>
+                    <div className="text-4xl font-bold text-gray-800">
+                      {selectedRoute.destinations.length}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Tempat Wisata
                     </div>
                   </div>
-                  <div className="overflow-hidden shadow-lg border border-gray-200">
-                    <MapComponent
-                      userLocation={[
-                        userLocation.latitude,
-                        userLocation.longitude,
-                      ]}
-                      destinations={selectedRoute.destinations}
-                      preCalculatedDistance={selectedRoute.total_distance_km}
-                      preCalculatedDuration={
-                        selectedRoute.estimated_duration_minutes
-                      }
-                    />
+                  <div className="p-6 bg-gray-50 border-l-4 border-[#F59E0B]">
+                    <div className="text-sm font-semibold text-gray-600 mb-2">
+                      Jarak Rute
+                    </div>
+                    <div className="text-4xl font-bold text-[#F59E0B]">
+                      {selectedRoute.total_distance_km.toFixed(2)}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">Kilometer</div>
+                    {selectedRoute.estimated_duration_minutes && (
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <div className="text-xs text-gray-500 mb-1">
+                          Estimasi Waktu
+                        </div>
+                        <div className="text-xl font-bold text-[#D97706]">
+                          {Math.round(selectedRoute.estimated_duration_minutes)}{' '}
+                          min
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 bg-gray-50 border-l-4 border-gray-600">
+                    <div className="text-sm font-semibold text-gray-600 mb-2">
+                      Peringkat
+                    </div>
+                    <div className="text-4xl font-bold text-gray-700">
+                      #{selectedRoute.rank}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Rekomendasi
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Daftar Destinasi - Enhanced Destination List */}
-            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
+            {/* Peta Rute - Full Width Below */}
+            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden mb-8">
               <div className="h-1 bg-[#F59E0B]"></div>
-              <div className="p-10">
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                    <MapPin className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      Peta Rute Perjalanan
+                    </h2>
+                    <p className="text-gray-600 mt-1">
+                      Visualisasi Rute Optimal Anda
+                    </p>
+                  </div>
+                </div>
+                <div className="overflow-hidden shadow-lg border border-gray-200">
+                  <MapComponent
+                    userLocation={[
+                      userLocation.latitude,
+                      userLocation.longitude,
+                    ]}
+                    destinations={selectedRoute.destinations.map(
+                      transformDestination
+                    )}
+                    preCalculatedDistance={selectedRoute.total_distance_km}
+                    preCalculatedDuration={
+                      selectedRoute.estimated_duration_minutes
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Daftar Destinasi - Enhanced Destination List */}
+            <div className="bg-white shadow-lg border border-gray-200 overflow-hidden mb-8">
+              <div className="h-1 bg-[#F59E0B]"></div>
+              <div className="p-8">
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
                     <Star className="w-7 h-7 text-white fill-white" />
@@ -583,17 +635,14 @@ export default function RoutesPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {selectedRoute.destinations.map((destination, idx) => (
                     <DestinationCard
-                      key={`${destination.nama}-${idx}`}
-                      destination={{
-                        ...destination,
-                        place_id: destination.nama,
-                      }}
+                      key={`${destination.place_id}-${idx}`}
+                      destination={transformDestination(destination)}
                     />
                   ))}
                 </div>
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {/* Empty State with Enhanced Design */}
@@ -601,13 +650,15 @@ export default function RoutesPage() {
           routeData &&
           routeData.data &&
           routeData.data.routes && (
-            <div className="text-center py-20">
-              <div className="w-24 h-24 bg-gray-200 flex items-center justify-center mx-auto mb-6">
-                <RouteIcon className="w-12 h-12 text-gray-400" />
+            <div className="container mx-auto px-6 md:px-12">
+              <div className="text-center py-20">
+                <div className="w-24 h-24 bg-gray-200 flex items-center justify-center mx-auto mb-6">
+                  <RouteIcon className="w-12 h-12 text-gray-400" />
+                </div>
+                <p className="text-xl font-semibold text-gray-700">
+                  Pilih salah satu rute di atas untuk melihat detail
+                </p>
               </div>
-              <p className="text-xl font-semibold text-gray-700">
-                Pilih salah satu rute di atas untuk melihat detail
-              </p>
             </div>
           )}
       </div>
