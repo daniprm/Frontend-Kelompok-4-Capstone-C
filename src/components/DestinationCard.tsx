@@ -33,17 +33,20 @@ export default function DestinationCard({
   };
 
   return (
-    <div className="group bg-white overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col h-full">
+    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-orange-200 flex flex-col h-full transform hover:-translate-y-2">
+      {/* Gradient glow effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 via-purple-500/0 to-amber-500/0 group-hover:from-orange-500/10 group-hover:via-purple-500/10 group-hover:to-amber-500/10 rounded-2xl transition-all duration-500 pointer-events-none" />
+      
       {showOrder && (
         <div className="absolute top-4 left-4 z-20">
-          <div className="bg-[#F59E0B] text-white w-12 h-12 flex items-center justify-center font-bold text-lg shadow-lg">
+          <div className="bg-gradient-to-br from-orange-500 to-amber-600 text-white w-14 h-14 rounded-xl flex items-center justify-center font-bold text-xl shadow-xl transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
             {destination.order}
           </div>
         </div>
       )}
 
       {/* Enhanced Image Section */}
-      <div className="relative h-72 w-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+      <div className="relative h-64 w-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
         <Image
           src={
             destination.image_url ||
@@ -52,16 +55,16 @@ export default function DestinationCard({
           }
           alt={destination.nama}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
         />
-        {/* Dynamic overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+        {/* Enhanced gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
 
         {destination.rating && (
           <div className="absolute top-4 right-4 z-10">
-            <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-4 py-2 shadow-lg border border-gray-200">
-              <Star className="w-4 h-4 text-[#F59E0B] fill-[#F59E0B]" />
-              <span className="text-base font-bold text-gray-800">
+            <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-xl border-2 border-white/50 transform transition-all duration-300 group-hover:scale-110">
+              <Star className="w-5 h-5 text-orange-500 fill-orange-500" />
+              <span className="text-base font-bold text-gray-900">
                 {destination.rating.toFixed(1)}
               </span>
             </div>
@@ -70,29 +73,29 @@ export default function DestinationCard({
       </div>
 
       {/* Content Section with Enhanced Design */}
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="font-bold text-xl text-gray-900 mb-4 line-clamp-2 leading-tight min-h-[3.5rem]">
+      <div className="p-6 flex flex-col flex-grow relative z-10">
+        <h3 className="font-bold text-xl text-gray-900 mb-4 line-clamp-2 leading-tight min-h-[3.5rem] group-hover:text-orange-600 transition-colors duration-300">
           {destination.nama}
         </h3>
 
         <div className="flex flex-wrap gap-2 mb-5">
-          {destination.kategori.slice(0, 3).map((kat, idx) => (
+          {destination.kategori.slice(0, 2).map((kat, idx) => (
             <span
               key={idx}
-              className="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 font-medium border border-gray-300 hover:bg-[#F59E0B] hover:text-white hover:border-[#F59E0B] transition-all duration-200 uppercase tracking-wide"
+              className="text-xs bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 px-4 py-2 rounded-full font-semibold border-2 border-gray-200 hover:bg-gradient-to-r hover:from-orange-500 hover:to-amber-600 hover:text-white hover:border-orange-400 transition-all duration-300 uppercase tracking-wide shadow-sm"
             >
               {categoryLabels[kat] || kat}
             </span>
           ))}
-          {destination.kategori.length > 3 && (
-            <span className="text-xs bg-gray-100 text-gray-600 px-4 py-2 font-semibold border border-gray-300 hover:bg-black hover:text-white hover:border-black transition-all duration-300 cursor-pointer">
-              +{destination.kategori.length - 3}
+          {destination.kategori.length > 2 && (
+            <span className="text-xs bg-gradient-to-r from-purple-100 to-purple-50 text-purple-700 px-4 py-2 rounded-full font-bold border-2 border-purple-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 hover:text-white hover:border-purple-500 transition-all duration-300 cursor-pointer shadow-sm">
+              +{destination.kategori.length - 2}
             </span>
           )}
         </div>
 
         {destination.deskripsi && (
-          <p className="text-sm text-gray-600 mb-6 line-clamp-3 leading-relaxed">
+          <p className="text-sm text-gray-600 mb-6 line-clamp-3 leading-relaxed flex-grow">
             {destination.deskripsi}
           </p>
         )}
@@ -101,10 +104,12 @@ export default function DestinationCard({
           href={`/destination/${encodeURIComponent(
             destination.place_id ?? ''
           )}`}
-          className="group/btn flex items-center justify-center gap-2 w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold py-4 px-6 transition-colors duration-200 mt-auto"
+          className="group/btn relative flex items-center justify-center gap-3 w-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:via-amber-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mt-auto overflow-hidden transform hover:scale-105"
         >
-          LIHAT DETAIL
-          <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-200" />
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
+          <span className="relative z-10">LIHAT DETAIL</span>
+          <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-2 transition-transform duration-300" />
         </Link>
       </div>
     </div>
