@@ -12,7 +12,8 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const placeId = decodeURIComponent(params.place_id);
+  const { place_id } = await params;
+  const placeId = decodeURIComponent(place_id);
   const destinations = await getDestinations();
   const destination = destinations.find((dest) => dest.place_id === placeId);
 
@@ -32,7 +33,8 @@ export async function generateMetadata({
 }
 
 export default async function DestinationDetailPage({ params }: PageProps) {
-  const placeId = decodeURIComponent(params.place_id);
+  const { place_id } = await params;
+  const placeId = decodeURIComponent(place_id);
 
   console.log('🔍 Looking for destination with place_id:', placeId);
 

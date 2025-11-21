@@ -1,10 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Destination } from '@/types';
-import { ArrowLeft, MapPin, Clock, Star } from 'lucide-react';
+import { MapPin, Clock, Star } from 'lucide-react';
 
 // Dynamically import MapComponent to avoid SSR issues
 const MapComponent = dynamic(() => import('@/components/MapComponent'), {
