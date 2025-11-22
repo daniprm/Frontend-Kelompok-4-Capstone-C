@@ -211,13 +211,13 @@ export default function RoutesPage() {
       <div className="bg-gray-900 text-white py-20">
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex items-center gap-6">
-            <div className="w-16 h-16 bg-[#F59E0B] flex items-center justify-center">
+            <div className="w-16 h-16 bg-blue-500 flex items-center justify-center">
               <RouteIcon className="w-8 h-8 text-white" />
             </div>
             <div className="flex-1">
               <h1 className="text-5xl md:text-6xl font-bold mb-3 tracking-tight">
                 <span className="text-white">Rekomendasi </span>
-                <span className="text-[#F59E0B]">Rute Wisata</span>
+                <span className="text-blue-500">Rute Wisata</span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-300">
                 Temukan destinasi wisata terbaik di Surabaya dengan rekomendasi
@@ -235,11 +235,11 @@ export default function RoutesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Left Column - Input with Glass Morphism */}
             <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-              <div className="h-1 bg-[#F59E0B]"></div>
+              <div className="h-1 bg-blue-500"></div>
 
               <div className="p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-[#F59E0B] flex items-center justify-center">
+                  <div className="w-12 h-12 bg-blue-500 flex items-center justify-center">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900">
@@ -263,7 +263,7 @@ export default function RoutesPage() {
                           latitude: parseFloat(e.target.value),
                         })
                       }
-                      className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-all duration-200 bg-white font-mono text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white font-mono text-gray-900"
                       placeholder="-7.2458"
                     />
                   </div>
@@ -281,7 +281,7 @@ export default function RoutesPage() {
                           longitude: parseFloat(e.target.value),
                         })
                       }
-                      className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-all duration-200 bg-white font-mono text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white font-mono text-gray-900"
                       placeholder="112.7378"
                     />
                   </div>
@@ -299,7 +299,7 @@ export default function RoutesPage() {
                   <button
                     onClick={handleGenerateRoutes}
                     disabled={isLoading || isCalculatingDistance}
-                    className="w-full px-6 py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-lg transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+                    className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold text-lg transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
                   >
                     {isLoading || isCalculatingDistance ? (
                       <>
@@ -320,7 +320,7 @@ export default function RoutesPage() {
                 </div>
 
                 {/* Enhanced Info Box */}
-                <div className="p-4 bg-gray-50 border-l-4 border-[#F59E0B]">
+                <div className="p-4 bg-gray-50 border-l-4 border-blue-500">
                   <p className="font-bold mb-2 text-gray-800">💡 Tips:</p>
                   <ul className="space-y-1 text-sm text-gray-700">
                     <li>• Klik peta di sebelah kanan untuk memilih lokasi</li>
@@ -338,10 +338,10 @@ export default function RoutesPage() {
 
             {/* Right Column - Enhanced Map Picker */}
             <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-              <div className="h-1 bg-[#F59E0B]"></div>
+              <div className="h-1 bg-blue-500"></div>
               <div className="p-8 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-[#F59E0B] flex items-center justify-center">
+                  <div className="w-12 h-12 bg-blue-500 flex items-center justify-center">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900">
@@ -390,8 +390,8 @@ export default function RoutesPage() {
                   onClick={() => setSelectedRoute(route)}
                   className={`text-left transition-all duration-200 border-2 ${
                     selectedRoute?.rank === route.rank
-                      ? 'border-[#F59E0B] shadow-lg bg-[#F59E0B]/5'
-                      : 'border-gray-200 shadow-md hover:shadow-lg bg-white hover:border-[#F59E0B]/50'
+                      ? 'border-blue-500 shadow-lg bg-blue-500/5'
+                      : 'border-gray-200 shadow-md hover:shadow-lg bg-white hover:border-blue-500/50'
                   }`}
                 >
                   <div className="p-6">
@@ -400,15 +400,15 @@ export default function RoutesPage() {
                       <div
                         className={`px-4 py-2 font-bold ${
                           selectedRoute?.rank === route.rank
-                            ? 'bg-[#F59E0B] text-white'
-                            : 'bg-gray-100 text-gray-700'
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-200 text-gray-700'
                         }`}
                       >
                         Rute #{route.rank}
                       </div>
                       {selectedRoute?.rank === route.rank && (
-                        <div className="flex items-center gap-2 text-[#F59E0B] font-semibold">
-                          <div className="w-2 h-2 bg-[#F59E0B] rounded-full"></div>
+                        <div className="flex items-center gap-2 text-blue-500 font-semibold">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                           Dipilih
                         </div>
                       )}
@@ -426,13 +426,13 @@ export default function RoutesPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="p-3 bg-gray-50 border-l-4 border-[#F59E0B]">
+                      <div className="p-3 bg-gray-50 border-l-4 border-blue-500">
                         <div className="flex flex-col gap-1">
                           <span className="font-semibold text-gray-700 text-sm">
                             Total Jarak
                           </span>
                           <div className="flex items-baseline justify-between">
-                            <span className="font-bold text-[#F59E0B] text-xl">
+                            <span className="font-bold text-blue-500 text-xl">
                               {route.total_distance_km.toFixed(2)} km
                             </span>
                           </div>
@@ -459,10 +459,10 @@ export default function RoutesPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               {/* Left Column - Detail Rute Stats */}
               <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-                <div className="h-1 bg-[#F59E0B]"></div>
+                <div className="h-1 bg-blue-500"></div>
                 <div className="p-10">
                   <div className="flex items-center gap-4 mb-10">
-                    <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                    <div className="w-14 h-14 bg-blue-500 flex items-center justify-center">
                       <RouteIcon className="w-7 h-7 text-white" />
                     </div>
                     <div>
@@ -488,11 +488,11 @@ export default function RoutesPage() {
                         Tempat Wisata
                       </div>
                     </div>
-                    <div className="p-6 bg-gray-50 border-l-4 border-[#F59E0B]">
+                    <div className="p-6 bg-gray-50 border-l-4 border-blue-500">
                       <div className="text-sm font-semibold text-gray-600 mb-2">
                         Jarak Rute
                       </div>
-                      <div className="text-4xl font-bold text-[#F59E0B]">
+                      <div className="text-4xl font-bold text-blue-500">
                         {selectedRoute.total_distance_km.toFixed(2)}
                       </div>
                       <div className="text-sm text-gray-600 mt-1">
@@ -503,7 +503,7 @@ export default function RoutesPage() {
                           <div className="text-xs text-gray-500 mb-1">
                             Estimasi Waktu
                           </div>
-                          <div className="text-xl font-bold text-[#D97706]">
+                          <div className="text-xl font-bold text-cyan-600">
                             {Math.round(
                               selectedRoute.estimated_duration_minutes
                             )}{' '}
@@ -527,12 +527,12 @@ export default function RoutesPage() {
                 </div>
               </div>
 
-              {/* Right Column - Peta Rute */}
+              {/* Right Column - Destinasi Cards */}
               <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-                <div className="h-1 bg-[#F59E0B]"></div>
+                <div className="h-1 bg-blue-500"></div>
                 <div className="p-10">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-14 h-14 bg-blue-500 flex items-center justify-center">
                       <MapPin className="w-7 h-7 text-white" />
                     </div>
                     <div>
@@ -563,10 +563,10 @@ export default function RoutesPage() {
 
             {/* Daftar Destinasi - Enhanced Destination List */}
             <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-              <div className="h-1 bg-[#F59E0B]"></div>
+              <div className="h-1 bg-blue-500"></div>
               <div className="p-10">
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="w-14 h-14 bg-[#F59E0B] flex items-center justify-center">
+                  <div className="w-14 h-14 bg-blue-500 flex items-center justify-center">
                     <Star className="w-7 h-7 text-white fill-white" />
                   </div>
                   <div>

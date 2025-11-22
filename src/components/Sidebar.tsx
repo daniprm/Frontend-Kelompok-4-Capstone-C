@@ -29,16 +29,16 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
       <div className="absolute -left-2 top-0 bottom-0 w-6 z-10" />
 
       {/* Sidebar Container with Auto-hide */}
-      <div className="relative bg-white shadow-xl overflow-hidden border-r-2 border-[#F59E0B] transition-all duration-300 -translate-x-[calc(100%-12px)] group-hover/sidebar:translate-x-0 hover:translate-x-0">
+      <div className="relative bg-white shadow-xl overflow-hidden border-r-2 border-blue-500 transition-all duration-300 -translate-x-[calc(100%-12px)] group-hover/sidebar:translate-x-0 hover:translate-x-0">
         {/* Accent Bar - Always Visible */}
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F59E0B]"></div>
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
 
         {/* Vertical Indicator Dots - Visible when collapsed */}
         <div className="absolute left-1.5 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-100 group-hover/sidebar:opacity-0 transition-opacity duration-300">
           {navItems.map((_, idx) => (
             <div
               key={idx}
-              className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full"
+              className="w-1.5 h-1.5 bg-blue-500 rounded-full"
             ></div>
           ))}
         </div>
@@ -61,7 +61,7 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
                   {/* Icon with Hover Effect */}
                   <div className="relative w-14 h-14 flex items-center justify-center mx-auto mb-2">
                     <div
-                      className={`absolute inset-0 bg-[#F59E0B] opacity-0 group-hover/item:opacity-100 transition-opacity duration-300`}
+                      className={`absolute inset-0 bg-blue-500 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300`}
                     ></div>
                     <Icon className="w-6 h-6 text-gray-600 group-hover/item:text-white relative z-10 transition-colors duration-300" />
                   </div>
@@ -87,7 +87,7 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
               >
                 {/* Active Indicator */}
                 {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F59E0B]"></div>
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
                 )}
 
                 <div className="relative flex flex-col items-center gap-1">
@@ -100,8 +100,8 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
                     <div
                       className={`relative w-7 h-7 flex items-center justify-center transition-all duration-300 ${
                         isActive
-                          ? 'bg-[#F59E0B]'
-                          : 'bg-gray-200 group-hover/item:bg-[#F59E0B]'
+                          ? 'bg-blue-500'
+                          : 'bg-gray-200 group-hover/item:bg-blue-500'
                       }`}
                     >
                       <Icon

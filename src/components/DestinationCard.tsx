@@ -33,13 +33,13 @@ export default function DestinationCard({
   };
 
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-orange-200 flex flex-col h-full transform hover:-translate-y-2">
+    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-blue-200 flex flex-col h-full transform hover:-translate-y-2">
       {/* Gradient glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 via-purple-500/0 to-amber-500/0 group-hover:from-orange-500/10 group-hover:via-purple-500/10 group-hover:to-amber-500/10 rounded-2xl transition-all duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-cyan-500/0 to-indigo-500/0 group-hover:from-blue-500/10 group-hover:via-cyan-500/10 group-hover:to-indigo-500/10 rounded-2xl transition-all duration-500 pointer-events-none" />
       
       {showOrder && (
         <div className="absolute top-4 left-4 z-20">
-          <div className="bg-gradient-to-br from-orange-500 to-amber-600 text-white w-14 h-14 rounded-xl flex items-center justify-center font-bold text-xl shadow-xl transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+          <div className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white w-14 h-14 rounded-xl flex items-center justify-center font-bold text-xl shadow-xl transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
             {destination.order}
           </div>
         </div>
@@ -63,7 +63,7 @@ export default function DestinationCard({
         {destination.rating && (
           <div className="absolute top-4 right-4 z-10">
             <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-xl border-2 border-white/50 transform transition-all duration-300 group-hover:scale-110">
-              <Star className="w-5 h-5 text-orange-500 fill-orange-500" />
+              <Star className="w-5 h-5 text-blue-500 fill-blue-500" />
               <span className="text-base font-bold text-gray-900">
                 {destination.rating.toFixed(1)}
               </span>
@@ -74,7 +74,7 @@ export default function DestinationCard({
 
       {/* Content Section with Enhanced Design */}
       <div className="p-6 flex flex-col flex-grow relative z-10">
-        <h3 className="font-bold text-xl text-gray-900 mb-4 line-clamp-2 leading-tight min-h-[3.5rem] group-hover:text-orange-600 transition-colors duration-300">
+        <h3 className="font-bold text-xl text-gray-900 mb-4 line-clamp-2 leading-tight min-h-[3.5rem] group-hover:text-blue-600 transition-colors duration-300">
           {destination.nama}
         </h3>
 
@@ -82,13 +82,13 @@ export default function DestinationCard({
           {destination.kategori.slice(0, 2).map((kat, idx) => (
             <span
               key={idx}
-              className="text-xs bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 px-4 py-2 rounded-full font-semibold border-2 border-gray-200 hover:bg-gradient-to-r hover:from-orange-500 hover:to-amber-600 hover:text-white hover:border-orange-400 transition-all duration-300 uppercase tracking-wide shadow-sm"
+              className="text-xs bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 px-4 py-2 rounded-full font-semibold border-2 border-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-600 hover:text-white hover:border-blue-400 transition-all duration-300 uppercase tracking-wide shadow-sm"
             >
               {categoryLabels[kat] || kat}
             </span>
           ))}
           {destination.kategori.length > 2 && (
-            <span className="text-xs bg-gradient-to-r from-purple-100 to-purple-50 text-purple-700 px-4 py-2 rounded-full font-bold border-2 border-purple-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 hover:text-white hover:border-purple-500 transition-all duration-300 cursor-pointer shadow-sm">
+            <span className="text-xs bg-gradient-to-r from-cyan-100 to-cyan-50 text-cyan-700 px-4 py-2 rounded-full font-bold border-2 border-cyan-200 hover:bg-gradient-to-r hover:from-cyan-600 hover:to-cyan-700 hover:text-white hover:border-cyan-500 transition-all duration-300 cursor-pointer shadow-sm">
               +{destination.kategori.length - 2}
             </span>
           )}
@@ -104,7 +104,7 @@ export default function DestinationCard({
           href={`/destination/${encodeURIComponent(
             destination.place_id ?? ''
           )}`}
-          className="group/btn relative flex items-center justify-center gap-3 w-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:via-amber-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mt-auto overflow-hidden transform hover:scale-105"
+          className="group/btn relative flex items-center justify-center gap-3 w-full bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 hover:from-blue-600 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mt-auto overflow-hidden transform hover:scale-105"
         >
           {/* Shimmer effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
