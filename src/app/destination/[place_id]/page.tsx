@@ -168,7 +168,7 @@ export default function DestinationDetailPage() {
         {/* Error Banner */}
         {error && (
           <div className="absolute top-20 left-6 right-6 md:left-12 md:right-12">
-            <div className="bg-yellow-500/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg">
+            <div className="bg-blue-500/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg">
               ⚠️ {error}
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function DestinationDetailPage() {
               {destination.kategori.map((kat, idx) => (
                 <span
                   key={idx}
-                  className="bg-[#F59E0B]/20 text-[#D97706] px-4 py-1.5 font-medium text-sm border border-[#F59E0B]/30"
+                  className="bg-blue-500/20 text-blue-600 px-4 py-1.5 font-medium text-sm border border-blue-500/30"
                 >
                   {categoryLabels[kat] || kat}
                 </span>
@@ -234,7 +234,7 @@ export default function DestinationDetailPage() {
                   {destination.kategori.map((kat, idx) => (
                     <span
                       key={idx}
-                      className="bg-[#F59E0B]/10 text-[#D97706] px-3 py-1.5 font-medium text-sm border border-[#F59E0B]/30"
+                      className="bg-blue-500/10 text-blue-600 px-3 py-1.5 font-medium text-sm border border-blue-500/30"
                     >
                       {categoryLabels[kat] || kat}
                     </span>
@@ -318,13 +318,13 @@ export default function DestinationDetailPage() {
                   href={`https://www.google.com/maps?q=${destination.coordinates[0]},${destination.coordinates[1]}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full text-center bg-[#F59E0B] hover:bg-[#D97706] text-white font-medium py-3 px-4 transition-colors duration-200"
+                  className="block w-full text-center bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-medium py-3 px-4 transition-colors duration-200"
                 >
                   Buka di Google Maps
                 </a>
                 <Link
                   href="/lihat-semua"
-                  className="block w-full text-center hover:bg-gray-200/20 text-[#F59E0B] border-2 border-[#F59E0B] font-medium py-3 px-4 transition-colors duration-200"
+                  className="block w-full text-center hover:bg-blue-50 text-blue-500 border-2 border-blue-500 font-medium py-3 px-4 transition-colors duration-200"
                 >
                   Lihat Semua Destinasi
                 </Link>
