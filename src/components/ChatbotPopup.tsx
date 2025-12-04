@@ -129,68 +129,74 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
       {isMinimized ? (
         <button
           onClick={() => setIsMinimized(false)}
-          className="group w-16 h-16 bg-[#F59E0B] hover:bg-[#D97706] text-white shadow-2xl transition-all duration-200 flex items-center justify-center"
+          className="group relative w-20 h-20 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center transform hover:scale-110 animate-bounce-in"
         >
-          <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300"></div>
-          <MessageCircle className="w-8 h-8 relative z-10" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
+          <MessageCircle className="w-10 h-10" />
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+            <span className="text-white text-xs font-bold">1</span>
+          </div>
         </button>
       ) : (
         /* Full Chatbot */
-        <div className="relative w-[400px] max-w-[calc(100vw-3rem)]">
-          {/* Glow Effect */}
-          <div className="absolute -inset-1 bg-[#F59E0B]/20 blur-xl"></div>
-
-          <div className="relative bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col h-[600px] max-h-[calc(100vh-8rem)]">
+        <div className="relative w-[420px] max-w-[calc(100vw-3rem)] animate-slide-in">
+          <div className="relative glass-dark border-2 border-blue-600/50 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[650px] max-h-[calc(100vh-8rem)] backdrop-blur-2xl">
             {/* Header */}
-            <div className="h-1 bg-[#F59E0B]"></div>
-            <div className="bg-gray-900 text-white p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-md flex items-center justify-center">
-                  <Bot className="w-6 h-6" />
+            <div className="h-2 bg-blue-600"></div>
+            <div className="bg-blue-600 text-white p-5 flex items-center justify-between border-b border-blue-700">
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
+                    <Bot className="w-8 h-8" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-blue-600 animate-pulse"></div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Asisten Wisata Surabaya</h3>
-                  <p className="text-xs text-white/80">Online 24/7</p>
+                  <h3 className="font-bold text-xl text-white">Asisten Wisata Surabaya</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <p className="text-sm text-blue-100">Online 24/7</p>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsMinimized(true)}
-                  className="p-2 hover:bg-white/20 transition-colors duration-200"
+                  className="p-2.5 rounded-xl hover:bg-white/20 transition-all duration-200"
                   title="Minimize"
                 >
-                  <Minimize2 className="w-5 h-5" />
+                  <Minimize2 className="w-5 h-5 text-blue-400" />
                 </button>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-white/20 transition-colors duration-200"
+                  className="p-2.5 rounded-xl hover:bg-red-500/20 transition-all duration-200"
                   title="Close"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5 text-red-400" />
                 </button>
               </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50">
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`flex gap-3 ${
+                  className={`flex gap-3 animate-slide-in ${
                     message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
                   }`}
                 >
                   {/* Avatar */}
                   <div
-                    className={`flex-shrink-0 w-8 h-8 flex items-center justify-center ${
-                      message.role === 'user' ? 'bg-gray-800' : 'bg-[#F59E0B]'
+                    className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg ${
+                      message.role === 'user' 
+                        ? 'bg-blue-600' 
+                        : 'bg-blue-600'
                     }`}
                   >
                     {message.role === 'user' ? (
-                      <User className="w-4 h-4 text-white" />
+                      <User className="w-5 h-5 text-white" />
                     ) : (
-                      <Bot className="w-4 h-4 text-white" />
+                      <Bot className="w-5 h-5 text-white" />
                     )}
                   </div>
 
@@ -201,10 +207,10 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     }`}
                   >
                     <div
-                      className={`inline-block px-3 py-2 shadow-md text-left text-sm ${
+                      className={`inline-block px-5 py-3 rounded-2xl shadow-xl text-left text-sm backdrop-blur-lg border transition-all duration-300 ${
                         message.role === 'user'
-                          ? 'bg-gray-800 text-white'
-                          : 'bg-white border border-gray-200 text-gray-800'
+                          ? 'bg-blue-600 text-white border-blue-500/50'
+                          : 'bg-white border-blue-200 text-gray-900'
                       }`}
                     >
                       {message.role === 'assistant' ? (
@@ -213,22 +219,22 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                             remarkPlugins={[remarkGfm]}
                             components={{
                               p: ({ children }) => (
-                                <p className="mb-2 last:mb-0 text-gray-800">
+                                <p className="mb-2 last:mb-0 text-gray-900">
                                   {children}
                                 </p>
                               ),
                               ul: ({ children }) => (
-                                <ul className="list-disc list-inside mb-2 text-gray-800 space-y-1">
+                                <ul className="list-disc list-inside mb-2 text-gray-900 space-y-1">
                                   {children}
                                 </ul>
                               ),
                               ol: ({ children }) => (
-                                <ol className="list-decimal list-inside mb-2 text-gray-800 space-y-1">
+                                <ol className="list-decimal list-inside mb-2 text-gray-900 space-y-1">
                                   {children}
                                 </ol>
                               ),
                               li: ({ children }) => (
-                                <li className="text-gray-800">{children}</li>
+                                <li className="text-gray-900">{children}</li>
                               ),
                               strong: ({ children }) => (
                                 <strong className="font-bold text-gray-900">
@@ -236,7 +242,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                                 </strong>
                               ),
                               em: ({ children }) => (
-                                <em className="italic text-gray-800">
+                                <em className="italic text-gray-900">
                                   {children}
                                 </em>
                               ),
@@ -258,11 +264,11 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                               code: ({ children, className }) => {
                                 const isInline = !className;
                                 return isInline ? (
-                                  <code className="bg-amber-100 text-amber-800 px-1 py-0.5 text-xs font-mono">
+                                  <code className="bg-blue-100 text-blue-800 px-1 py-0.5 text-xs font-mono">
                                     {children}
                                   </code>
                                 ) : (
-                                  <code className="block bg-gray-100 text-gray-800 p-2 overflow-x-auto text-xs font-mono mb-2">
+                                  <code className="block bg-gray-100 text-gray-900 p-2 overflow-x-auto text-xs font-mono mb-2">
                                     {children}
                                   </code>
                                 );
@@ -293,7 +299,8 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                         </p>
                       )}
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 px-1">
+                    <p className="text-xs text-gray-400 mt-2 px-1 flex items-center gap-1">
+                      <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
                       {message.timestamp.toLocaleTimeString('id-ID', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -305,16 +312,21 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
 
               {/* Loading Indicator */}
               {isLoading && (
-                <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-[#F59E0B] flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-white" />
+                <div className="flex gap-3 animate-bounce-in">
+                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <Bot className="w-5 h-5 text-white" />
                   </div>
-                  <div className="inline-block px-3 py-2 bg-white border border-gray-200 shadow-md">
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-[#F59E0B]" />
-                      <span className="text-sm text-gray-600">
-                        Sedang mengetik...
+                  <div className="glass border border-blue-600/50 rounded-2xl px-5 py-3 shadow-xl backdrop-blur-lg">
+                    <div className="flex items-center gap-3">
+                      <Loader2 className="w-5 h-5 animate-spin text-blue-400" />
+                      <span className="text-sm text-gray-300 font-medium">
+                        Sedang mengetik
                       </span>
+                      <div className="flex gap-1">
+                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -324,8 +336,8 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200 bg-white p-3">
-              <form onSubmit={handleSubmit} className="flex gap-2">
+            <div className="border-t-2 border-blue-200 bg-white p-4">
+              <form onSubmit={handleSubmit} className="flex gap-3">
                 <div className="flex-1 relative">
                   <textarea
                     ref={inputRef}
@@ -335,24 +347,24 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     placeholder="Tanya tentang wisata Surabaya..."
                     disabled={isLoading}
                     rows={1}
-                    className="w-full px-3 py-2 pr-10 border border-gray-300 focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 text-sm text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-5 py-4 pr-12 glass border-2 border-blue-600/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 rounded-2xl resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm text-white placeholder:text-gray-400 backdrop-blur-xl shadow-lg"
                     style={{
-                      minHeight: '40px',
-                      maxHeight: '100px',
+                      minHeight: '52px',
+                      maxHeight: '120px',
                     }}
                   />
-                  <Sparkles className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Sparkles className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
                 </div>
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold px-4 py-2 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-4 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none"
                 >
                   <span className="flex items-center gap-2">
                     {isLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
-                      <Send className="w-4 h-4" />
+                      <Send className="w-5 h-5" />
                     )}
                   </span>
                 </button>
