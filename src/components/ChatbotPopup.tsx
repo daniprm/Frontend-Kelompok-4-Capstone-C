@@ -347,7 +347,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     placeholder="Tanya tentang wisata Surabaya..."
                     disabled={isLoading}
                     rows={1}
-                    className="w-full px-5 py-4 pr-12 glass border-2 border-blue-600/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 rounded-2xl resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm text-white placeholder:text-gray-400 backdrop-blur-xl shadow-lg"
+                    className="w-full px-5 py-4 pr-12 bg-gray-50 border-2 border-blue-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 rounded-2xl resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400 shadow-lg"
                     style={{
                       minHeight: '52px',
                       maxHeight: '120px',
