@@ -12,6 +12,8 @@ import {
   Loader2,
   X,
   Minimize2,
+  Minimize,
+  Minus,
 } from 'lucide-react';
 
 interface Message {
@@ -132,9 +134,6 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
           className="group relative w-20 h-20 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl transition-all duration-300 flex items-center justify-center transform hover:scale-110 animate-bounce-in"
         >
           <MessageCircle className="w-10 h-10" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 flex items-center justify-center shadow-lg">
-            <span className="text-white text-xs font-bold">1</span>
-          </div>
         </button>
       ) : (
         /* Full Chatbot */
@@ -148,32 +147,27 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                   <div className="w-14 h-14 bg-blue-600 flex items-center justify-center shadow-xl">
                     <Bot className="w-8 h-8" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-blue-600 animate-pulse"></div>
                 </div>
                 <div>
                   <h3 className="font-bold text-xl text-white">
                     Asisten Wisata Surabaya
                   </h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="w-2 h-2 bg-green-400 animate-pulse"></div>
-                    <p className="text-sm text-blue-100">Online 24/7</p>
-                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center">
                 <button
                   onClick={() => setIsMinimized(true)}
                   className="p-2.5 hover:bg-white/20 transition-all duration-200"
                   title="Minimize"
                 >
-                  <Minimize2 className="w-5 h-5 text-blue-400" />
+                  <Minus className="w-5 h-5 text-white" />
                 </button>
                 <button
                   onClick={onClose}
                   className="p-2.5 hover:bg-red-500/20 transition-all duration-200"
                   title="Close"
                 >
-                  <X className="w-5 h-5 text-red-400" />
+                  <X className="w-5 h-5 text-white" />
                 </button>
               </div>
             </div>
