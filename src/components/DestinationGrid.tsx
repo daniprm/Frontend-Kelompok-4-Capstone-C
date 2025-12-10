@@ -8,13 +8,11 @@ import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 interface DestinationGridProps {
   destinations: Destination[];
   itemsPerPage?: number;
-  showSearchInBanner?: boolean;
 }
 
 export default function DestinationGrid({
   destinations,
   itemsPerPage = 12,
-  showSearchInBanner = false,
 }: DestinationGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');

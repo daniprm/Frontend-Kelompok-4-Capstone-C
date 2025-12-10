@@ -4,9 +4,9 @@ import { getDestinations } from '@/services/destinationService';
 import DestinationDetail from '@/components/DestinationDetail';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     place_id: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({

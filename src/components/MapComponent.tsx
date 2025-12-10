@@ -26,7 +26,6 @@ export default function MapComponent({
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [transportMode, setTransportMode] = useState<TransportMode>('car');
   const [routeInfo, setRouteInfo] = useState<{
     distance: number;
     duration: number;
@@ -186,10 +185,7 @@ export default function MapComponent({
     // Fetch and draw route using OSRM (only if showRoute is true)
     if (showRoute && destinations.length > 0) {
       // Use pre-calculated values if available and mode is 'car'
-      const usePreCalculated =
-        transportMode === 'car' &&
-        preCalculatedDistance &&
-        preCalculatedDuration;
+      const usePreCalculated = preCalculatedDistance && preCalculatedDuration;
 
       if (usePreCalculated) {
         console.log('Using pre-calculated route info for car mode');
@@ -200,7 +196,7 @@ export default function MapComponent({
         ];
 
         setIsLoading(true);
-        getOSRMRoute(allPoints, transportMode)
+        getOSRMRoute(allPoints)
           .then((data) => {
             const currentMap = mapRef.current;
             if (data.routes && data.routes[0] && currentMap) {
@@ -249,9 +245,7 @@ export default function MapComponent({
           ...destinations.map((d) => d.coordinates),
         ];
 
-        console.log('Fetching route for transport mode:', transportMode);
-
-        getOSRMRoute(allPoints, transportMode)
+        getOSRMRoute(allPoints)
           .then((data) => {
             // Use mapRef.current instead of map variable to get latest reference
             const currentMap = mapRef.current;
@@ -266,7 +260,6 @@ export default function MapComponent({
               console.log('Setting route info:', {
                 distance: route.distance,
                 duration: route.duration,
-                mode: transportMode,
               });
 
               setRouteInfo({
@@ -335,7 +328,6 @@ export default function MapComponent({
   }, [
     destinations,
     userLocation,
-    transportMode,
     preCalculatedDistance,
     preCalculatedDuration,
     showRoute,
@@ -367,17 +359,6 @@ export default function MapComponent({
     const km = (meters / 1000).toFixed(1);
     return `${km} km`;
   };
-
-  interface TransportModeOption {
-    mode: TransportMode;
-    icon: LucideIcon;
-    label: string;
-  }
-
-  const transportModes: TransportModeOption[] = [
-    { mode: 'car', icon: Car, label: 'Mobil' },
-    { mode: 'bike', icon: Bike, label: 'Motor' },
-  ];
 
   return (
     <div className="relative">
