@@ -129,31 +129,33 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
       {isMinimized ? (
         <button
           onClick={() => setIsMinimized(false)}
-          className="group relative w-20 h-20 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center transform hover:scale-110 animate-bounce-in"
+          className="group relative w-20 h-20 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl transition-all duration-300 flex items-center justify-center transform hover:scale-110 animate-bounce-in"
         >
           <MessageCircle className="w-10 h-10" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 flex items-center justify-center shadow-lg">
             <span className="text-white text-xs font-bold">1</span>
           </div>
         </button>
       ) : (
         /* Full Chatbot */
         <div className="relative w-[420px] max-w-[calc(100vw-3rem)] animate-slide-in">
-          <div className="relative glass-dark border-2 border-blue-600/50 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[650px] max-h-[calc(100vh-8rem)] backdrop-blur-2xl">
+          <div className="relative glass-dark border-2 border-blue-600/50 shadow-2xl overflow-hidden flex flex-col h-[650px] max-h-[calc(100vh-8rem)] backdrop-blur-2xl">
             {/* Header */}
             <div className="h-2 bg-blue-600"></div>
             <div className="bg-blue-600 text-white p-5 flex items-center justify-between border-b border-blue-700">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
+                  <div className="w-14 h-14 bg-blue-600 flex items-center justify-center shadow-xl">
                     <Bot className="w-8 h-8" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-blue-600 animate-pulse"></div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-blue-600 animate-pulse"></div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-xl text-white">Asisten Wisata Surabaya</h3>
+                  <h3 className="font-bold text-xl text-white">
+                    Asisten Wisata Surabaya
+                  </h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-green-400 animate-pulse"></div>
                     <p className="text-sm text-blue-100">Online 24/7</p>
                   </div>
                 </div>
@@ -161,14 +163,14 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsMinimized(true)}
-                  className="p-2.5 rounded-xl hover:bg-white/20 transition-all duration-200"
+                  className="p-2.5 hover:bg-white/20 transition-all duration-200"
                   title="Minimize"
                 >
                   <Minimize2 className="w-5 h-5 text-blue-400" />
                 </button>
                 <button
                   onClick={onClose}
-                  className="p-2.5 rounded-xl hover:bg-red-500/20 transition-all duration-200"
+                  className="p-2.5 hover:bg-red-500/20 transition-all duration-200"
                   title="Close"
                 >
                   <X className="w-5 h-5 text-red-400" />
@@ -187,10 +189,8 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                 >
                   {/* Avatar */}
                   <div
-                    className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg ${
-                      message.role === 'user' 
-                        ? 'bg-blue-600' 
-                        : 'bg-blue-600'
+                    className={`flex-shrink-0 w-10 h-10 flex items-center justify-center shadow-lg ${
+                      message.role === 'user' ? 'bg-blue-600' : 'bg-blue-600'
                     }`}
                   >
                     {message.role === 'user' ? (
@@ -207,7 +207,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     }`}
                   >
                     <div
-                      className={`inline-block px-5 py-3 rounded-2xl shadow-xl text-left text-sm backdrop-blur-lg border transition-all duration-300 ${
+                      className={`inline-block px-5 py-3 shadow-xl text-left text-sm backdrop-blur-lg border transition-all duration-300 ${
                         message.role === 'user'
                           ? 'bg-blue-600 text-white border-blue-500/50'
                           : 'bg-white border-blue-200 text-gray-900'
@@ -219,9 +219,9 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                             remarkPlugins={[remarkGfm]}
                             components={{
                               p: ({ children }) => (
-                                <p className="mb-2 last:mb-0 text-gray-900">
+                                <div className="mb-2 last:mb-0 text-gray-900">
                                   {children}
-                                </p>
+                                </div>
                               ),
                               ul: ({ children }) => (
                                 <ul className="list-disc list-inside mb-2 text-gray-900 space-y-1">
@@ -299,13 +299,13 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                         </p>
                       )}
                     </div>
-                    <p className="text-xs text-gray-400 mt-2 px-1 flex items-center gap-1">
-                      <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                    <span className="text-xs text-gray-400 mt-2 px-1 flex items-center gap-1">
+                      <span className="w-1 h-1 bg-blue-400 inline-block"></span>
                       {message.timestamp.toLocaleTimeString('id-ID', {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
-                    </p>
+                    </span>
                   </div>
                 </div>
               ))}
@@ -313,19 +313,28 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
               {/* Loading Indicator */}
               {isLoading && (
                 <div className="flex gap-3 animate-bounce-in">
-                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 flex items-center justify-center shadow-lg">
                     <Bot className="w-5 h-5 text-white" />
                   </div>
-                  <div className="glass border border-blue-600/50 rounded-2xl px-5 py-3 shadow-xl backdrop-blur-lg">
+                  <div className="glass border border-blue-600/50 px-5 py-3 shadow-xl backdrop-blur-lg">
                     <div className="flex items-center gap-3">
                       <Loader2 className="w-5 h-5 animate-spin text-blue-400" />
                       <span className="text-sm text-gray-300 font-medium">
                         Sedang mengetik
                       </span>
                       <div className="flex gap-1">
-                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                        <div
+                          className="w-1.5 h-1.5 bg-blue-400 animate-bounce"
+                          style={{ animationDelay: '0s' }}
+                        ></div>
+                        <div
+                          className="w-1.5 h-1.5 bg-blue-400 animate-bounce"
+                          style={{ animationDelay: '0.2s' }}
+                        ></div>
+                        <div
+                          className="w-1.5 h-1.5 bg-blue-400 animate-bounce"
+                          style={{ animationDelay: '0.4s' }}
+                        ></div>
                       </div>
                     </div>
                   </div>
@@ -347,7 +356,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                     placeholder="Tanya tentang wisata Surabaya..."
                     disabled={isLoading}
                     rows={1}
-                    className="w-full px-5 py-4 pr-12 glass border-2 border-blue-600/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 rounded-2xl resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm text-white placeholder:text-gray-400 backdrop-blur-xl shadow-lg"
+                    className="w-full px-5 py-4 pr-12 glass border-2 border-blue-600/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm text-black placeholder:text-gray-400 backdrop-blur-xl shadow-lg"
                     style={{
                       minHeight: '52px',
                       maxHeight: '120px',
@@ -358,7 +367,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-4 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-4 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none"
                 >
                   <span className="flex items-center gap-2">
                     {isLoading ? (

@@ -9,7 +9,7 @@ import { MapPin, Clock, Star } from 'lucide-react';
 const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
   loading: () => (
-    <div className="h-[400px] bg-gray-200 animate-pulse rounded-lg flex items-center justify-center">
+    <div className="h-[400px] bg-gray-200 animate-pulse flex items-center justify-center">
       <p className="text-gray-500">Loading map...</p>
     </div>
   ),
@@ -43,9 +43,18 @@ export default function DestinationDetail({
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
       {/* Animated Background Particles */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="particle w-32 h-32 top-10 right-10 opacity-30 animate-float" style={{ animationDelay: '0s' }}></div>
-        <div className="particle w-24 h-24 bottom-20 left-20 opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="particle w-40 h-40 top-1/2 right-1/4 opacity-25 animate-float" style={{ animationDelay: '3s' }}></div>
+        <div
+          className="particle w-32 h-32 top-10 right-10 opacity-30 animate-float"
+          style={{ animationDelay: '0s' }}
+        ></div>
+        <div
+          className="particle w-24 h-24 bottom-20 left-20 opacity-20 animate-float"
+          style={{ animationDelay: '2s' }}
+        ></div>
+        <div
+          className="particle w-40 h-40 top-1/2 right-1/4 opacity-25 animate-float"
+          style={{ animationDelay: '3s' }}
+        ></div>
       </div>
 
       {/* Hero Image */}
@@ -75,7 +84,7 @@ export default function DestinationDetail({
               {destination.kategori.map((kat, idx) => (
                 <span
                   key={idx}
-                  className="px-6 py-3 glass border-2 border-blue-600/50 text-blue-200 font-bold text-sm uppercase tracking-widest shadow-2xl backdrop-blur-xl rounded-full hover:bg-blue-600 hover:text-white hover:border-transparent transition-all duration-300 animate-bounce-in"
+                  className="px-6 py-3 border-2 bg-white border-blue-600 text-blue-600 font-bold text-sm uppercase tracking-widest shadow-2xl transition-all duration-300 animate-bounce-in"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   {categoryLabels[kat] || kat}
@@ -93,7 +102,7 @@ export default function DestinationDetail({
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
               {/* Description Card */}
-              <div className="bg-white border-2 border-blue-200 rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up">
+              <div className="bg-white border-2 border-blue-200 overflow-hidden shadow-2xl animate-fade-in-up">
                 <div className="h-2 bg-blue-600"></div>
                 <div className="p-10">
                   <h2 className="text-4xl font-extrabold mb-6 text-gray-900">
@@ -112,16 +121,21 @@ export default function DestinationDetail({
               </div>
 
               {/* Map Card */}
-              <div className="bg-white border-2 border-blue-200 rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+              <div
+                className="bg-white border-2 border-blue-200 overflow-hidden shadow-2xl animate-fade-in-up"
+                style={{ animationDelay: '0.1s' }}
+              >
                 <div className="h-2 bg-blue-600"></div>
                 <div className="p-10">
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
+                    <div className="w-16 h-16 bg-blue-600  flex items-center justify-center shadow-xl">
                       <MapPin className="w-8 h-8 text-white" />
                     </div>
-                    <h2 className="text-4xl font-extrabold text-gray-900">Lokasi</h2>
+                    <h2 className="text-4xl font-extrabold text-gray-900">
+                      Lokasi
+                    </h2>
                   </div>
-                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-blue-600/50">
+                  <div className=" overflow-hidden shadow-2xl border-2 border-blue-600/50">
                     <MapComponent
                       destinations={[destination]}
                       userLocation={destination.coordinates}
@@ -135,7 +149,10 @@ export default function DestinationDetail({
 
             {/* Sidebar Info */}
             <div className="lg:col-span-1">
-              <div className="bg-white border-2 border-blue-200 rounded-3xl overflow-hidden shadow-2xl sticky top-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <div
+                className="bg-white border-2 border-blue-200 overflow-hidden shadow-2xl sticky top-4 animate-fade-in-up"
+                style={{ animationDelay: '0.2s' }}
+              >
                 <div className="h-2 bg-blue-600"></div>
                 <div className="p-8">
                   <h2 className="text-3xl font-extrabold mb-8 text-gray-900">
@@ -145,7 +162,7 @@ export default function DestinationDetail({
                   <div className="space-y-6">
                     {/* Rating */}
                     {destination.rating && (
-                      <div className="flex items-start gap-4 p-6 bg-blue-50 border-2 border-blue-200 rounded-2xl hover:border-blue-400 transition-colors duration-300">
+                      <div className="flex items-start gap-4 p-6 bg-blue-50 border-2 border-blue-200  hover:border-blue-400 transition-colors duration-300">
                         <div className="w-10 h-10 bg-blue-600 flex items-center justify-center flex-shrink-0">
                           <Star className="w-5 h-5 text-white fill-white" />
                         </div>
@@ -217,7 +234,7 @@ export default function DestinationDetail({
                       href={`https://www.google.com/maps/search/?api=1&query=${destination.coordinates[0]},${destination.coordinates[1]}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-2xl transition-colors duration-200 shadow-md hover:shadow-lg"
+                      className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6  transition-colors duration-200 shadow-md hover:shadow-lg"
                     >
                       <MapPin className="w-5 h-5" />
                       <span>Buka di Google Maps</span>
