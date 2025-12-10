@@ -29,17 +29,14 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
       <div className="absolute -left-2 top-0 bottom-0 w-6 z-10" />
 
       {/* Sidebar Container with Auto-hide */}
-      <div className="relative bg-white shadow-xl overflow-hidden border-r-2 border-[#F59E0B] transition-all duration-300 -translate-x-[calc(100%-12px)] group-hover/sidebar:translate-x-0 hover:translate-x-0">
+      <div className="relative glass-dark backdrop-blur-2xl shadow-2xl overflow-hidden border-r-2 border-blue-400 transition-all duration-500 -translate-x-[calc(100%-12px)] group-hover/sidebar:translate-x-0 hover:translate-x-0">
         {/* Accent Bar - Always Visible */}
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F59E0B]"></div>
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-600"></div>
 
         {/* Vertical Indicator Dots - Visible when collapsed */}
-        <div className="absolute left-1.5 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-100 group-hover/sidebar:opacity-0 transition-opacity duration-300">
+        <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-100 group-hover/sidebar:opacity-0 transition-opacity duration-300">
           {navItems.map((_, idx) => (
-            <div
-              key={idx}
-              className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full"
-            ></div>
+            <div key={idx} className="w-1.5 h-1.5 bg-blue-600 shadow-lg"></div>
           ))}
         </div>
 
@@ -55,20 +52,20 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
                   key={idx}
                   onClick={onChatbotClick}
                   type="button"
-                  className={`relative p-2 transition-all duration-300 border-b border-gray-100 last:border-b-0 group/item overflow-hidden hover:bg-gray-50`}
+                  className={`relative p-2 transition-all duration-300 border-b border-blue-600/20 last:border-b-0 group/item overflow-hidden hover:bg-blue-600/20`}
                   title={item.label}
                 >
                   {/* Icon with Hover Effect */}
-                  <div className="relative w-14 h-14 flex items-center justify-center mx-auto mb-2">
+                  <div className="relative w-10 h-10 flex items-center justify-center mx-auto mb-1">
                     <div
-                      className={`absolute inset-0 bg-[#F59E0B] opacity-0 group-hover/item:opacity-100 transition-opacity duration-300`}
+                      className={`absolute inset-0 bg-blue-600 opacity-0 group-hover/item:opacity-100 transition-all duration-300 shadow-xl`}
                     ></div>
-                    <Icon className="w-6 h-6 text-gray-600 group-hover/item:text-white relative z-10 transition-colors duration-300" />
+                    <Icon className="w-5 h-5 text-blue-600 group-hover/item:text-white relative z-10 transition-all duration-300 group-hover/item:scale-110" />
                   </div>
 
                   {/* Label */}
                   <span
-                    className={`text-xs font-medium text-center block transition-colors duration-300 text-gray-600 group-hover/item:text-gray-900`}
+                    className={`text-[10px] font-bold text-center block transition-colors duration-300 text-blue-600 hover:text-blue-800 uppercase tracking-wider`}
                   >
                     {item.label}
                   </span>
@@ -80,51 +77,40 @@ export default function Sidebar({ onChatbotClick }: SidebarProps) {
               <Link
                 key={idx}
                 href={item.href}
-                className={`relative p-2 transition-all duration-300 border-b border-gray-100 last:border-b-0 group/item overflow-hidden ${
-                  isActive ? 'bg-gray-50' : 'hover:bg-gray-50'
+                className={`relative p-2 transition-all duration-300 border-b border-blue-600/20 last:border-b-0 group/item overflow-hidden ${
+                  isActive ? 'bg-blue-600/30' : 'hover:bg-blue-600/20'
                 }`}
                 title={item.label}
               >
                 {/* Active Indicator */}
                 {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F59E0B]"></div>
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 shadow-lg"></div>
                 )}
 
-                <div className="relative flex flex-col items-center gap-1">
-                  {/* Icon Container - Smaller */}
+                {/* Icon with Hover Effect */}
+                <div className="relative w-10 h-10 flex items-center justify-center mx-auto mb-1">
                   <div
-                    className={`relative transition-all duration-300 ${
-                      isActive ? 'scale-105' : 'group-hover/item:scale-110'
-                    }`}
-                  >
-                    <div
-                      className={`relative w-7 h-7 flex items-center justify-center transition-all duration-300 ${
-                        isActive
-                          ? 'bg-[#F59E0B]'
-                          : 'bg-gray-200 group-hover/item:bg-[#F59E0B]'
-                      }`}
-                    >
-                      <Icon
-                        className={`w-4 h-4 transition-colors duration-300 ${
-                          isActive
-                            ? 'text-white'
-                            : 'text-gray-700 group-hover/item:text-white'
-                        }`}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Label - Show only on hover sidebar */}
-                  <div
-                    className={`text-[9px] font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
+                    className={`absolute inset-0 transition-all duration-300 shadow-xl ${
                       isActive
-                        ? 'opacity-0 group-hover/sidebar:opacity-100 text-gray-900'
-                        : 'opacity-0 group-hover/sidebar:opacity-100 group-hover/item:text-gray-900 text-gray-700'
+                        ? 'bg-blue-600 opacity-100'
+                        : 'bg-blue-600 opacity-0 group-hover/item:opacity-100'
                     }`}
-                  >
-                    {item.label}
-                  </div>
+                  ></div>
+                  <Icon
+                    className={`w-5 h-5 relative z-10 transition-all duration-300 group-hover/item:scale-110 ${
+                      isActive
+                        ? 'text-white'
+                        : 'text-blue-600 group-hover/item:text-white'
+                    }`}
+                  />
                 </div>
+
+                {/* Label */}
+                <span
+                  className={`text-[10px] font-bold text-center block transition-colors duration-300 uppercase tracking-wider text-blue-600 hover:text-blue-800`}
+                >
+                  {item.label}
+                </span>
               </Link>
             );
           })}

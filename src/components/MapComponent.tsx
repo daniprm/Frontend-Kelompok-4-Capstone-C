@@ -80,26 +80,23 @@ export default function MapComponent({
       });
     };
 
-    // Custom red pin icon for user location (same as LocationPickerMap)
+    // Custom icon for user location with person silhouette
     const userLocationIcon = L.divIcon({
       className: 'custom-marker',
       html: `
-        <div style="position: relative; width: 30px; height: 40px;">
-          <svg width="30" height="40" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
-            <!-- Pin shadow -->
-            <ellipse cx="15" cy="38" rx="6" ry="2" fill="rgba(0,0,0,0.2)"/>
-            <!-- Pin body -->
-            <path d="M15 0C8.925 0 4 4.925 4 11c0 8.25 11 24 11 24s11-15.75 11-24c0-6.075-4.925-11-11-11z" 
-                  fill="#EF4444" stroke="#B91C1C" stroke-width="1"/>
-            <!-- Pin inner circle -->
-            <circle cx="15" cy="11" r="5" fill="white"/>
-            <circle cx="15" cy="11" r="3" fill="#B91C1C"/>
+        <div style="position: relative; width: 40px; height: 40px;">
+          <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <!-- Circle background with shadow -->
+            <circle cx="20" cy="20" r="18" fill="#3B82F6" stroke="white" stroke-width="3" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"/>
+            <!-- Person icon -->
+            <circle cx="20" cy="14" r="5" fill="white"/>
+            <path d="M20 20c-5 0-9 3-9 7v3h18v-3c0-4-4-7-9-7z" fill="white"/>
           </svg>
         </div>
       `,
-      iconSize: [30, 40],
-      iconAnchor: [15, 40],
-      popupAnchor: [0, -40],
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
+      popupAnchor: [0, -20],
     });
 
     // Custom red pin icon for single destination (when showRoute is false)
@@ -140,19 +137,47 @@ export default function MapComponent({
     // Add destination markers
     destinations.forEach((dest) => {
       try {
+        const imageUrl =
+          dest.image_url ||
+          dest.gambar ||
+          `https://picsum.photos/seed/${dest.place_id}/200/120`;
+        const popupContent = `
+          <div style="width: 220px; font-family: system-ui, -apple-system, sans-serif;">
+            <img 
+              src="${imageUrl}" 
+              alt="${dest.nama}" 
+              style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px 8px 0 0; margin-bottom: 8px;"
+              onerror="this.src='https://picsum.photos/seed/${
+                dest.place_id
+              }/200/120'"
+            />
+            <div style="padding: 0 4px 4px 4px;">
+              <h3 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: #1e3a8a;">
+                ${showRoute ? `${dest.order}. ` : ''}${dest.nama}
+              </h3>
+              ${
+                dest.alamat
+                  ? `
+                <p style="margin: 0; font-size: 12px; color: #4b5563; line-height: 1.4;">
+                  📍 ${dest.alamat}
+                </p>
+              `
+                  : ''
+              }
+            </div>
+          </div>
+        `;
+
         L.marker(dest.coordinates, {
           icon: showRoute
             ? createIcon('#3B82F6', dest.order)
             : destinationPinIcon,
         })
           .addTo(map)
-          .bindPopup(
-            showRoute
-              ? `<b>${dest.order}. ${dest.nama}</b><br>${dest.kategori.join(
-                  ', '
-                )}`
-              : `<b>${dest.nama}</b><br>${dest.kategori.join(', ')}`
-          );
+          .bindPopup(popupContent, {
+            maxWidth: 250,
+            className: 'custom-popup',
+          });
       } catch (error) {
         console.error('Error adding destination marker:', error);
       }
@@ -356,54 +381,20 @@ export default function MapComponent({
 
   return (
     <div className="relative">
-      {/* Transport Mode Selector */}
-      {showRoute && (
-        <div className="absolute top-4 left-16 z-[1000] bg-white shadow-lg border border-gray-200 overflow-hidden">
-          <div className="p-2">
-            <p className="text-xs font-bold text-gray-700 mb-2 px-1 uppercase tracking-wider">
-              Moda Transportasi
-            </p>
-            <div className="flex gap-1">
-              {transportModes.map(({ mode, icon: Icon, label }) => (
-                <button
-                  key={mode}
-                  onClick={() => setTransportMode(mode)}
-                  className={`relative px-3 py-2 transition-all duration-300 group/mode ${
-                    transportMode === mode
-                      ? 'bg-gradient-to-br from-slate-700 to-slate-900 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-br hover:from-slate-600 hover:to-slate-800 hover:text-white'
-                  }`}
-                  title={label}
-                >
-                  <div className="flex flex-col items-center gap-1">
-                    <Icon
-                      className={`w-5 h-5 transition-transform group-hover/mode:scale-110 duration-300`}
-                    />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">
-                      {label}
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Route Info Display */}
       {showRoute && routeInfo && !isLoading && (
         <div className="absolute top-4 right-4 bg-white shadow-lg border border-gray-200 z-[1000] overflow-hidden min-w-[200px]">
-          <div className="h-1 bg-[#F59E0B]"></div>
+          <div className="h-1 bg-blue-600"></div>
           <div className="p-4">
             <p className="text-xs font-bold text-gray-700 mb-3 uppercase tracking-wider">
               Estimasi Perjalanan
             </p>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-2 bg-gradient-to-br from-white to-gray-50 border-l-4 border-[#F59E0B]">
+              <div className="flex items-center justify-between p-2 bg-gradient-to-br from-white to-gray-50 border-l-4 border-blue-600">
                 <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Jarak
                 </span>
-                <span className="text-lg font-bold text-[#F59E0B]">
+                <span className="text-lg font-bold text-blue-600">
                   {formatDistance(routeInfo.distance)}
                 </span>
               </div>
@@ -423,7 +414,7 @@ export default function MapComponent({
       {showRoute && isLoading && (
         <div className="absolute top-4 right-4 bg-white px-4 py-2 shadow-lg border border-gray-200 z-[1000]">
           <div className="flex items-center gap-2">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#F59E0B]"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
             <span className="text-sm text-gray-600 font-medium">
               Memuat rute...
             </span>

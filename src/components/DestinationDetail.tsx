@@ -9,7 +9,7 @@ import { MapPin, Clock, Star } from 'lucide-react';
 const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
   loading: () => (
-    <div className="h-[400px] bg-gray-200 animate-pulse rounded-lg flex items-center justify-center">
+    <div className="h-[400px] bg-gray-200 animate-pulse flex items-center justify-center">
       <p className="text-gray-500">Loading map...</p>
     </div>
   ),
@@ -40,22 +40,25 @@ export default function DestinationDetail({
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Back Button */}
-      {/* <div className="bg-gray-900 py-4">
-        <div className="container mx-auto px-6 md:px-12">
-          <Link
-            href="/lihat-semua"
-            className="inline-flex items-center gap-2 text-white hover:text-[#F59E0B] transition-colors duration-200 font-semibold"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Kembali ke Semua Destinasi</span>
-          </Link>
-        </div>
-      </div> */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
+      {/* Animated Background Particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div
+          className="particle w-32 h-32 top-10 right-10 opacity-30 animate-float"
+          style={{ animationDelay: '0s' }}
+        ></div>
+        <div
+          className="particle w-24 h-24 bottom-20 left-20 opacity-20 animate-float"
+          style={{ animationDelay: '2s' }}
+        ></div>
+        <div
+          className="particle w-40 h-40 top-1/2 right-1/4 opacity-25 animate-float"
+          style={{ animationDelay: '3s' }}
+        ></div>
+      </div>
 
       {/* Hero Image */}
-      <div className="relative h-[500px] w-full bg-gradient-to-br from-gray-200 to-gray-300">
+      <div className="relative h-[600px] w-full bg-gray-200 overflow-hidden">
         <Image
           src={
             destination.image_url ||
@@ -64,22 +67,25 @@ export default function DestinationDetail({
           }
           alt={destination.nama}
           fill
-          className="object-cover"
+          className="object-cover brightness-75 hover:scale-105 transition-transform duration-500"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        {/* Gradient Overlays */}
+        <div className="absolute inset-0 bg-gray-900/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
 
         {/* Title Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-          <div className="container mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+        <div className="absolute bottom-0 left-0 right-0 p-10 md:p-16 z-10">
+          <div className="container mx-auto animate-fade-in-up">
+            <h1 className="text-6xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl leading-tight">
               {destination.nama}
             </h1>
             <div className="flex flex-wrap gap-3">
               {destination.kategori.map((kat, idx) => (
                 <span
                   key={idx}
-                  className="px-4 py-2 bg-[#F59E0B] text-white font-semibold text-sm uppercase tracking-wide shadow-lg"
+                  className="px-6 py-3 border-2 bg-white border-blue-600 text-blue-600 font-bold text-sm uppercase tracking-widest shadow-2xl transition-all duration-300 animate-bounce-in"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   {categoryLabels[kat] || kat}
                 </span>
@@ -90,16 +96,16 @@ export default function DestinationDetail({
       </div>
 
       {/* Content Section */}
-      <div className="bg-gray-50 py-12">
-        <div className="container mx-auto px-6 md:px-12">
+      <div className="relative bg-white py-16">
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
               {/* Description Card */}
-              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-                <div className="h-1 bg-[#F59E0B]"></div>
-                <div className="p-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              <div className="bg-white border-2 border-blue-200 overflow-hidden shadow-2xl animate-fade-in-up">
+                <div className="h-2 bg-blue-600"></div>
+                <div className="p-10">
+                  <h2 className="text-4xl font-extrabold mb-6 text-gray-900">
                     Tentang Destinasi
                   </h2>
                   {destination.deskripsi ? (
@@ -107,24 +113,29 @@ export default function DestinationDetail({
                       {destination.deskripsi}
                     </p>
                   ) : (
-                    <p className="text-gray-500 italic">
-                      Deskripsi belum tersedia untuk destinasi ini.
+                    <p className="text-gray-500 italic text-lg">
+                      Deskripsi belum tersedia untuk destinasi ini
                     </p>
                   )}
                 </div>
               </div>
 
               {/* Map Card */}
-              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-                <div className="h-1 bg-[#F59E0B]"></div>
-                <div className="p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-[#F59E0B] flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-white" />
+              <div
+                className="bg-white border-2 border-blue-200 overflow-hidden shadow-2xl animate-fade-in-up"
+                style={{ animationDelay: '0.1s' }}
+              >
+                <div className="h-2 bg-blue-600"></div>
+                <div className="p-10">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-16 h-16 bg-blue-600  flex items-center justify-center shadow-xl">
+                      <MapPin className="w-8 h-8 text-white" />
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900">Lokasi</h2>
+                    <h2 className="text-4xl font-extrabold text-gray-900">
+                      Lokasi
+                    </h2>
                   </div>
-                  <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                  <div className=" overflow-hidden shadow-2xl border-2 border-blue-600/50">
                     <MapComponent
                       destinations={[destination]}
                       userLocation={destination.coordinates}
@@ -138,18 +149,21 @@ export default function DestinationDetail({
 
             {/* Sidebar Info */}
             <div className="lg:col-span-1">
-              <div className="bg-white shadow-lg border border-gray-200 overflow-hidden sticky top-4">
-                <div className="h-1 bg-[#F59E0B]"></div>
+              <div
+                className="bg-white border-2 border-blue-200 overflow-hidden shadow-2xl sticky top-4 animate-fade-in-up"
+                style={{ animationDelay: '0.2s' }}
+              >
+                <div className="h-2 bg-blue-600"></div>
                 <div className="p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-3xl font-extrabold mb-8 text-gray-900">
                     Informasi
                   </h2>
 
                   <div className="space-y-6">
                     {/* Rating */}
                     {destination.rating && (
-                      <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-[#F59E0B]">
-                        <div className="w-10 h-10 bg-[#F59E0B] flex items-center justify-center flex-shrink-0">
+                      <div className="flex items-start gap-4 p-6 bg-blue-50 border-2 border-blue-200  hover:border-blue-400 transition-colors duration-300">
+                        <div className="w-10 h-10 bg-blue-600 flex items-center justify-center flex-shrink-0">
                           <Star className="w-5 h-5 text-white fill-white" />
                         </div>
                         <div>
@@ -165,15 +179,15 @@ export default function DestinationDetail({
 
                     {/* Address */}
                     {destination.alamat && (
-                      <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-gray-700">
-                        <div className="w-10 h-10 bg-gray-700 flex items-center justify-center flex-shrink-0">
+                      <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-blue-600">
+                        <div className="w-10 h-10 bg-blue-600 flex items-center justify-center flex-shrink-0">
                           <MapPin className="w-5 h-5 text-white" />
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">
                             Alamat
                           </p>
-                          <p className="text-base text-gray-800 leading-relaxed">
+                          <p className="text-base text-gray-700 leading-relaxed">
                             {destination.alamat}
                           </p>
                         </div>
@@ -182,15 +196,15 @@ export default function DestinationDetail({
 
                     {/* Opening Hours */}
                     {destination.jam_buka && (
-                      <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-gray-600">
-                        <div className="w-10 h-10 bg-gray-600 flex items-center justify-center flex-shrink-0">
+                      <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-blue-600">
+                        <div className="w-10 h-10 bg-blue-600 flex items-center justify-center flex-shrink-0">
                           <Clock className="w-5 h-5 text-white" />
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">
                             Jam Buka
                           </p>
-                          <p className="text-base text-gray-800 font-medium">
+                          <p className="text-base text-gray-700 font-medium">
                             {destination.jam_buka}
                           </p>
                         </div>
@@ -198,15 +212,15 @@ export default function DestinationDetail({
                     )}
 
                     {/* Coordinates */}
-                    <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-gray-500">
-                      <div className="w-10 h-10 bg-gray-500 flex items-center justify-center flex-shrink-0">
+                    <div className="flex items-start gap-4 p-4 bg-gray-50 border-l-4 border-blue-600">
+                      <div className="w-10 h-10 bg-blue-600 flex items-center justify-center flex-shrink-0">
                         <MapPin className="w-5 h-5 text-white" />
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">
                           Koordinat
                         </p>
-                        <p className="text-sm text-gray-800 font-mono">
+                        <p className="text-sm text-gray-700 font-mono">
                           {destination.coordinates[0].toFixed(6)},{' '}
                           {destination.coordinates[1].toFixed(6)}
                         </p>
@@ -220,7 +234,7 @@ export default function DestinationDetail({
                       href={`https://www.google.com/maps/search/?api=1&query=${destination.coordinates[0]},${destination.coordinates[1]}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold py-4 px-6 transition-colors duration-200 shadow-md hover:shadow-lg"
+                      className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6  transition-colors duration-200 shadow-md hover:shadow-lg"
                     >
                       <MapPin className="w-5 h-5" />
                       <span>Buka di Google Maps</span>

@@ -2,8 +2,12 @@
 @import 'leaflet/dist/leaflet.css';
 
 :root {
-  --background: #f8fafc;
-  --foreground: #171717;
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --foreground: #1a1a2e;
+  --primary-blue: #0ea5e9;
+  --secondary-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --dark-blue: #0c4a6e;
 }
 
 @theme inline {
@@ -15,15 +19,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    --foreground: #e0f2fe;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #dbeafe 100%);
+  color: #1e3a8a;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
 }
 
 /* Custom Leaflet marker styles */
@@ -39,7 +44,7 @@ body {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 }
 
@@ -55,17 +60,19 @@ body {
 @keyframes glow-pulse {
   0%,
   100% {
-    opacity: 0.3;
+    opacity: 0.5;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
   }
   50% {
-    opacity: 0.6;
+    opacity: 1;
+    box-shadow: 0 0 40px rgba(14, 165, 233, 1);
   }
 }
 
 @keyframes slide-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -73,16 +80,123 @@ body {
   }
 }
 
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes rotate-360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
 
 .animate-shimmer {
-  animation: shimmer 2s linear infinite;
+  animation: shimmer 3s linear infinite;
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.3) 50%,
+    rgba(14, 165, 233, 0.4) 50%,
     transparent 100%
   );
   background-size: 1000px 100%;
@@ -93,7 +207,40 @@ body {
 }
 
 .animate-slide-in {
-  animation: slide-in 0.5s ease-out;
+  animation: slide-in 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.8s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.8s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s ease-out;
+}
+
+.animate-wave {
+  animation: wave 2s ease-in-out;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-pulse-scale {
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+.animate-rotate {
+  animation: rotate-360 20s linear infinite;
 }
 
 /* Smooth scrolling */
@@ -103,19 +250,99 @@ html {
 
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: linear-gradient(to bottom, #e0f2fe, #bae6fd);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #404040;
-  border-radius: 4px;
+  background: linear-gradient(to bottom, #0ea5e9, #0284c7);
+  border-radius: 5px;
+  border: 2px solid #e0f2fe;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #262626;
+  background: linear-gradient(to bottom, #0284c7, #0369a1);
+}
+
+/* Glass morphism effect utility */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+.glass-dark {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6, #06b6d4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Neon glow effect */
+.neon-glow {
+  box-shadow: 
+    0 0 10px rgba(14, 165, 233, 0.5),
+    0 0 20px rgba(14, 165, 233, 0.3),
+    0 0 30px rgba(14, 165, 233, 0.2);
+}
+
+.neon-glow:hover {
+  box-shadow: 
+    0 0 20px rgba(14, 165, 233, 0.8),
+    0 0 40px rgba(14, 165, 233, 0.5),
+    0 0 60px rgba(14, 165, 233, 0.3);
+}
+
+/* Parallax effect */
+.parallax {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Floating particles background */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-20px) translateX(5px);
+  }
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent);
+  animation: particle-float 10s ease-in-out infinite;
+}
+
+/* Card hover lift effect */
+.card-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-lift:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(14, 165, 233, 0.3);
 }

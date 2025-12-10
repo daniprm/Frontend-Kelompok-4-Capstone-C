@@ -11,31 +11,43 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="container mx-auto px-6 md:px-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center">
+      {/* Animated Background Particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div
+          className="particle w-32 h-32 top-10 left-10 opacity-30 animate-float"
+          style={{ animationDelay: '0s' }}
+        ></div>
+        <div
+          className="particle w-24 h-24 bottom-20 right-20 opacity-20 animate-float"
+          style={{ animationDelay: '2s' }}
+        ></div>
+      </div>
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#F59E0B]"></div>
+          <div className="glass-dark border-2 border-red-500/30 overflow-hidden shadow-2xl backdrop-blur-xl animate-bounce-in">
+            <div className="h-2 bg-red-500"></div>
 
             <div className="p-12 text-center">
               {/* Icon */}
-              <div className="w-24 h-24 bg-red-50 flex items-center justify-center mx-auto mb-6">
-                <AlertTriangle className="w-12 h-12 text-red-500" />
+              <div className="w-32 h-32 bg-red-500 flex items-center justify-center mx-auto mb-8 shadow-2xl">
+                <AlertTriangle className="w-16 h-16 text-white" />
               </div>
 
               {/* Title */}
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-5xl font-extrabold text-white mb-6">
                 Terjadi Kesalahan
               </h2>
 
               {/* Error Message */}
-              <div className="mb-8">
-                <p className="text-gray-600 text-lg mb-4">
+              <div className="mb-10">
+                <p className="text-gray-300 text-xl mb-6">
                   {error.message ||
                     'Maaf, terjadi kesalahan yang tidak terduga.'}
                 </p>
                 {error.digest && (
-                  <p className="text-sm text-gray-500 font-mono bg-gray-50 p-3 border border-gray-200">
+                  <p className="text-sm text-gray-400 font-mono glass border border-blue-600/50 p-4">
                     Error ID: {error.digest}
                   </p>
                 )}
@@ -45,16 +57,16 @@ export default function Error({
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={reset}
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="inline-flex items-center justify-center gap-3 px-8 py-5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl shadow-2xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <RotateCcw className="w-5 h-5" />
+                  <RotateCcw className="w-6 h-6" />
                   Coba Lagi
                 </button>
                 <Link
                   href="/"
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gray-700 hover:bg-gray-800 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="inline-flex items-center justify-center gap-3 px-8 py-5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xl shadow-2xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <Home className="w-5 h-5" />
+                  <Home className="w-6 h-6" />
                   Kembali ke Beranda
                 </Link>
               </div>

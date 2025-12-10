@@ -3,38 +3,44 @@ import { Home, AlertCircle } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="container mx-auto px-6 md:px-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center">
+      {/* Animated Background Particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="particle w-32 h-32 top-10 left-10 opacity-30 animate-float" style={{ animationDelay: '0s' }}></div>
+        <div className="particle w-24 h-24 bottom-20 right-20 opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
+      </div>
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white shadow-lg border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#F59E0B]"></div>
+          <div className="glass-dark border-2 border-blue-600/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-xl animate-bounce-in">
+            <div className="h-2 bg-blue-600"></div>
 
             <div className="p-12 text-center">
               {/* Icon */}
-              <div className="w-24 h-24 bg-gray-100 flex items-center justify-center mx-auto mb-6">
-                <AlertCircle className="w-12 h-12 text-gray-400" />
+              <div className="w-32 h-32 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
+                <AlertCircle className="w-16 h-16 text-white" />
               </div>
 
               {/* 404 */}
-              <div className="text-8xl font-bold text-[#F59E0B] mb-4">404</div>
+              <div className="text-9xl font-extrabold text-blue-400 mb-6 animate-pulse">404</div>
 
               {/* Title */}
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-5xl font-extrabold text-white mb-6">
                 Halaman Tidak Ditemukan
               </h2>
 
               {/* Description */}
-              <p className="text-gray-600 mb-8 text-lg">
+              <p className="text-gray-300 mb-10 text-xl">
                 Maaf, halaman yang Anda cari tidak dapat ditemukan atau telah
-                dipindahkan.
+                dipindahkan
               </p>
 
               {/* Button */}
               <Link
                 href="/"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl rounded-2xl shadow-2xl transition-all duration-300 transform hover:scale-105"
               >
-                <Home className="w-5 h-5" />
+                <Home className="w-6 h-6" />
                 Kembali ke Beranda
               </Link>
             </div>
