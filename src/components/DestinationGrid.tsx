@@ -144,7 +144,6 @@ export default function DestinationGrid({
     return pages;
   };
 
-
   return (
     <>
       {/* Info Banner with Search */}
@@ -184,8 +183,8 @@ export default function DestinationGrid({
             onClear={clearSearch}
             filteredCount={filteredDestinations.length}
           />
-              {/* SearchBar di luar banner jika ingin search di atas grid */}
-              {/*
+          {/* SearchBar di luar banner jika ingin search di atas grid */}
+          {/*
               <SearchBar
                 searchQuery={searchQuery}
                 onSearchChange={handleSearchChange}

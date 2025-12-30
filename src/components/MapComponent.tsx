@@ -273,7 +273,8 @@ export default function MapComponent({
                 const bounds = L.latLngBounds([
                   userLocation,
                   ...destinations.map((d) => d.coordinates),
-                ]);                currentMap.fitBounds(bounds, { padding: [50, 50] });
+                ]);
+                currentMap.fitBounds(bounds, { padding: [50, 50] });
               } catch (error) {
                 // Silently handle error
               }
