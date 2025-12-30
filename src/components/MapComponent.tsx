@@ -72,7 +72,7 @@ export default function MapComponent({
       return L.divIcon({
         className: 'custom-marker',
         html: `<div style="background-color: ${color}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${
-          number || '📍'
+          number || '●'
         }</div>`,
         iconSize: [32, 32],
         iconAnchor: [16, 16],
@@ -158,7 +158,8 @@ export default function MapComponent({
                 dest.alamat
                   ? `
                 <p style="margin: 0; font-size: 12px; color: #4b5563; line-height: 1.4;">
-                  📍 ${dest.alamat}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  ${dest.alamat}
                 </p>
               `
                   : ''

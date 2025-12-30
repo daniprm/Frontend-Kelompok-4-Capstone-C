@@ -2,9 +2,9 @@
 
 import { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { MapPin, Route as RouteIcon, Star } from 'lucide-react';
+import { MapPin, Route as RouteIcon, Star, ExternalLink } from 'lucide-react';
 import DestinationCard from '@/components/DestinationCard';
-import { generateRoutes, getOSRMRoute } from '@/lib/api';
+import { generateRoutes } from '@/lib/api';
 
 // Dynamic import for LocationPickerMap to avoid SSR issues
 const LocationPickerMap = dynamic(
@@ -33,10 +33,28 @@ interface BackendDestination {
 // Interface untuk route dari backend
 interface BackendRoute {
   rank: number;
+  fitness: number;
   total_distance_km: number;
+  total_travel_time_minutes: number;
+  total_travel_time_hours: number;
   is_valid_order: boolean;
+  constraint_info: {
+    distance_constraint: {
+      max_allowed_km: number;
+      actual_distance_km: number;
+      violated: boolean;
+      excess_km: number;
+    };
+    time_constraint: {
+      max_allowed_minutes: number;
+      actual_time_minutes: number;
+      violated: boolean;
+      excess_minutes: number;
+    };
+    is_feasible: boolean;
+  };
   destinations: BackendDestination[];
-  estimated_duration_minutes?: number;
+  google_maps_url: string;
 }
 
 // Interface untuk response API
@@ -66,99 +84,43 @@ function transformDestination(backendDest: BackendDestination) {
 }
 
 export default function RoutesPage() {
-  const [userLocation, setUserLocation] = useState({
+  // Default location: Surabaya
+  const DEFAULT_LOCATION = {
     latitude: -7.2458,
     longitude: 112.7378,
-  });
+  };
+
+  const [userLocation, setUserLocation] = useState(DEFAULT_LOCATION);
+  // Display values for inputs (can be empty strings)
+  const [latDisplay, setLatDisplay] = useState<string>(
+    DEFAULT_LOCATION.latitude.toString()
+  );
+  const [lngDisplay, setLngDisplay] = useState<string>(
+    DEFAULT_LOCATION.longitude.toString()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [routeData, setRouteData] = useState<BackendApiResponse | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<BackendRoute | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
-
-  // Function to calculate real distance using OSRM
-  const calculateRealDistances = async (
-    routes: BackendRoute[],
-    userLoc: { latitude: number; longitude: number }
-  ) => {
-    setIsCalculatingDistance(true);
-    console.log('=== Calculating Real Distances with OSRM ===');
-
-    const updatedRoutes = await Promise.all(
-      routes.map(async (route) => {
-        try {
-          // Create array of coordinates: user location + all destinations
-          const allPoints: [number, number][] = [
-            [userLoc.latitude, userLoc.longitude],
-            ...route.destinations.map(
-              (d) => [d.latitude, d.longitude] as [number, number]
-            ),
-          ];
-
-          console.log(
-            `Calculating route ${route.rank} with ${allPoints.length} points`
-          );
-
-          // Get OSRM route data with timeout
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-          const osrmData = await getOSRMRoute(allPoints, 'car').finally(() => {
-            clearTimeout(timeoutId);
-          });
-
-          if (osrmData.routes && osrmData.routes[0]) {
-            const realDistance = osrmData.routes[0].distance / 1000; // convert to km
-            const realDuration = osrmData.routes[0].duration / 60; // convert to minutes
-
-            console.log(`Route ${route.rank}:`, {
-              oldDistance: route.total_distance_km,
-              newDistance: realDistance,
-              duration: realDuration,
-            });
-
-            return {
-              ...route,
-              total_distance_km: realDistance,
-              estimated_duration_minutes: realDuration,
-            };
-          }
-
-          console.warn(
-            `No route data for route ${route.rank}, using original distance`
-          );
-          return route; // Return original if OSRM fails
-        } catch (error) {
-          console.error(
-            `Error calculating distance for route ${route.rank}:`,
-            error
-          );
-          // Return original route with a note that distance is estimated
-          return {
-            ...route,
-            estimated_duration_minutes: undefined,
-          };
-        }
-      })
-    );
-
-    setIsCalculatingDistance(false);
-    console.log('=== Distance Calculation Complete ===');
-    return updatedRoutes;
-  };
 
   const handleLocationSelect = useCallback((lat: number, lng: number) => {
     setUserLocation({ latitude: lat, longitude: lng });
+    setLatDisplay(lat.toString());
+    setLngDisplay(lng.toString());
   }, []);
 
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
           setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: lat,
+            longitude: lng,
           });
+          setLatDisplay(lat.toString());
+          setLngDisplay(lng.toString());
         },
         (error) => {
           console.error('Error getting location:', error);
@@ -184,7 +146,7 @@ export default function RoutesPage() {
       const response = await generateRoutes(userLocation);
       console.log('API Response:', response);
 
-      // Cast response to BackendApiResponse since backend structure is different
+      // Cast response to BackendApiResponse
       const backendResponse = response as unknown as BackendApiResponse;
 
       if (
@@ -192,57 +154,15 @@ export default function RoutesPage() {
         backendResponse.data &&
         backendResponse.data.routes
       ) {
-        // Try to calculate real distances using OSRM
-        let finalRoutes = backendResponse.data.routes;
+        console.log('✓ Received routes from backend with calculated distances');
 
-        try {
-          console.log('Recalculating distances with OSRM...');
-          const routesWithRealDistances = await calculateRealDistances(
-            backendResponse.data.routes,
-            userLocation
-          );
-          finalRoutes = routesWithRealDistances;
-          console.log('✓ Distance recalculation successful');
-        } catch (osrmError) {
-          console.warn(
-            '⚠ OSRM calculation failed, using backend distances:',
-            osrmError
-          );
-          // Continue with original backend distances if OSRM fails
-        }
+        // Backend already provides sorted routes by rank
+        // Just use the data directly
+        setRouteData(backendResponse);
 
-        // Sort routes by distance (shortest to longest)
-        const sortedRoutes = [...finalRoutes].sort((a, b) => {
-          return a.total_distance_km - b.total_distance_km;
-        });
-
-        // Update rank after sorting
-        const routesWithUpdatedRank = sortedRoutes.map((route, index) => ({
-          ...route,
-          rank: index + 1,
-        }));
-
-        console.log(
-          'Routes sorted by distance:',
-          routesWithUpdatedRank.map((r) => ({
-            rank: r.rank,
-            distance: r.total_distance_km.toFixed(2),
-          }))
-        );
-
-        // Update response with sorted routes
-        const updatedResponse: BackendApiResponse = {
-          ...backendResponse,
-          data: {
-            routes: routesWithUpdatedRank,
-          },
-        };
-
-        setRouteData(updatedResponse);
-
-        // Set the first route (shortest distance) as selected
-        if (routesWithUpdatedRank.length > 0) {
-          setSelectedRoute(routesWithUpdatedRank[0]);
+        // Set the first route (rank 1) as selected
+        if (backendResponse.data.routes.length > 0) {
+          setSelectedRoute(backendResponse.data.routes[0]);
         }
       } else {
         setError('Response API tidak sesuai format yang diharapkan');
@@ -255,7 +175,6 @@ export default function RoutesPage() {
       console.error(err);
     } finally {
       setIsLoading(false);
-      setIsCalculatingDistance(false);
       console.log('=== Generate Routes Finished ===');
     }
   };
@@ -329,15 +248,42 @@ export default function RoutesPage() {
                     <input
                       type="number"
                       step="0.000001"
-                      value={userLocation.latitude}
-                      onChange={(e) =>
-                        setUserLocation({
-                          ...userLocation,
-                          latitude: parseFloat(e.target.value),
-                        })
-                      }
+                      value={latDisplay}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setLatDisplay(value); // Always update display
+
+                        // Update actual location if valid
+                        if (value !== '' && value !== '-' && value !== '.') {
+                          const parsed = parseFloat(value);
+                          if (!isNaN(parsed) && parsed >= -90 && parsed <= 90) {
+                            setUserLocation({
+                              ...userLocation,
+                              latitude: parsed,
+                            });
+                          }
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const value = e.target.value;
+                        // Reset display and state to default if empty/invalid
+                        if (
+                          value === '' ||
+                          value === '-' ||
+                          value === '.' ||
+                          isNaN(parseFloat(value))
+                        ) {
+                          setUserLocation({
+                            ...userLocation,
+                            latitude: DEFAULT_LOCATION.latitude,
+                          });
+                          setLatDisplay(DEFAULT_LOCATION.latitude.toString());
+                        }
+                      }}
                       className="w-full px-5 py-4 bg-gray-50 border-2 border-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 font-mono text-gray-900 placeholder:text-gray-400 shadow-lg"
                       placeholder="-7.2458"
+                      min="-90"
+                      max="90"
                     />
                   </div>
                   <div>
@@ -347,15 +293,46 @@ export default function RoutesPage() {
                     <input
                       type="number"
                       step="0.000001"
-                      value={userLocation.longitude}
-                      onChange={(e) =>
-                        setUserLocation({
-                          ...userLocation,
-                          longitude: parseFloat(e.target.value),
-                        })
-                      }
+                      value={lngDisplay}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setLngDisplay(value); // Always update display
+
+                        // Update actual location if valid
+                        if (value !== '' && value !== '-' && value !== '.') {
+                          const parsed = parseFloat(value);
+                          if (
+                            !isNaN(parsed) &&
+                            parsed >= -180 &&
+                            parsed <= 180
+                          ) {
+                            setUserLocation({
+                              ...userLocation,
+                              longitude: parsed,
+                            });
+                          }
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const value = e.target.value;
+                        // Reset display and state to default if empty/invalid
+                        if (
+                          value === '' ||
+                          value === '-' ||
+                          value === '.' ||
+                          isNaN(parseFloat(value))
+                        ) {
+                          setUserLocation({
+                            ...userLocation,
+                            longitude: DEFAULT_LOCATION.longitude,
+                          });
+                          setLngDisplay(DEFAULT_LOCATION.longitude.toString());
+                        }
+                      }}
                       className="w-full px-5 py-4 bg-gray-50 border-2 border-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 font-mono text-gray-900 placeholder:text-gray-400 shadow-lg"
                       placeholder="112.7378"
+                      min="-180"
+                      max="180"
                     />
                   </div>
                 </div>
@@ -371,17 +348,13 @@ export default function RoutesPage() {
                   </button>
                   <button
                     onClick={handleGenerateRoutes}
-                    disabled={isLoading || isCalculatingDistance}
+                    disabled={isLoading}
                     className="w-full px-6 py-5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl flex items-center justify-center gap-4 transform hover:scale-105 disabled:transform-none"
                   >
-                    {isLoading || isCalculatingDistance ? (
+                    {isLoading ? (
                       <>
                         <div className="w-6 h-6 border-3 border-white/30 border-t-white animate-spin"></div>
-                        <span>
-                          {isCalculatingDistance
-                            ? 'Menghitung Jarak Rute...'
-                            : 'Memproses...'}
-                        </span>
+                        <span>Memproses...</span>
                       </>
                     ) : (
                       <>
@@ -472,7 +445,7 @@ export default function RoutesPage() {
                     <span className="text-blue-600 font-bold">
                       {routeData.data.routes.length}
                     </span>{' '}
-                    Rekomendasi Tersedia ✨
+                    Rekomendasi Tersedia
                   </p>
                 </div>
               </div>
@@ -514,16 +487,6 @@ export default function RoutesPage() {
                         {/* Stats with Modern Design */}
                         <div className="space-y-4">
                           <div className="p-5 bg-gray-50 border-2 border-blue-200">
-                            <div className="flex items-center justify-between">
-                              <span className="font-bold text-gray-700 text-sm uppercase tracking-wider">
-                                Destinasi
-                              </span>
-                              <span className="font-extrabold text-gray-900 text-3xl">
-                                {route.destinations.length}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="p-5 bg-gray-50 border-2 border-blue-200">
                             <div className="flex flex-col gap-2">
                               <span className="font-bold text-gray-700 text-sm uppercase tracking-wider">
                                 Total Jarak
@@ -533,13 +496,13 @@ export default function RoutesPage() {
                                   {route.total_distance_km.toFixed(2)} km
                                 </span>
                               </div>
-                              {route.estimated_duration_minutes && (
-                                <span className="text-sm text-blue-600 font-semibold">
-                                  ≈{' '}
-                                  {Math.round(route.estimated_duration_minutes)}{' '}
-                                  menit
-                                </span>
-                              )}
+                              <span className="text-sm text-blue-600 font-semibold">
+                                ≈{' '}
+                                {Math.round(
+                                  route.total_travel_time_minutes * 1.55
+                                )}{' '}
+                                menit
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -582,7 +545,7 @@ export default function RoutesPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="p-8 bg-blue-50 border-2 border-blue-200 transform hover:scale-105 transition-all duration-300">
                     <div className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">
-                      🎯 Destinasi
+                      Destinasi
                     </div>
                     <div className="text-6xl font-extrabold text-gray-900 mb-2">
                       {selectedRoute.destinations.length}
@@ -593,7 +556,7 @@ export default function RoutesPage() {
                   </div>
                   <div className="p-8 bg-blue-50 border-2 border-blue-200 transform hover:scale-105 transition-all duration-300">
                     <div className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">
-                      📍 Jarak Rute
+                      Jarak Rute
                     </div>
                     <div className="text-6xl font-extrabold text-blue-600 mb-2">
                       {selectedRoute.total_distance_km.toFixed(2)}
@@ -601,21 +564,21 @@ export default function RoutesPage() {
                     <div className="text-sm text-gray-600 font-semibold">
                       Kilometer
                     </div>
-                    {selectedRoute.estimated_duration_minutes && (
-                      <div className="mt-4 pt-4 border-t-2 border-blue-200">
-                        <div className="text-xs text-gray-700 mb-2 font-bold uppercase tracking-wider">
-                          Estimasi Waktu
-                        </div>
-                        <div className="text-3xl font-bold text-blue-600">
-                          {Math.round(selectedRoute.estimated_duration_minutes)}{' '}
-                          min
-                        </div>
+                    <div className="mt-4 pt-4 border-t-2 border-blue-200">
+                      <div className="text-xs text-gray-700 mb-2 font-bold uppercase tracking-wider">
+                        Estimasi Waktu
                       </div>
-                    )}
+                      <div className="text-3xl font-bold text-blue-600">
+                        {Math.round(
+                          selectedRoute.total_travel_time_minutes * 1.55
+                        )}{' '}
+                        min
+                      </div>
+                    </div>
                   </div>
                   <div className="p-8 bg-blue-50 border-2 border-blue-200 transform hover:scale-105 transition-all duration-300">
                     <div className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">
-                      🏆 Peringkat
+                      Peringkat
                     </div>
                     <div className="text-6xl font-extrabold text-gray-900 mb-2">
                       #{selectedRoute.rank}
@@ -659,11 +622,25 @@ export default function RoutesPage() {
                     )}
                     preCalculatedDistance={selectedRoute.total_distance_km}
                     preCalculatedDuration={
-                      selectedRoute.estimated_duration_minutes
+                      selectedRoute.total_travel_time_minutes * 1.55
                     }
                     height="600px"
                   />
                 </div>
+                {/* Google Maps Button - Prominent */}
+                {selectedRoute.google_maps_url && (
+                  <div className="mt-8">
+                    <a
+                      href={selectedRoute.google_maps_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-4 px-8 py-5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-xl transition-all duration-300 shadow-2xl transform hover:scale-105"
+                    >
+                      <ExternalLink className="w-8 h-8" />
+                      <span>Buka Rute di Google Maps</span>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
 

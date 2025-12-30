@@ -32,7 +32,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
     {
       role: 'assistant',
       content:
-        'Halo! 👋 Saya asisten wisata virtual Surabaya. Saya siap membantu Anda menemukan tempat wisata menarik, kuliner khas, dan informasi lainnya tentang Surabaya. Ada yang bisa saya bantu?',
+        'Halo! Saya asisten wisata virtual Surabaya. Saya siap membantu Anda menemukan tempat wisata menarik, kuliner khas, dan informasi lainnya tentang Surabaya. Ada yang bisa saya bantu?',
       timestamp: new Date(),
     },
   ]);
@@ -106,7 +106,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
       const errorMessage: Message = {
         role: 'assistant',
         content:
-          'Maaf, terjadi kesalahan. Silakan coba lagi dalam beberapa saat. 😔',
+          'Maaf, terjadi kesalahan. Silakan coba lagi dalam beberapa saat.',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);

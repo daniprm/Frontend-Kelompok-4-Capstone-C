@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Destination } from '@/types';
+import { Sparkles } from 'lucide-react';
 import DestinationCard from '@/components/DestinationCard';
 import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 
@@ -267,8 +268,9 @@ export default function DestinationGrid({
               <p className="text-3xl font-bold text-gray-800 mb-4">
                 Belum ada destinasi yang tersedia
               </p>
-              <p className="text-xl text-gray-600">
-                Destinasi akan segera ditambahkan ✨
+              <p className="text-xl text-gray-600 flex items-center justify-center gap-2">
+                Destinasi akan segera ditambahkan{' '}
+                <Sparkles className="w-5 h-5 text-yellow-500" />
               </p>
             </>
           )}
