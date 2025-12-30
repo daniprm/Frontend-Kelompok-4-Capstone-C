@@ -56,8 +56,7 @@ export async function getDestinations(): Promise<Destination[]> {
     return result.data.map((dest, index) =>
       transformBackendToDestination(dest, index)
     );
-  } catch (error) {
-    console.error('Error fetching destinations:', error);
+  } catch {
     return [];
   }
 }

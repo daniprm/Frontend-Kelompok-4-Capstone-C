@@ -10,8 +10,7 @@ export async function GET() {
     const destinations = parseJSONL(jsonlText)
     
     return NextResponse.json(destinations)
-  } catch (error) {
-    console.error('Error loading destinations:', error)
+  } catch {
     return NextResponse.json({ error: 'Failed to load destinations' }, { status: 500 })
   }
 }

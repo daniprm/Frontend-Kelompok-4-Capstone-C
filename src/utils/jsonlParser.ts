@@ -31,7 +31,7 @@ export function parseJSONL(jsonlText: string): Destination[] {
         
         destinations.push(destination)
       } catch (error) {
-        console.error('Error parsing JSONL line:', line, error)
+        // Silently skip invalid lines
       }
     }
   }

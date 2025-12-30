@@ -36,19 +36,13 @@ export default async function DestinationDetailPage({ params }: PageProps) {
   const { place_id } = await params;
   const placeId = decodeURIComponent(place_id);
 
-  console.log('🔍 Looking for destination with place_id:', placeId);
-
   const destinations = await getDestinations();
-  console.log('📍 Available destinations:', destinations.length);
 
   const destination = destinations.find((dest) => dest.place_id === placeId);
 
   if (!destination) {
-    console.log('❌ Destination not found:', placeId);
     notFound();
   }
-
-  console.log('✅ Found destination:', destination.nama);
 
   return <DestinationDetail destination={destination} />;
 }

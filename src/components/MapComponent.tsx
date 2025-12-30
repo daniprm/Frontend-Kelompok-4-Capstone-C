@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { Destination } from '@/types';
-import { getOSRMRoute, TransportMode } from '@/lib/api';
-import { Car, Bike, LucideIcon } from 'lucide-react';
+import { getOSRMRoute } from '@/lib/api';
 
 interface MapComponentProps {
   destinations: Destination[];
@@ -128,8 +127,8 @@ export default function MapComponent({
         })
           .addTo(map)
           .bindPopup('<b>Lokasi Anda</b>');
-      } catch (error) {
-        console.error('Error adding user location marker:', error);
+      } catch {
+        // Silently handle error
       }
     }
 
@@ -179,7 +178,7 @@ export default function MapComponent({
             className: 'custom-popup',
           });
       } catch (error) {
-        console.error('Error adding destination marker:', error);
+        // Silently handle error
       }
     });
 
@@ -189,7 +188,6 @@ export default function MapComponent({
       const usePreCalculated = preCalculatedDistance && preCalculatedDuration;
 
       if (usePreCalculated) {
-        console.log('Using pre-calculated route info for car mode');
         // Don't need to fetch again, just draw the route
         const allPoints = [
           userLocation,
@@ -226,12 +224,12 @@ export default function MapComponent({
                 ]);
                 currentMap.fitBounds(bounds, { padding: [50, 50] });
               } catch (error) {
-                console.error('Error adding route polyline:', error);
+                // Silently handle error
               }
             }
           })
-          .catch((error) => {
-            console.error('Error fetching route geometry:', error);
+          .catch(() => {
+            // Silently handle error
           })
           .finally(() => {
             setIsLoading(false);
@@ -258,11 +256,6 @@ export default function MapComponent({
               );
 
               // Store route info for display
-              console.log('Setting route info:', {
-                distance: route.distance,
-                duration: route.duration,
-              });
-
               setRouteInfo({
                 distance: route.distance,
                 duration: route.duration,
@@ -280,15 +273,13 @@ export default function MapComponent({
                 const bounds = L.latLngBounds([
                   userLocation,
                   ...destinations.map((d) => d.coordinates),
-                ]);
-                currentMap.fitBounds(bounds, { padding: [50, 50] });
+                ]);                currentMap.fitBounds(bounds, { padding: [50, 50] });
               } catch (error) {
-                console.error('Error adding route polyline:', error);
+                // Silently handle error
               }
             }
           })
-          .catch((error) => {
-            console.error('Error fetching route:', error);
+          .catch(() => {
             // Fallback: draw straight lines
             const currentMap = mapRef.current;
             if (currentMap) {
@@ -304,7 +295,7 @@ export default function MapComponent({
                   dashArray: '10, 10',
                 }).addTo(currentMap);
               } catch (error) {
-                console.error('Error adding fallback polyline:', error);
+                // Silently handle error
               }
             }
           })
@@ -318,7 +309,7 @@ export default function MapComponent({
         const bounds = L.latLngBounds(destinations.map((d) => d.coordinates));
         map.fitBounds(bounds, { padding: [50, 50] });
       } catch (error) {
-        console.error('Error fitting bounds to destinations:', error);
+        // Silently handle error
       }
     }
 

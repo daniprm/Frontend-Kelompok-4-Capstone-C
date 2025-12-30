@@ -10,15 +10,10 @@ export async function generateRoutes(
   location: UserLocation
 ): Promise<ApiResponse> {
   try {
-    console.log('=== generateRoutes function called ===');
-    console.log('Location:', location);
-    console.log('API URL:', `${API_BASE_URL}/generate-routes`);
-
     const requestBody = {
       latitude: location.latitude,
       longitude: location.longitude,
     };
-    console.log('Request Body:', requestBody);
 
     const response = await fetch(`${API_BASE_URL}/generate-routes`, {
       method: 'POST',
@@ -26,20 +21,13 @@ export async function generateRoutes(
       body: JSON.stringify(requestBody),
     });
 
-    console.log('Response Status:', response.status);
-    console.log('Response OK:', response.ok);
-
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Error Response:', errorText);
       throw new Error('Failed to fetch route recommendations');
     }
 
     const data = await response.json();
-    console.log('Response Data:', data);
     return data;
   } catch (error) {
-    console.error('Error generating routes:', error);
     throw error;
   }
 }
@@ -65,11 +53,6 @@ export async function getOSRMRoute(
       throw new Error('At least 2 coordinates are required');
     }
 
-    // OSRM public server supports: 'car', 'bike', 'foot'
-    // However, the correct profile names are: 'driving', 'cycling', 'walking'
-    // But the public demo server at router.project-osrm.org only has 'car' and 'foot'
-    // So we use: car (driving), bike (driving with adjustment), foot (walking)
-
     let osrmProfile: string;
     const baseUrl = 'https://router.project-osrm.org/route/v1';
 
@@ -93,12 +76,6 @@ export async function getOSRMRoute(
 
     const url = `${baseUrl}/${osrmProfile}/${coords}?overview=full&geometries=geojson&steps=true&annotations=true`;
 
-    console.log('Fetching OSRM route:', {
-      profile,
-      osrmProfile,
-      coordCount: coordinates.length,
-    });
-
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -107,8 +84,6 @@ export async function getOSRMRoute(
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OSRM API Error:', response.status, errorText);
       throw new Error(`Failed to fetch OSRM route: ${response.status}`);
     }
 
@@ -122,22 +97,10 @@ export async function getOSRMRoute(
     // Adjust duration for motorcycle (typically 20% faster than car in urban areas)
     if (profile === 'bike' && data.routes && data.routes[0]) {
       data.routes[0].duration = data.routes[0].duration * 0.8;
-      console.log('Adjusted bike duration:', data.routes[0].duration);
     }
-
-    console.log('Route data received:', {
-      profile,
-      osrmProfile,
-      distance: data.routes?.[0]?.distance,
-      duration: data.routes?.[0]?.duration,
-      durationMinutes: data.routes?.[0]?.duration
-        ? (data.routes[0].duration / 60).toFixed(1)
-        : 'N/A',
-    });
 
     return data;
   } catch (error) {
-    console.error('Error fetching OSRM route:', error);
     throw error;
   }
 }

@@ -79,8 +79,7 @@ function loadWisataData(): string {
 
     wisataDataCache = formattedData;
     return formattedData;
-  } catch (error) {
-    console.error('Error loading wisata data:', error);
+  } catch {
     return 'Data wisata tidak tersedia.';
   }
 }
@@ -215,7 +214,6 @@ export async function POST(request: NextRequest) {
       message: text,
     });
   } catch (error) {
-    console.error('Chat API Error:', error);
     return NextResponse.json(
       {
         error: 'Failed to process chat message',

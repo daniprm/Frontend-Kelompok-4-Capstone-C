@@ -122,8 +122,7 @@ export default function RoutesPage() {
           setLatDisplay(lat.toString());
           setLngDisplay(lng.toString());
         },
-        (error) => {
-          console.error('Error getting location:', error);
+        () => {
           alert(
             'Tidak dapat mengakses lokasi. Menggunakan lokasi default (Surabaya).'
           );
@@ -135,16 +134,11 @@ export default function RoutesPage() {
   };
 
   const handleGenerateRoutes = async () => {
-    console.log('=== Generate Routes Clicked ===');
-    console.log('User Location:', userLocation);
-
     setIsLoading(true);
     setError(null);
 
     try {
-      console.log('Calling API...');
       const response = await generateRoutes(userLocation);
-      console.log('API Response:', response);
 
       // Cast response to BackendApiResponse
       const backendResponse = response as unknown as BackendApiResponse;
@@ -154,8 +148,6 @@ export default function RoutesPage() {
         backendResponse.data &&
         backendResponse.data.routes
       ) {
-        console.log('✓ Received routes from backend with calculated distances');
-
         // Backend already provides sorted routes by rank
         // Just use the data directly
         setRouteData(backendResponse);
@@ -167,15 +159,12 @@ export default function RoutesPage() {
       } else {
         setError('Response API tidak sesuai format yang diharapkan');
       }
-    } catch (err) {
-      console.error('API Error:', err);
+    } catch {
       setError(
         'Gagal mengambil rekomendasi rute. Pastikan API berjalan di http://localhost:8000'
       );
-      console.error(err);
     } finally {
       setIsLoading(false);
-      console.log('=== Generate Routes Finished ===');
     }
   };
 

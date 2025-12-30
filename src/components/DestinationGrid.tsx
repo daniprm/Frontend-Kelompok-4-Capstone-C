@@ -1,10 +1,57 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Destination } from '@/types';
 import { Sparkles } from 'lucide-react';
 import DestinationCard from '@/components/DestinationCard';
 import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
+
+// SearchBar dipisah agar tidak menyebabkan input kehilangan fokus
+function SearchBar({
+  searchQuery,
+  onSearchChange,
+  onClear,
+  inBanner = false,
+  filteredCount = 0,
+}: {
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+  onClear: () => void;
+  inBanner?: boolean;
+  filteredCount?: number;
+}) {
+  return (
+    <div className={inBanner ? 'w-full md:w-80' : 'mb-8'}>
+      <div className={`relative ${inBanner ? '' : 'max-w-md mx-auto'}`}>
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <Search className="w-5 h-5 text-gray-400" />
+        </div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Cari destinasi..."
+          className="w-full pl-12 pr-12 py-3 border-2 border-blue-600/40 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-200 text-gray-700 placeholder-gray-400 bg-white"
+        />
+        {searchQuery && (
+          <button
+            onClick={onClear}
+            className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+      {searchQuery && !inBanner && (
+        <p className="text-center text-gray-600 mt-3 text-sm">
+          Ditemukan{' '}
+          <span className="font-semibold text-blue-600">{filteredCount}</span>{' '}
+          destinasi untuk &quot;{searchQuery}&quot;
+        </p>
+      )}
+    </div>
+  );
+}
 
 interface DestinationGridProps {
   destinations: Destination[];
@@ -34,15 +81,15 @@ export default function DestinationGrid({
   const currentDestinations = filteredDestinations.slice(startIndex, endIndex);
 
   // Reset to page 1 when search query changes
-  const handleSearchChange = (value: string) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
     setCurrentPage(1);
-  };
+  }, []);
 
-  const clearSearch = () => {
+  const clearSearch = useCallback(() => {
     setSearchQuery('');
     setCurrentPage(1);
-  };
+  }, []);
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
@@ -97,40 +144,6 @@ export default function DestinationGrid({
     return pages;
   };
 
-  // Search bar component to be used inline or in banner
-  const SearchBar = ({ inBanner = false }: { inBanner?: boolean }) => (
-    <div className={inBanner ? 'w-full md:w-80' : 'mb-8'}>
-      <div className={`relative ${inBanner ? '' : 'max-w-md mx-auto'}`}>
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Search className="w-5 h-5 text-gray-400" />
-        </div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Cari destinasi..."
-          className="w-full pl-12 pr-12 py-3 border-2 border-blue-600/40 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-200 text-gray-700 placeholder-gray-400 bg-white"
-        />
-        {searchQuery && (
-          <button
-            onClick={clearSearch}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        )}
-      </div>
-      {searchQuery && !inBanner && (
-        <p className="text-center text-gray-600 mt-3 text-sm">
-          Ditemukan{' '}
-          <span className="font-semibold text-blue-600">
-            {filteredDestinations.length}
-          </span>{' '}
-          destinasi untuk &quot;{searchQuery}&quot;
-        </p>
-      )}
-    </div>
-  );
 
   return (
     <>
@@ -164,7 +177,22 @@ export default function DestinationGrid({
               </p>
             </div>
           </div>
-          <SearchBar inBanner />
+          <SearchBar
+            inBanner
+            searchQuery={searchQuery}
+            onSearchChange={handleSearchChange}
+            onClear={clearSearch}
+            filteredCount={filteredDestinations.length}
+          />
+              {/* SearchBar di luar banner jika ingin search di atas grid */}
+              {/*
+              <SearchBar
+                searchQuery={searchQuery}
+                onSearchChange={handleSearchChange}
+                onClear={clearSearch}
+                filteredCount={filteredDestinations.length}
+              />
+              */}
         </div>
       </div>
 

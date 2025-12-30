@@ -11,8 +11,6 @@ import {
   Sparkles,
   Loader2,
   X,
-  Minimize2,
-  Minimize,
   Minus,
 } from 'lucide-react';
 
@@ -101,8 +99,7 @@ export default function ChatbotPopup({ isOpen, onClose }: ChatbotPopupProps) {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error('Chat error:', error);
+    } catch {
       const errorMessage: Message = {
         role: 'assistant',
         content:
